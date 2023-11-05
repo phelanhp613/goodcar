@@ -1,0 +1,13 @@
+.card-post{
+	height: 9rem;
+	
+	@media (max-widt    h: 500px) {
+		height: 5rem
+	}
+}
+
+.post-image {
+	img {
+		object-fit: cover;
+	}
+}

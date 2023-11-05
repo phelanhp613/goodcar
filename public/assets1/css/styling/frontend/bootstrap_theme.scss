@@ -1,0 +1,16 @@
+@import "theme";
+
+.text-truncate {
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	white-space: inherit;
+	-webkit-box-orient: vertical;
+}
+
+@include media-breakpoint-up(md) {
+	.container {
+		max-width: 1200px;
+	}
+}

@@ -1,0 +1,146 @@
+.product-detail-page {
+	.slick-nav {
+		.slick-slide {
+			opacity: 0.6;
+			&.active {
+				opacity: 1;
+			}
+		}
+	}
+
+	.slick-slide {
+		visibility: hidden;
+
+		&.slick-active {
+			visibility: inherit;
+		}
+	}
+
+
+	.slick-single {
+		.slick-list {
+			height: auto !important;
+		}
+	}
+
+	.product-order-form {
+		@media screen and (max-width: 575px){
+			font-size: 14px;
+		}
+	}
+
+	.product-tab-nav {
+		z-index: 1029;
+		top: 0;
+		left: 0;
+		right: 0;
+		margin: $headerHeight auto auto;
+		border: 1px solid #80808047;
+		display: none;
+		flex-direction: row;
+
+		.navbar-nav {
+			text-transform: uppercase;
+			flex-direction: row;
+			margin: auto;
+			font-size: 14px;
+			justify-content: center;
+
+			.nav-link {
+				max-width: calPxToRem(110);
+			}
+		}
+
+		@media (max-width: 575px) {
+			.container {
+				padding: 0;
+			}
+			.navbar-nav {
+				font-size: 9px;
+				width: 100%;
+				.nav-link {
+					span {
+						font-weight: bold;
+					}
+				}
+			}
+		}
+	}
+
+	.product-info {
+		.promotion, .description {
+			img {
+				width: 100% !important;
+			}
+		}
+
+		.rating {
+			display: flex;
+		}
+		
+		@media (min-width: 768px) and (max-width: 1107px){
+			.rating {
+				display: block;
+			}
+
+			.price-discount {
+				.price,.discount {
+					display: block;
+				}
+
+				.discount {
+					opacity: .9;
+				}
+			}
+		}
+
+		@media (max-width: 320px){
+			.rating {
+				display: block;
+			}
+		}
+	}
+
+	.btn-order-mobile {
+		width: 10rem;
+		bottom: 5.2rem;
+		left: 12px;
+		z-index: 1029;
+	}
+
+
+
+	p {
+		margin-bottom: 0;
+		img {
+			width: 100%;
+			height: auto !important;
+			text-align: center;
+		}
+	}
+
+	.product-owl-carousel, .product-owl-carousel-sidebar {
+		.slick-list {
+			padding: 1.2rem 0;
+
+			.slick-track {
+				margin: inherit;
+			}
+		}
+	}
+
+	.product-related {
+		.slick-arrow {
+			position: inherit !important;
+		}
+	}
+
+	.product-order-modal {
+		@media (max-width: 991px){
+			.modal-dialog {
+				max-width: 95% !important;
+				margin: 1rem auto auto auto;
+			}
+		}
+	}
+}

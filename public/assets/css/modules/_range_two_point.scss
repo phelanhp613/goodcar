@@ -1,0 +1,59 @@
+#range-two-point {
+	.range-slide {
+		position: relative;
+		height: 4px;
+
+		.slide {
+			position: absolute;
+			top: 0;
+			height: 4px;
+			background: $secondary;
+			left: 9px;
+			right: 9px;
+
+			.range-line {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				height: 4px;
+				background-color: $primary;
+			}
+
+			.thumb {
+				position: absolute;
+				z-index: 2;
+				background-color: $primary;
+				border-radius: 50%;
+				outline: none;
+				top: -7px;
+				height: 18px;
+				width: 18px;
+				margin-left: -9px;
+			}
+		}
+
+		input {
+			-webkit-appearance: none;
+			appearance: none;
+			position: absolute;
+			pointer-events: none;
+			z-index: 3;
+			height: 3px;
+			top: 0;
+			width: 100%;
+			opacity: 0;
+			margin: 0;
+		}
+
+		input::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			pointer-events: all;
+			border-radius: 50%;
+			cursor: pointer;
+			width: 18px;
+			height: 18px;
+		}
+	}
+}

@@ -1,0 +1,200 @@
+@import "styling/backend/theme";
+@import "styling/backend/helper";
+
+body {
+	background: #F5F6F8FF;
+	font-size: 15px;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.cursor-pointer {
+	cursor: pointer !important;
+}
+
+@include media-breakpoint-up(md) {
+	.container {
+		max-width: 1700px;
+	}
+}
+
+.header {
+	height: 4rem;
+
+	.nav {
+		width: 100%;
+		margin-top: 1rem;
+	}
+
+	.navbar-nav {
+		.nav-link, .dropdown-item {
+			&.active {
+				background: inherit;
+				color: $primary;
+				font-weight: $font-weight-semi-bold;
+			}
+		}
+
+		.nav-link {
+			padding-right: calPxToRem(14);
+			padding-left: calPxToRem(14);
+		}
+	}
+
+	.header-menu-desktop.sticky {
+		z-index: $zindex-fixed;
+
+		.nav {
+			margin-top: 0;
+
+			.navbar {
+				border-top-left-radius: 0 !important;
+				border-top-right-radius: 0 !important;
+			}
+		}
+	}
+
+	@include media-breakpoint-down(lg) {
+		height: auto;
+	}
+}
+
+.toast {
+	width: 20rem !important;
+	opacity: inherit !important;
+	box-shadow: 0 0 12px $dark !important;
+	@each $color, $code in $theme-colors {
+		&.toast-#{$color} {
+			background-color: $code;
+			border: white;
+		}
+	}
+
+	&.toast-error {
+		background-color: $danger;
+	}
+}
+
+.admin-authentication {
+	.login-register {
+		.card {
+			width: 1000px;
+		}
+	}
+}
+
+label {
+	font-weight: $font-weight-medium;
+	margin-bottom: 0.25rem;
+}
+
+input[readonly], textarea[readonly] {
+	background-color: rgba(245, 245, 245, 0.87);
+}
+
+.select2-multiple, .select2-multiple-tag {
+	opacity: 0;
+}
+
+.badge-status {
+	width: calPxToRem(110);
+}
+
+table {
+	th {
+		font-weight: $font-weight-medium;
+	}
+
+	td {
+		min-height: 55px;
+	}
+
+	.action, .link-action {
+		width: 200px;
+		text-align: center;
+	}
+
+	.link-action {
+		a {
+			margin-right: 5px;
+		}
+	}
+}
+
+
+.pagination {
+	.page-item {
+		.page-link {
+			border: none;
+			color: $info;
+
+			&:hover {
+				background: none;
+			}
+
+			&:focus {
+				box-shadow: none;
+			}
+		}
+
+		&.active {
+			.page-link {
+				background-color: inherit;
+				color: $primary;
+				font-weight: $font-weight-bold;
+			}
+		}
+
+		&.disabled {
+			.page-link {
+				color: $gray;
+			}
+		}
+
+	}
+}
+
+.form-group {
+	margin-bottom: calPxToRem(24);
+}
+
+.form-control:focus {
+	box-shadow: none;
+}
+
+.text-truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	white-space: inherit;
+	-webkit-box-orient: vertical;
+}
+
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+	padding: 5px 14px !important;
+	background: $primary;
+	color: white !important;
+
+	.select2-selection__choice__remove {
+		background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 19 16' fill='%23ffffff'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") 50%/.75rem auto no-repeat !important;
+	}
+}
+
+.select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option {
+	border-bottom: 1px solid $secondary;
+	&.select2-results__option--selected {
+		background-color: $primary !important;
+	}
+}
+
+.input-image-component-img {
+	max-width: 100%;
+	max-height: calPxToRem(150);
+}
+
+@import "modules/elfinder";
+@import "modules/datetimepicker";
+@import "modules/gallery";

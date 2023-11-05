@@ -1,0 +1,44 @@
+.upload-file-multiple {
+	.images-uploaded{
+		.image {
+			width: 80px;
+			height: 80px;
+		}
+
+		.remove {
+			position: absolute;
+			right: -10px;
+			top: -10px;
+			z-index: 2;
+			display: flex;
+			width: 1.5rem;
+			height: 1.5rem;
+			font-size: 16px;
+			justify-content: center;
+			align-items: center;
+		}
+	}
+
+	.input-upload {
+		width: 80px;
+		height: 80px;
+		border: 2px dashed #ccc;
+		color: #ccc;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+
+		.plus-icon {
+			font-weight: 900;
+			font-size: 30px;
+			line-height: 0;
+		}
+	}
+
+	input {
+		position: absolute;
+		z-index: 0;
+		width: 0;
+	}
+}

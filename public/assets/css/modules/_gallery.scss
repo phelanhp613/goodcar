@@ -1,0 +1,13 @@
+#gallery {
+	.image-item {
+		position: relative;
+		width: 150px;
+
+		.btn-remove {
+			position: absolute;
+			z-index: 2;
+			top: -19px;
+			right: -19px;
+		}
+	}
+}

@@ -1,0 +1,84 @@
+
+.home-content-page {
+	overflow-x: hidden;
+}
+
+.title-section {
+	position: relative;
+	text-align: center;
+
+	&.title-left {
+		text-align: left !important;
+	}
+
+	h2 {
+		position: relative;
+
+		span {
+			position: relative;
+			background: $white;
+			z-index: 10;
+			font-size: calPxToRem(20);
+		}
+
+		&::before {
+			content: "";
+			border-bottom: 1px solid $primary;
+			border-top: 0px solid $primary;
+			display: table;
+			top: 58%;
+			width: 100%;
+			position: absolute;
+			z-index: 9;
+		}
+
+		&::after {
+			content: "";
+			border-bottom: 1px solid $primary;
+			/* border-top: 1px solid #201d6f; */
+			display: table;
+			top: 66%;
+			width: 100%;
+			position: absolute;
+			z-index: 9;
+		}
+	}
+}
+
+.home-owl-carousel {
+	position: relative;
+
+	.slick-arrow {
+		position: absolute;
+		top: 50%;
+
+		&.pre-arrow {
+			left: -4px;
+		}
+
+		&.next-arrow {
+			right: -7px;
+		}
+
+		.btn {
+			border-radius: 50% !important;
+			border: none !important;
+			background: $secondary;
+			padding: 8px 12px !important;
+		}
+	}
+
+	.arrows-container-flash-sale-list {
+		.slick-arrow {
+			padding: 0 !important;
+
+			&.pre-arrow {
+				left: -20px;
+			}
+
+			&.next-arrow {
+				right: -20px;
+			}
+		}
+	}
+}

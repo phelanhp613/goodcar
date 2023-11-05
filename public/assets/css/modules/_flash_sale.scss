@@ -1,0 +1,78 @@
+$mainColor: #248be3;
+$highlightColor: #da251c;
+
+.bg-highlight-flash-sale {
+	background: $highlightColor;
+}
+
+.flash-sale-timing {
+	.timing-box {
+		color: $primary;
+		font-size: 18px;
+		span {
+			width: calPxToRem(41);
+			padding: 5px 10px;
+		}
+	}
+}
+
+#flash-sale {
+	&.flash-sale {
+		background: $mainColor;
+
+		.flash-sale-list {
+			.slick-list {
+				padding-left: 0 !important;
+
+				.slick-track {
+					display: flex !important;
+				}
+
+				.slick-slide {
+					height: inherit !important;
+				}
+			}
+
+			.card {
+				overflow: hidden;
+
+				.saleoff-flashsale {
+					color: #fff;
+					text-transform: uppercase;
+					text-align: center;
+					line-height: calPxToRem(24);
+					transform: rotate(45deg);
+					-webkit-transform: rotate(45deg);
+					width: calPxToRem(100);
+					display: block;
+					background: $highlightColor;
+					position: absolute;
+					top: 8px;
+					right: calPxToRem(-28);
+					z-index: $zindex-sticky;
+				}
+
+				.card-description {
+					background: $highlightColor;
+
+					.card-price {
+						@media (max-width: 450px) {
+							padding: 0 !important;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	#category {
+		a.active{
+			color: orangered;
+			background-color: transparent;
+		}
+
+		.dropdown-menu {
+			z-index: $zindex-popover;
+		}
+	}
+}

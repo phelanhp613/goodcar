@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin/
+Allow: /
+
+# BEGIN XML-SITEMAP
+Sitemap: https://basicgalaxy.vn/sitemap.xml
+# END XML-SITEMAP

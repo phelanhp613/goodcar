@@ -1,0 +1,126 @@
+//Elfinder
+.elfinder * {
+	font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+	font-size: 1.3rem;
+
+	.elfinder-navbar-dir {
+		font-size: 18px;
+	}
+}
+
+.ui-dialog.ui-widget.ui-widget-content.ui-front.ui-draggable {
+	z-index: 2001;
+	font-size: 1.2rem;
+}
+
+.ui-widget-overlay.ui-front {
+	z-index: 2000;
+}
+
+.ui-dialog .ui-dialog-content {
+	overflow: hidden !important;
+}
+
+.ui-draggable .ui-dialog-titlebar {
+	cursor: move;
+	background: white;
+	border: none;
+
+	.ui-dialog-titlebar-close {
+		border: none;
+		background: white;
+	}
+}
+
+.ui-widget-content.elfinder-button.elfinder-button-search.ui-state-active {
+	background: white;
+
+	input {
+		padding: 0 2px 0 22px;
+	}
+}
+
+.elfinder-backdrops {
+	overflow: hidden;
+	padding-right: 15px;
+}
+
+.elfinder-button-search-menu {
+	.ui-button {
+		:hover {
+			color: $primary !important;
+		}
+
+		&.ui-state-active {
+			.ui-button-text {
+				color: $white;
+			}
+
+			:hover {
+				color: $secondary !important;
+			}
+		}
+
+		&.ui-state-hover {
+			border: 0 !important;
+		}
+	}
+}
+
+.ui-widget-header.elfinder-toolbar {
+	height: 2.3rem;
+	border-bottom: 1px solid gray !important;
+	margin-bottom: 1rem;
+	overflow-y: hidden;
+
+	.elfinder-buttonset {
+		height: 100%;
+		border-radius: 0 !important;
+
+		.elfinder-button {
+			min-width: 25px;
+			height: 100%;
+
+			.elfinder-button-icon {
+				width: 100%;
+				height: 32px;
+				background-repeat: no-repeat;
+			}
+
+			.elfinder-button-icon-mkdir,
+			.elfinder-button-icon-upload,
+			.elfinder-button-icon-selectall,
+			.elfinder-button-icon-selectnone,
+			.elfinder-button-icon-selectinvert,
+			.elfinder-button-icon-quicklook,
+			.elfinder-button-icon-info,
+			.elfinder-button-icon-fullscreen {
+				opacity: inherit !important;
+			}
+		}
+	}
+}
+
+.elfinder-tree {
+	.elfinder-navbar-dir {
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+}
+
+.elfinder-cwd {
+	height: auto !important;
+	display: flex;
+	flex-wrap: wrap;
+	.elfinder-cwd-file {
+		padding: 8px !important;
+		width: calPxToRem(100) !important;
+		height: auto !important;
+		float: inherit !important;
+		margin: 0 !important;
+
+		&.ui-state-hover {
+			background: inherit !important;
+		}
+	}
+}

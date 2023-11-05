@@ -1,0 +1,740 @@
+@import "styling/frontend/helper";
+
+* {
+	scroll-margin-top: $headerHeight;
+}
+
+body {
+	color: $primary;
+}
+
+input, button, a {
+	&:focus {
+		box-shadow: none !important;
+	}
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.hover:hover {
+	color: orangered !important;
+}
+
+.cursor-pointer {
+	cursor: pointer !important;
+}
+
+.header, .header-nav {
+	height: $headerHeight;
+}
+
+@supports (position: sticky) {
+	.sticky-element {
+		position: sticky;
+		top: 9rem;
+	}
+}
+
+.header {
+	position: relative;
+
+	.logo {
+		img {
+			height: 40px;
+			width: auto;
+		}
+
+		@media (max-width: 436px) {
+			&.logo-mobile {
+				img {
+					height: auto;
+					width: 100%;
+				}
+			}
+		}
+	}
+
+	.nav-sub-menu-header {
+		@media (max-width: 991px) {
+			.nav-item {
+				border-bottom: 1px solid #c5818159;
+			}
+		}
+	}
+
+	.header-nav {
+		z-index: $zindex-fixed;
+
+		.header-icon {
+			@media (max-width: 991px) {
+				position: absolute;
+				top: 3px;
+				bottom: 0;
+				left: 1rem;
+				height: 32px;
+				margin: auto;
+
+				&.header-cart {
+					left: inherit;
+					right: 1rem;
+				}
+			}
+		}
+
+		.menu {
+			.nav-link {
+				font-weight: $font-weight-semi-bold;
+				text-transform: uppercase;
+
+				&:hover {
+					color: orangered !important;
+				}
+			}
+
+			a {
+				white-space: normal;
+
+				&.active {
+					color: orangered !important;
+					background-color: transparent !important;
+				}
+			}
+
+			.dropdown {
+				@media (min-width: 991px) {
+					&:hover > .dropdown-menu {
+						display: block;
+						top: 1.8rem;
+						left: 0;
+						margin-top: var(--bs-dropdown-spacer);
+					}
+				}
+
+				.dropdown-menu {
+					.dropdown-item {
+						padding: 12px 8px;
+
+						&:hover, &:focus {
+							color: orangered !important;
+							background: $secondary;
+						}
+					}
+
+					@media (max-width: 991px) {
+						border: none;
+					}
+				}
+
+				.dropdown-submenu {
+					position: relative;
+					@media (min-width: 991px) {
+						&:hover > .dropdown-menu {
+							display: block;
+						}
+					}
+				}
+
+				.dropdown-submenu .dropdown-menu {
+					padding-left: 0.5rem;
+					position: absolute;
+					top: 25%;
+					left: 95%;
+					@media (max-width: 991px) {
+						border: none;
+						position: inherit;
+						top: 0;
+						left: 0;
+						margin-top: -1px;
+					}
+				}
+			}
+
+			@media (max-width: 991px) {
+				.nav-item {
+					border-bottom: 1px solid #c5818159;
+					display: flex;
+					align-items: center;
+					width: 100%;
+				}
+
+				.dropdown .nav-link {
+					max-width: 80%;
+				}
+			}
+		}
+
+		@media (max-width: 360px) {
+			.container {
+				flex-wrap: nowrap;
+			}
+		}
+	}
+
+	.header-cart {
+		.dropdown {
+			position: inherit;
+
+			.dropdown-search {
+				left: inherit;
+				width: 50%;
+				top: $headerHeight;
+				right: 1rem;
+				box-shadow: 0 0.5rem 1rem rgb(195 195 195 / 36%);
+
+				&::before {
+					content: "";
+					position: absolute;
+					bottom: 100%;
+					right: 2rem;
+					border-width: 8px;
+					border-style: solid;
+					border-color: transparent transparent $secondary;
+					border-image: initial;
+				}
+
+				@media screen and (max-width: 991px) {
+					width: 100%;
+				}
+			}
+
+			@media screen and (max-width: 991px) {
+				position: relative;
+				.dropdown-search {
+					width: 300px;
+					top: 52px;
+					right: -1.5rem;
+				}
+			}
+		}
+	}
+}
+
+.main {
+	min-height: 100vh;
+}
+
+.footer {
+	.footer-icon {
+		width: 1.5rem;
+	}
+}
+
+.btn:focus {
+	box-shadow: none;
+}
+
+#btn-back-to-top {
+	position: fixed;
+	bottom: 4rem;
+	right: 0.5rem;
+	display: none;
+	padding: 6px 20px;
+	font-size: 26px;
+	z-index: 1050;
+}
+
+.contact-buttons {
+	position: fixed;
+	bottom: 0;
+	left: 0.5rem;
+	z-index: 1050;
+
+	.contact-button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: transparent;
+		width: 100px;
+		height: 100px;
+		cursor: pointer;
+		z-index: 200000 !important;
+		-webkit-backface-visibility: hidden;
+		-webkit-transform: translateZ(0);
+		-webkit-transition: visibility .5s;
+		-moz-transition: visibility .5s;
+		-o-transition: visibility .5s;
+		transition: visibility .5s;
+
+		.contact-button-circle {
+			opacity: .5;
+			width: 100px;
+			height: 100px;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			margin: auto;
+			position: absolute;
+			background-color: transparent;
+			-webkit-border-radius: 100%;
+			-moz-border-radius: 100%;
+			border-radius: 100%;
+			border: 2px solid #00aff2;
+			-webkit-animation: contactButtonCircleAnimate 1.2s infinite ease-in-out;
+			-moz-animation: contactButtonCircleAnimate 1.2s infinite ease-in-out;
+			-ms-animation: contactButtonCircleAnimate 1.2s infinite ease-in-out;
+			-o-animation: contactButtonCircleAnimate 1.2s infinite ease-in-out;
+			animation: contactButtonCircleAnimate 1.2s infinite ease-in-out;
+			-webkit-transition: all .5s;
+			-moz-transition: all .5s;
+			-o-transition: all .5s;
+			transition: all .5s;
+
+			&.phone {
+				border: 2px solid $danger;
+			}
+		}
+
+		.contact-button-fill {
+			background-color: $info;
+			opacity: .75 !important;
+			width: 80px;
+			height: 80px;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			margin: auto;
+			position: absolute;
+			-webkit-border-radius: 100%;
+			-moz-border-radius: 100%;
+			border-radius: 100%;
+			border: 2px solid transparent;
+			-webkit-animation: contactButtonFillAnimate 2.3s infinite ease-in-out;
+			-moz-animation: contactButtonFillAnimate 2.3s infinite ease-in-out;
+			-ms-animation: contactButtonFillAnimate 2.3s infinite ease-in-out;
+			-o-animation: contactButtonFillAnimate 2.3s infinite ease-in-out;
+			animation: contactButtonFillAnimate 2.3s infinite ease-in-out;
+			-webkit-transition: all .5s;
+			-moz-transition: all .5s;
+			-o-transition: all .5s;
+			transition: all .5s;
+
+			&.phone {
+				background-color: $danger;
+			}
+		}
+
+		.contact-button-image {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: $info;
+			width: 40px;
+			height: 40px;
+			-webkit-border-radius: 100%;
+			-moz-border-radius: 100%;
+			border-radius: 100%;
+			border: 2px solid transparent;
+			opacity: 1;
+			-webkit-animation: contactButtonImageAnimate 1s infinite ease-in-out;
+			-moz-animation: contactButtonImageAnimate 1s infinite ease-in-out;
+			-ms-animation: contactButtonImageAnimate 1s infinite ease-in-out;
+			-o-animation: contactButtonImageAnimate 1s infinite ease-in-out;
+			animation: contactButtonImageAnimate 1s infinite ease-in-out;
+
+			&.phone {
+				background-color: $danger;
+			}
+		}
+
+		@media (max-width: 767px) {
+			width: 70px;
+			height: 70px;
+
+			.contact-button-circle {
+				width: 70px;
+				height: 70px;
+			}
+			.contact-button-fill {
+				width: 60px;
+				height: 60px;
+			}
+		}
+	}
+
+	//Circle
+	@-moz-keyframes contactButtonCircleAnimate {
+		0% {
+			transform: rotate(0) scale(.5) skew(1deg);
+			opacity: .1
+		}
+		30% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .5
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .1
+		}
+	}
+
+	@-webkit-keyframes contactButtonCircleAnimate {
+		0% {
+			transform: rotate(0) scale(.5) skew(1deg);
+			opacity: .1
+		}
+		30% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .5
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .1
+		}
+	}
+
+	@-o-keyframes contactButtonCircleAnimate {
+		0% {
+			transform: rotate(0) scale(.5) skew(1deg);
+			opacity: .1
+		}
+		30% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .5
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .1
+		}
+	}
+
+	@keyframes contactButtonCircleAnimate {
+		0% {
+			transform: rotate(0) scale(.5) skew(1deg);
+			opacity: .1
+		}
+		30% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .5
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .1
+		}
+	}
+
+	//Circle Fill
+	@-moz-keyframes contactButtonFillAnimate {
+		0% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .2
+		}
+		100% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+	}
+
+	@-webkit-keyframes contactButtonFillAnimate {
+		0% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .2
+		}
+		100% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+	}
+
+	@-o-keyframes contactButtonFillAnimate {
+		0% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .2
+		}
+		100% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+	}
+
+	@keyframes contactButtonFillAnimate {
+		0% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .2
+		}
+		100% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+	}
+
+	//Image
+	@-moz-keyframes contactButtonImageAnimate {
+		0% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		10% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		20% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		30% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		40% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+	}
+
+	@-webkit-keyframes contactButtonImageAnimate {
+		0% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		10% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		20% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		30% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		40% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+	}
+
+	@-o-keyframes contactButtonImageAnimate {
+		0% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		10% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		20% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		30% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		40% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+	}
+
+	@keyframes contactButtonImageAnimate {
+		0% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		10% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		20% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		30% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		40% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+	}
+}
+
+.toast {
+	width: 20rem !important;
+	opacity: inherit !important;
+	box-shadow: 0 0 12px $dark !important;
+
+	&.toast-success {
+		background-color: $success;
+		border: white;
+	}
+
+	&.toast-error {
+		background-color: $danger;
+	}
+}
+
+@media screen and (max-width: 575px) {
+	.text-content img {
+		width: 100% !important;
+		height: auto !important;
+	}
+}
+
+.hide-content {
+	overflow: hidden;
+	height: 10em;
+}
+
+.show-more::before {
+	z-index: 8;
+	background: linear-gradient(to bottom, rgb(255 255 255 / 0%) 0%, #fff 100%);
+	display: block;
+	content: "";
+	height: 105px;
+	margin-top: -110px;
+	position: relative;
+}
+
+.card-product {
+	.card-body {
+
+		.card-title {
+			line-height: 1.3;
+			height: calPxToRem(40);
+		}
+
+		.card-price {
+			height: calPxToRem(40);
+		}
+
+		@media screen and (max-width: 408px) {
+			.card-price {
+				height: calPxToRem(60);
+			}
+		}
+	}
+}
+
+.no-before::before {
+	background: none;
+}
+
+iframe, img {
+	max-width: 100%;
+}
+
+iframe {
+	max-height: calPxToRem(416);
+}
+
+.container-post {
+	max-width: 800px;
+	margin: auto;
+}
+
+.saleoff {
+	@keyframes flickerAnimation {
+		0% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+	@-o-keyframes flickerAnimation {
+		0% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+	@-moz-keyframes flickerAnimation {
+		0% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+	@-webkit-keyframes flickerAnimation {
+		0% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
+	-webkit-animation: flickerAnimation linear .7s infinite;
+	-moz-animation: flickerAnimation .7s infinite;
+	-o-animation: flickerAnimation .7s infinite;
+	animation: flickerAnimation linear .7s infinite;
+	padding: 12px 5px;
+	background: url("/images/sale-off.png");
+	color: #ffffff !important;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 50%;
+	margin-top: -2rem;
+	display: inline-block;
+	font-weight: bold;
+	background-size: cover;
+	width: calPxToRem(45);
+	height: calPxToRem(45);
+
+	&.home-page {
+		z-index: 10;
+		top: 0.5rem;
+		right: -1rem;
+		white-space: nowrap;
+	}
+}
+
+.text-truncate {
+	p, div, span {
+		margin-bottom: 0 !important;
+		display: inline;
+	}
+}
+
+@import "modules/home";
+@import "modules/banner";
+@import "modules/product";
+@import "modules/shopping_cart";
+@import "modules/post";
+@import "modules/comment";
+@import "modules/rating";
+@import "modules/upload_file_multiple";
+@import "modules/_range_two_point";
+@import "modules/_flash_sale";

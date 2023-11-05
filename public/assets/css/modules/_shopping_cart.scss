@@ -1,0 +1,16 @@
+.cart-notify {
+	top: 2.3rem;
+	min-width: 18rem;
+	right: -0.7rem;
+
+	&::before {
+		content: "";
+		position: absolute;
+		bottom: 100%;
+		right: 15px;
+		border-width: 8px;
+		border-style: solid;
+		border-color: transparent transparent $success;
+		border-image: initial;
+	}
+}
