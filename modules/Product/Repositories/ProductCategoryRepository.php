@@ -47,6 +47,9 @@ class ProductCategoryRepository extends BaseRepository
 		if (!empty($filters['name'])) {
 			$query = $query->where('name', 'LIKE', '%' . $filters['name'] . '%');
 		}
+		if (!empty($filters['type'])) {
+			$query = $query->where('type', $filters['type']);
+		}
 		if (!empty($filters['parent'])) {
 			$query = $query->where('parent', $filters['parent_id']);
 		}

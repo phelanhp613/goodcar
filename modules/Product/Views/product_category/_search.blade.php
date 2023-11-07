@@ -8,8 +8,15 @@
             <form action="{{ route('get.product_category.list') }}" method="get">
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label for="name col-md-3">{{ trans("Name") }}</label>
+                        <label for="name">{{ trans("Name") }}</label>
                         <input type="text" class="form-control" id="name" name="name" value="{{ $filter['name'] ?? null}}">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="type">{{ trans('Category Type') }}</label>
+                        <select name="type" class="form-control select2 w-100" id="type">
+                            <option value="">{{ trans('Select') }}</option>
+                            <option value="brand" @if(($filter['name'] ?? '') === 'brand' || request()->type === 'brand') selected @endif>{{ trans('Brand') }}</option>
+                        </select>
                     </div>
                     {{--<div class="form-group col-md-3">
                         <label for="parent">{{ trans("Category Parent") }}</label>

@@ -41,8 +41,7 @@
                                 <th>{{ trans('Image') }}</th>
                                 <th>{{ trans('Slug') }}</th>
                                 <th>{{ trans('Parent') }}</th>
-                                <th style="width: 200px;">{{ trans('Created At') }}</th>
-                                <th style="width: 200px;">{{ trans('Updated At') }}</th>
+                                <th>{{ trans('Type') }}</th>
                                 <th class="action">{{ trans('Action') }}</th>
                             </tr>
                             </thead>
@@ -59,8 +58,7 @@
                                     <th><img src="{{ env('APP_URL') . $item->image }}" alt="" width="100"></th>
                                     <td>{{ $item->slug ?? "" }}</td>
                                     <td>{{ $item->parent->name ?? '--'  }}</td>
-                                    <td>{{ formatDate($item->created_at,'d-m-Y H:i:s') }}</td>
-                                    <td>{{ formatDate($item->updated_at,'d-m-Y H:i:s') }}</td>
+                                    <td>{{ $item->type == 'brand' ? trans('Brand') : '--' }}</td>
                                     <td class="link-action">
                                         <a href="{{ route("get.product_category.view", $item->id) }}" class="btn btn-warning text-white" target="_blank">
                                             <i class="fa-solid fa-eye"></i>

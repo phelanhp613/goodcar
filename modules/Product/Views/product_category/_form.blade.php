@@ -38,6 +38,13 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="type" class="form-label">{{ trans('Category Type') }}</label>
+                <select name="type" class="form-control select2 w-100" id="type">
+                    <option value="">{{ trans('Select') }}</option>
+                    <option value="brand" @if(($data->type ?? '') === 'brand' || request()->type === 'brand') selected @endif>{{ trans('Brand') }}</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="image" class="form-label">{{ trans('Image') }}</label>
                 <x-base::image-input id="image" name="image" value="{{$data->image ?? '' }}"/>
             </div>
