@@ -161,7 +161,8 @@ class ProductCategory extends BaseModel
 			} else {
 				$category_ids = ProductCategory::query()
 				                               ->where('parent_id', $category->id)
-				                               ->pluck('id');
+				                               ->get('id');
+				$category_ids = [...$category_ids, ...[$category->id]];
 			}
 
 			$products = $products->where(function($q) use ($category_ids) {

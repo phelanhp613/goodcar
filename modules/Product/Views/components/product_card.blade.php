@@ -17,15 +17,19 @@
             $discounts = $prices = array_column($variants, 'discount');
             $minDiscount = min($discounts);
             $maxDiscount = max($discounts);
-            if((int)$maxDiscount !== 0) {
+
+			if((int)$minDiscount === 0) {
+				$minDiscount = $maxDiscount;
+				$maxDiscount = 0;
+			}
+            $priceRange = currency_format($minPrice);
+			if((int)$minDiscount > 0){
                 $priceRange = currency_format($minDiscount);
-                if($maxDiscount > $minDiscount) {
-					$startPrice = ($minPrice < $minDiscount) ? $minPrice : $minDiscount;
-                    $priceRange = currency_format($startPrice) . ' - ' . currency_format($maxDiscount);
-                }
-            } else {
-                $priceRange = currency_format($minPrice) . ($minPrice == $maxPrice ? null : ' - ' . currency_format($maxPrice));
-            }
+                $startPrice = ($maxDiscount > $minDiscount) ? (($minPrice < $minDiscount) ? $minPrice : $minDiscount) : $minDiscount;
+                $priceRange = currency_format($startPrice) . ' - ' . currency_format(($maxDiscount > $maxPrice) ? $maxDiscount: $maxPrice);
+			} else{
+				$priceRange = currency_format($minPrice) . ($minPrice == $maxPrice ? null : ' - ' . currency_format($maxPrice));
+			}
         }
     @endphp
     <div class="card card-product position-relative">
@@ -41,12 +45,9 @@
             </div>
             <hr class="m-1">
             <div class="card-price">
-                <span class="fw-semibold text-primary border-bottom border-primary fs-lg-6 fs-md-7 fs-8">
+                <span class="fw-semibold text-primary border-primary fs-lg-6 fs-md-7 fs-8">
                     {{ $priceRange }}
                 </span>
-                @if((int)$maxDiscount !== 0)
-                    <span class="d-block text-decoration-line-through fs-md-7 fs-8">{{ currency_format($maxPrice) }}</span>
-                @endif
             </div>
         </div>
         <div class="card-footer bg-white border-top-0 p-md-2 p-1">

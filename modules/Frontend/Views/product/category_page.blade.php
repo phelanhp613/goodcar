@@ -1,12 +1,4 @@
-@php use Modules\Setting\Models\Website; @endphp@extends('Base::frontend.master')@php
-    pageSEO(
-		(!empty($data->meta_title) ? $data->meta_title : trans('Product Category')),
-		(!empty($data->meta_description) ? $data->meta_description : trans('Product Category Page')),
-		(!empty($data->meta_keyword) ? $data->meta_keyword : trans('Product Category Page')),
-		(!empty($data->image) ? env('APP_URL') . $data->image : null),
-		(!empty($data->canonical) ? $data->canonical : request()->url())
-	);
-@endphp
+@extends('Base::frontend.master')
 @section('content')
     <div class="container mb-5">
         @if(!empty($data->banner))
@@ -52,60 +44,10 @@
             </div>
             <div class="container-post text-content">
                 @if(!empty($data->content))
-						<?php $content = json_decode($data->content ?? []); ?>
+					<?php $content = json_decode($data->content ?? []); ?>
                     <x-base::post-content :content="$content"/>
                 @endif
             </div>
         </div>
     </div>
 @endsection
-@push('js')
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "NewsArticle",
-  "headline": "{{ $data->name ?? '' }}",
-  "image": [
-    "{{ env('APP_URL') . $data->image ?? '' }}"
-   ],
-  "datePublished": "{{ formatDate($data->created_at ?? time() , 'Y-m-d\TH:i:sT:00') }}",
-  "dateModified": "{{ formatDate($data->updated_at ?? time() , 'Y-m-d\TH:i:sT:00') }}",
-  "author": [{
-    "@type":"Organization",
-    "name": "{{ cache('setting_website')[Website::WEBSITE_NAME]['value'] ?? env('APP_NAME') }}",
-    "url": "{{ env('APP_URL') }}"
-  }]
-}
-
-
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [{
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "{{ route('frontend.home') }}"
-      },
-      @if(!empty($data->parent))
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "{{ $data->parent->name ?? ''}}",
-        "item": "{{ route('frontend.redirect_to_page', $data->parent->slug ?? '') }}"
-      },
-
-
-        @endif
-        {
-            "@type": "ListItem",
-            "position":  {{ (!empty($data->parent)) ? 3 : 2 }},
-        "name": "{{ $data->name ?? ''}}"
-      }]
-    }
-
-
-    </script>
-@endpush

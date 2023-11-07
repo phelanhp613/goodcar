@@ -12,9 +12,6 @@ use Illuminate\Support\Str;
 use Modules\Base\Models\BaseModel;
 use Modules\Base\Models\Slug;
 use Modules\Base\Models\Status;
-use Modules\Comment\Repositories\CommentRepository;
-use Modules\Comment\Repositories\CommentService;
-use Modules\Rating\Models\Rating;
 use Modules\Tag\Models\Tag;
 use Modules\User\Models\User;
 
@@ -63,14 +60,6 @@ class Product extends BaseModel
 	}
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function ratings()
-	{
-		return $this->hasMany(Rating::class, 'product_id');
-	}
-
-	/**
 	 * @return BelongsTo
 	 */
 	public function createdBy()
@@ -105,9 +94,6 @@ class Product extends BaseModel
 					            $vq->with('variants');
 				            });
 			            })
-			            ->with('ratings', function($cq) {
-				            $cq->where('status', Status::STATUS_ACTIVE);
-			            })
 			            ->where('slug', $slug)
 			            ->where('status', Status::STATUS_ACTIVE)
 			            ->first()
@@ -133,11 +119,24 @@ class Product extends BaseModel
 		/** Get product attributes */
 		$productAttributes = $cacheService->get('product_attributes_' . $product->id);
 		if(!$productAttributes) {
-			$productAttributes = ProductAttribute::query()
+			$attrs = json_decode($product->attribute_ids, 1);
+			$attribute_ids = array_keys($attrs);
+			$productAttributesDB = ProductAttribute::query()
 			                                     ->with('children')
-			                                     ->whereIn('id',
-				                                     json_decode($product->attribute_ids, 1))
+			                                     ->whereIn('id', $attribute_ids)
 			                                     ->get();
+
+			$productAttributes = [];
+			foreach($productAttributesDB as $productAttribute) {
+				$children = [];
+				foreach($productAttribute->children as $child) {
+					if(in_array($child->id, $attrs[$productAttribute->id])) {
+						$children[] = $child;
+					}
+				}
+				$productAttribute->selectedChildren = $children;
+				$productAttributes[] = $productAttribute;
+			}
 
 			$cacheService->cache('product_attributes_' . $product->id, $productAttributes);
 		}
@@ -149,14 +148,6 @@ class Product extends BaseModel
 		} else {
 			$variantSelected = $product->rootVariant();
 		}
-		$variantSelected->suggest_products = ProductVariant::query()
-		                                                   ->with('product', function($pq) {
-			                                                   $pq->with('variants');
-		                                                   })
-		                                                   ->whereIn('id',
-			                                                   json_decode($variantSelected->suggest_product_ids,
-				                                                   1))
-		                                                   ->get();
 
 		/** Get related products */
 		$related_products = $product->category->products
@@ -164,19 +155,11 @@ class Product extends BaseModel
 			                    ->where('status', 1)
 			                    ->take(20) ?? [];
 
-		/** Get comments */
-		$commentService = new CommentService(new CommentRepository());
-		$comments       = $commentService->listFrontend([
-			'status'     => 1,
-			'product_id' => $product->id,
-		]);
-
 		return [
 			'data'               => $data->data,
 			'related_products'   => $related_products ?? [],
 			'product_attributes' => $productAttributes ?? [],
 			'variant_selected'   => $variantSelected ?? [],
-			'comments'           => $comments ?? [],
 		];
 	}
 

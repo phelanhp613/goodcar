@@ -27,13 +27,8 @@
 						slickOwlCarousel(".product-owl-carousel.invisible", 4);
 						$(document).find('.product-owl-carousel').removeClass('invisible');
 					}
-					if ($(document).find('.product-owl-carousel-sidebar').length > 0) {
-						slickOwlCarousel(".product-owl-carousel-sidebar.invisible", 2, 1, 1, 1);
-						$(document).find('.product-owl-carousel-sidebar').removeClass('invisible');
-					}
 					incrementValue();
 					decrementValue();
-					$('.lazy').Lazy();
 					console.log('done');
 				});
 			});

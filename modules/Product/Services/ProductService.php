@@ -66,7 +66,7 @@ class ProductService implements BaseServiceInterface
 		try {
 			$attribute_ids = array_keys($attrs);
 			$data          = $this->moduleRepository->updateById($id,
-				['attribute_ids' => json_encode($attribute_ids)], true);
+				['attribute_ids' => json_encode($attrs)], true);
 
 			$data->variants->each->delete();
 			if(!empty($attribute_ids)) {

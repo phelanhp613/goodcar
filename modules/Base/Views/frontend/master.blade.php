@@ -31,6 +31,7 @@
 <script type="text/javascript" src="{{ asset('assets/vendor/slick/js/slick.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/vendor/jquery-passive-events.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/vendor/toastr/toastr.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/jsvalidation/jsvalidation.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/frontend.js') }}?v={{ env('APP_VERSION', '1') }}"></script>
 <script class="js-loading">
 	$(document).ready(function () {
