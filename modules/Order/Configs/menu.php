@@ -5,7 +5,7 @@ return [
     'sort' => 6,
     'active'=> TRUE,
     'id'=> 'order',
-    'icon' => '',
+    'icon' => '<i class="fa fa-file-invoice-dollar"></i>',
     'middleware' => ['order'],
     'group' => []
 ];

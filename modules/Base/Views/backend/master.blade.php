@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"/>
     <link rel="stylesheet" href="{{ asset('assets/css/backend.css') }}?v={{ env('APP_VERSION', '1') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/toastr/toastr.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('assets/vendor/datetimepicker/css/datetimepicker.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2-bootstrap5.min.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/elfinder/css/elfinder.min.css') }}">
@@ -41,6 +42,8 @@
 <script src="{{ asset('assets/js/main.js') }}?v={{ env('APP_VERSION', '1') }}"></script>
 <script src="{{ asset('assets/vendor/toastr/toastr.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/select2/select2.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/datetimepicker/js/datetimepicker.js') }}"></script>
+<script src="{{ asset('assets/vendor/datetimepicker/js/datetimepicker_main.js') }}"></script>
 <script src="{{ asset('assets/vendor/jsvalidation/jsvalidation.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/elfinder/js/elfinder.min.js') }}"></script>
 <script src="{{ asset("assets/vendor/elfinder/js/i18n/elfinder.". ($locale ?? 'LANG') .".js") }}"></script>

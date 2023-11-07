@@ -20,11 +20,6 @@
                         <input type="tel" class="form-control" id="phone" name="phone" value="{{ $filters['phone'] ?? null}}">
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="invoice_info">{{ trans("Invoice Type") }}</label>
-                        {!! Form::select('invoice_info', ['' => 'Select'] + Order::INVOICE_TYPES, $filters['invoice_info'] ?? '',
-                            ['class' => 'select2 form-control w-100', 'id' => 'invoice_info']) !!}
-                    </div>
-                    <div class="form-group col-md-3">
                         <label for="status">{{ trans("Status") }}</label>
                         {!! Form::select('status', ['' => 'Select'] + $statues, $filters['status'] ?? '',
                             ['class' => 'select2 form-control w-100', 'id' => 'status']) !!}

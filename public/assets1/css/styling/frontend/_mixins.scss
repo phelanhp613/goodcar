@@ -1,4 +1,0 @@
-@import 'variables';
-@function calPxToRem($value) {
-  @return calc($value/$aRem) + rem;
-}
