@@ -33,12 +33,12 @@ class ProductCategoryRepository extends BaseRepository
 	public function getArray()
 	{
 		return $this->model->query()
-		                    ->tree()
-		                    ->select('id', 'name', 'slug', 'parent_id', 'level', 'status')
-							->where('status', TRUE)
-		                    ->get()
-		                    ->toTree()
-		                    ->toArray();
+			->tree()
+			->select('id', 'name', 'slug', 'parent_id', 'level', 'status')
+			->where('status', TRUE)
+			->get()
+			->toTree()
+			->toArray();
 	}
 
 	protected function hookFilterResultCustom($query, $filters, $perPage)

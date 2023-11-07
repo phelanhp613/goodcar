@@ -58,7 +58,6 @@
 
 # BEGIN Cache-Control-Headers
 <IfModule mod_headers.c>
-  HeadersActive on
 	<FilesMatch "\.(ico|jpe?g|png|gif|swf|css|gz)$">
 		Header set Cache-Control "max-age=2592000, public"
 	</FilesMatch>
