@@ -7,11 +7,11 @@ $(document).ready(function () {
 			if (child.length > 0) {
 				child.not(this).prop('checked', this.checked);
 			}
-				/*else {
-					if (!$(this).hasClass('select-all-with-other-child')) {
-						$('input.checkbox-item').not(this).prop('checked', this.checked);
-					}
-				}*/
+			/*else {
+				if (!$(this).hasClass('select-all-with-other-child')) {
+					$('input.checkbox-item').not(this).prop('checked', this.checked);
+				}
+			}*/
 		}
 		else {
 			$('input.checkbox-item').not(this).prop('checked', this.checked);
@@ -97,7 +97,7 @@ function elfinderInit(routeConnector, locale, csrf, ckeditor = false) {
 
 /*********** Elfinder Popup *************/
 function openElfinder(routeConnector, csrf, currentWebsiteURL, btn = null) {
-	if (btn === null){
+	if (btn === null) {
 		btn = $(".btn-elfinder");
 	}
 	btn.click(function (e) {
@@ -188,23 +188,23 @@ function openElfinder(routeConnector, csrf, currentWebsiteURL, btn = null) {
 }
 
 $(document).on('click', '.btn-delete', function (e) {
-    e.preventDefault();
-    var action = $(this).attr('href');
-    var lang = $('html').attr('lang');
-    var title = (lang === 'en') ? "Are you sure?" : "Are you sure?";
-    var text = (lang === 'en') ? "You won't be able to revert this!" : "You won't be able to revert this!";
+	e.preventDefault();
+	var action = $(this).attr('href');
+	var lang = $('html').attr('lang');
+	var title = (lang === 'en') ? "Are you sure?" : "Are you sure?";
+	var text = (lang === 'en') ? "You won't be able to revert this!" : "You won't be able to revert this!";
 
-    swal({
-        title: title,
-        text: text,
-        icon: "warning",
-        buttons: ['Cancel', 'Delete'],
-        dangerMode: true,
-    }).then((willDelete) => {
-        if (willDelete) {
-            window.location.replace(action);
-        }
-    });
+	swal({
+		title: title,
+		text: text,
+		icon: "warning",
+		buttons: ['Cancel', 'Delete'],
+		dangerMode: true,
+	}).then((willDelete) => {
+		if (willDelete) {
+			window.location.replace(action);
+		}
+	});
 });
 
 
@@ -237,12 +237,12 @@ function textareaContentComponent(countContent, ckeditorBrowserURL) {
                     <span href="javascript:" class="btn-remove-tab position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><i class="fas fa-times"></i></span>
                 </span>
             </li>`
-			/*`<div class="tab-item" role="presentation">
-                <button class="btn btn-outline-primary rounded-0 position-relative py-2 px-4 tab-link-${tabNameID}" data-bs-toggle="pill" data-bs-target="#tab-${tabNameID}" type="button" role="tab" aria-controls="${tabNameID}" aria-selected="true">
-                    <span class="fw-semibold text-capitalize">${tabNameInput.val()}</span>
-                    <span href="javascript:" class="btn-remove-tab position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><i class="fas fa-times"></i></span>
-                </button>
-            </div>`;*/
+		/*`<div class="tab-item" role="presentation">
+			<button class="btn btn-outline-primary rounded-0 position-relative py-2 px-4 tab-link-${tabNameID}" data-bs-toggle="pill" data-bs-target="#tab-${tabNameID}" type="button" role="tab" aria-controls="${tabNameID}" aria-selected="true">
+				<span class="fw-semibold text-capitalize">${tabNameInput.val()}</span>
+				<span href="javascript:" class="btn-remove-tab position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><i class="fas fa-times"></i></span>
+			</button>
+		</div>`;*/
 
 		let tabContent =
 			`<div class="tab-pane fade" id="tab-${tabNameID}" role="tabpanel" aria-labelledby="${tabNameID}" tabindex="0">

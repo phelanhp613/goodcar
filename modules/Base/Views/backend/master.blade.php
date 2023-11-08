@@ -1,4 +1,6 @@
-@php use Modules\Setting\Models\Website; @endphp
+@php use Modules\Setting\Models\Website;
+$locale = env('APP_LANG', 'en');
+@endphp
 <!doctype html>
 <html lang="{{ env('APP_LANG', 'en') }}">
 <head>
@@ -38,8 +40,6 @@
 <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
-<script src="{{ asset('assets/js/modal.js') }}?v={{ env('APP_VERSION', '1') }}"></script>
-<script src="{{ asset('assets/js/main.js') }}?v={{ env('APP_VERSION', '1') }}"></script>
 <script src="{{ asset('assets/vendor/toastr/toastr.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/select2/select2.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/datetimepicker/js/datetimepicker.js') }}"></script>
@@ -48,6 +48,8 @@
 <script src="{{ asset('assets/vendor/elfinder/js/elfinder.min.js') }}"></script>
 <script src="{{ asset("assets/vendor/elfinder/js/i18n/elfinder.". ($locale ?? 'LANG') .".js") }}"></script>
 <script src="{{ asset('assets/js/sweetalert.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/js/modal.js') }}?v={{ env('APP_VERSION', '1') }}"></script>
+<script src="{{ asset('assets/js/main.js') }}?v={{ env('APP_VERSION', '1') }}"></script>
 <script class="js-loading">
 	$(document).ready(function () {
 		toastr.options = {

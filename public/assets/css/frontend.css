@@ -1,1 +1,10 @@
-.btn-back-to-top{position:fixed;z-index:9999;bottom:5rem;right:2rem}/*# sourceMappingURL=frontend.css.map */
+.btn-back-to-top {
+  position: fixed;
+  z-index: 9999;
+  bottom: 5rem;
+  right: 2rem;
+}
+
+img {
+  max-width: 100%;
+}/*# sourceMappingURL=frontend.css.map */
