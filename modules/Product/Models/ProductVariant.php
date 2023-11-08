@@ -15,7 +15,6 @@ use Modules\User\Models\User;
 
 class ProductVariant extends BaseModel
 {
-
 	public $timestamps = true;
 
 	protected $table = "product_variants";

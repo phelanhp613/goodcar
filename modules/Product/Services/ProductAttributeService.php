@@ -109,7 +109,7 @@ class ProductAttributeService implements BaseServiceInterface
 	{
 		try {
 			$data = $this->moduleRepository->detailById($id);
-			if ($data->products->count() > 0 || $data->children->count() > 0) {
+			if ($data->products->count() > 0) {
 				session()->flash('error', trans('Something is using this data.'));
 			} else {
 				$data->delete();

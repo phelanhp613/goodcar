@@ -76,11 +76,13 @@ class ProductVariantService implements BaseServiceInterface
 			if(!empty($data['quick_update'])) {
 				unset($data['suggest_product_ids'], $data['quick_update']);
 			}
-			$variant        = $this->moduleRepository->detailById($id);
-			$images         = json_decode($variant->images, 1);
-			$images['main'] = $data['images']['main'];
-			$data['name']   = !empty($data['name']) ? $data['name'] : $variant->product->name;
-			$data['images'] = json_encode($images);
+			$variant = $this->moduleRepository->detailById($id);
+			if(!empty($data['images'])) {
+				$images         = json_decode($variant->images, 1);
+				$images['main'] = $data['images']['main'];
+				$data['name']   = !empty($data['name']) ? $data['name'] : $variant->product->name;
+				$data['images'] = json_encode($images);
+			}
 			$variant->update($data);
 			session()->flash('success', trans('Updated successfully.'));
 			DB::commit();

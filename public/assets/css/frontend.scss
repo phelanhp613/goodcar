@@ -7,6 +7,9 @@
 	right: 2rem;
 }
 
-img {
-	max-width: 100%;
+.content-section {
+	img {
+		max-width: 100% !important;
+		height: auto !important;
+	}
 }
