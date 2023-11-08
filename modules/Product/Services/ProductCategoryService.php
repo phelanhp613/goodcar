@@ -31,7 +31,7 @@ class ProductCategoryService implements BaseServiceInterface
 		try {
 			$data['home_name'] = !empty($data['home_name']) ? $data['home_name'] : $data['name'];
 			$data['level'] = 0;
-			if(!empty($data['parent_id'])) {
+			if (!empty($data['parent_id'])) {
 				$parent        = $this->moduleRepository->detailById($data['parent_id']);
 				$data['level'] = (int) $parent->level + 1;
 			} else {
@@ -41,7 +41,7 @@ class ProductCategoryService implements BaseServiceInterface
 			$data['content'] = replaceOldUrl($data['content']);
 			$this->moduleRepository->create($data);
 			session()->flash('success', trans('Created successfully.'));
-		} catch(Exception $exception) {
+		} catch (Exception $exception) {
 			session()->flash('error', trans('Created error.'));
 		}
 	}
@@ -56,7 +56,7 @@ class ProductCategoryService implements BaseServiceInterface
 		try {
 			$data['home_name'] = !empty($data['home_name']) ? $data['home_name'] : $data['name'];
 			$data['level'] = 0;
-			if(!empty($data['parent_id'])) {
+			if (!empty($data['parent_id'])) {
 				$parent        = $this->moduleRepository->detailById($data['parent_id']);
 				$data['level'] = (int) $parent->level + 1;
 			} else {
@@ -67,7 +67,7 @@ class ProductCategoryService implements BaseServiceInterface
 			$data['parent_id'] = !empty($data['parent_id']) ? $data['parent_id'] : null;
 			$this->moduleRepository->updateById($id, $data);
 			session()->flash('success', trans('Updated successfully.'));
-		} catch(Exception $exception) {
+		} catch (Exception $exception) {
 			session()->flash('error', trans('Updated error.'));
 		}
 	}
@@ -76,15 +76,20 @@ class ProductCategoryService implements BaseServiceInterface
 	{
 		try {
 			$data = $this->moduleRepository->detailById($id);
-			if($data->products->count() > 0 || $data->children->count() > 0) {
+			if ($data->products->count() > 0 || $data->children->count() > 0) {
 				session()->flash('error', trans('Something is using this data.'));
 			} else {
 				$data->delete();
 				session()->flash('success', trans('Deleted successfully.'));
 			}
 			session()->flash('success', trans('Deleted successfully.'));
-		} catch(Exception $exception) {
+		} catch (Exception $exception) {
 			session()->flash('error', trans('Deleted error.'));
 		}
+	}
+
+	public function findBy($data = [])
+	{
+		return $this->moduleRepository->findBy($data);
 	}
 }

@@ -6,7 +6,8 @@ use App\Commons\CacheData\CacheDataService;
 use App\Commons\Slug\SlugInterface;
 use App\Http\Controllers\Controller;
 use Modules\Frontend\Repositories\FrontendService;
-
+use Modules\Product\Services\ProductService;
+use Modules\Product\Services\ProductCategoryService;
 
 class FrontendController extends Controller
 {
@@ -16,6 +17,9 @@ class FrontendController extends Controller
 
 	private $cacheService;
 
+	private $productService;
+
+	private $productCategoryService;
 	/**
 	 * Create a new authentication controller instance.
 	 *
@@ -25,10 +29,14 @@ class FrontendController extends Controller
 		SlugInterface $slugInterface,
 		FrontendService $frontendService,
 		CacheDataService $cacheService,
+		ProductService $productService,
+		ProductCategoryService $productCategoryService
 	) {
 		$this->slugInterface   = $slugInterface;
 		$this->frontendService = $frontendService;
 		$this->cacheService    = $cacheService;
+		$this->productService  = $productService;
+		$this->productCategoryService  = $productCategoryService;
 	}
 
 	/**
@@ -36,7 +44,14 @@ class FrontendController extends Controller
 	 */
 	public function index()
 	{
-		return view('Frontend::index');
+		$products = $this->productService->findBy()->get()->take(4);
+		$productCategories = $this->productCategoryService->findBy()->where('type', 'brand')->get()->take(4);
+		$productByCategory = [];
+		foreach ($productCategories as $item) {
+			$productByCategory[$item->id] = $this->productService->findBy()->whereJsonContains('product_category_ids', (string) $item->id)->get()->take(4);
+		}
+
+		return view('Frontend::index', compact('products', 'productByCategory', 'productCategories'));
 	}
 
 	/**

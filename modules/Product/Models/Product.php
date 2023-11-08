@@ -17,7 +17,6 @@ use Modules\User\Models\User;
 
 class Product extends BaseModel
 {
-	use SoftDeletes;
 
 	public $timestamps = true;
 
@@ -84,20 +83,20 @@ class Product extends BaseModel
 	{
 		$cacheService = new CacheDataService();
 		$data         = $cacheService->get('product_' . $slug);
-		if(!$data) {
+		if (!$data) {
 			$data = self::query()
-			            ->with('variants', function($vq) {
-				            $vq->with('attributePivots');
-			            })
-			            ->with('category', function($cq) {
-				            $cq->with('products', function($vq) {
-					            $vq->with('variants');
-				            });
-			            })
-			            ->where('slug', $slug)
-			            ->where('status', Status::STATUS_ACTIVE)
-			            ->first()
-			            ->withShortCode();
+				->with('variants', function ($vq) {
+					$vq->with('attributePivots');
+				})
+				->with('category', function ($cq) {
+					$cq->with('products', function ($vq) {
+						$vq->with('variants');
+					});
+				})
+				->where('slug', $slug)
+				->where('status', Status::STATUS_ACTIVE)
+				->first()
+				->withShortCode();
 
 			$cacheService->cache('product_' . $slug, $data);
 		}
@@ -118,19 +117,19 @@ class Product extends BaseModel
 
 		/** Get product attributes */
 		$productAttributes = $cacheService->get('product_attributes_' . $product->id);
-		if(!$productAttributes) {
+		if (!$productAttributes) {
 			$attrs = json_decode($product->attribute_ids, 1);
 			$attribute_ids = array_keys($attrs);
 			$productAttributesDB = ProductAttribute::query()
-			                                     ->with('children')
-			                                     ->whereIn('id', $attribute_ids)
-			                                     ->get();
+				->with('children')
+				->whereIn('id', $attribute_ids)
+				->get();
 
 			$productAttributes = [];
-			foreach($productAttributesDB as $productAttribute) {
+			foreach ($productAttributesDB as $productAttribute) {
 				$children = [];
-				foreach($productAttribute->children as $child) {
-					if(in_array($child->id, $attrs[$productAttribute->id])) {
+				foreach ($productAttribute->children as $child) {
+					if (in_array($child->id, $attrs[$productAttribute->id])) {
 						$children[] = $child;
 					}
 				}
@@ -143,7 +142,7 @@ class Product extends BaseModel
 
 		/** Get variant selected */
 		$attr = request()->attr ?? [];
-		if(!empty($attr)) {
+		if (!empty($attr)) {
 			$variantSelected = $this->getProductVariantSelected($product, $attr);
 		} else {
 			$variantSelected = $product->rootVariant();
@@ -151,9 +150,9 @@ class Product extends BaseModel
 
 		/** Get related products */
 		$related_products = $product->category->products
-			                    ->where('id', '<>', $product->id)
-			                    ->where('status', 1)
-			                    ->take(20) ?? [];
+			->where('id', '<>', $product->id)
+			->where('status', 1)
+			->take(20) ?? [];
 
 		return [
 			'data'               => $data->data,
@@ -174,20 +173,20 @@ class Product extends BaseModel
 		$cacheService          = new CacheDataService();
 		$keyCacheAttrNames     = 'product_attribute_variant_selected_names_' . implode('_', $attr);
 		$productAttributeNames = $cacheService->get($keyCacheAttrNames);
-		if(!$productAttributeNames) {
+		if (!$productAttributeNames) {
 			$productAttributeNames = ProductAttribute::query()
-			                                         ->whereIn('id', $attr)
-			                                         ->orderBy('name')
-			                                         ->pluck('name')
-			                                         ->toArray();
+				->whereIn('id', $attr)
+				->orderBy('name')
+				->pluck('name')
+				->toArray();
 			$cacheService->cache($keyCacheAttrNames, $productAttributeNames);
 		}
 		$productAttributeNameKey = Str::slug(implode('-', $productAttributeNames));
 		$variants                = [];
-		foreach($product->variants as $variant) {
+		foreach ($product->variants as $variant) {
 			$variantAttr               = $variant->attributePivots->sortBy('value')
-			                                                      ->pluck('value')
-			                                                      ->toArray();
+				->pluck('value')
+				->toArray();
 			$variantAttrKey            = Str::slug(implode('-', $variantAttr));
 			$variants[$variantAttrKey] = $variant;
 		}
