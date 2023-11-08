@@ -1,15 +1,6 @@
-@extends('Base::frontend.master')@php
-    use App\Commons\CacheData\CacheDataService;
-	use Modules\Setting\Models\Website;
-
+@extends('Base::frontend.master')
+@php
     $image = getMainImage($variant_selected->images ?? $data->rootVariant()->images);
-    pageSEO(
-		(!empty($data->meta_title) ? $data->meta_title : trans('Product Detail')),
-		(!empty($data->meta_description) ? $data->meta_description : trans('Product Page')),
-		(!empty($data->meta_keyword) ? $data->meta_keyword : trans('Product Page')),
-		(!empty($image) ? env('APP_URL') . $image : null),
-		(!empty($data->canonical) ? $data->canonical : request()->url())
-	);
 @endphp
 @push('css')
     <style>

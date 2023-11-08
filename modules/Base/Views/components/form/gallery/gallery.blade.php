@@ -12,8 +12,8 @@
                         <div class="mb-3">
                             <label>{{ trans('Main Image') }}</label>
                             <div class="image-item ratio ratio-1x1">
-                                <input type="hidden" value="{{ $images['main'] }}" name="images[main]">
-                                <img src="{{ $images['main'] }}" alt="{{ $images['main'] }}" class="w-100 h-100" width="150" height="150">
+                                <input type="hidden" value="{{ $images['main'] ?? '' }}" name="images[main]">
+                                <img src="{{ $images['main'] ?? '' }}" alt="{{ $images['main'] ?? '' }}" class="object-fit-contain w-100 h-100" width="150" height="150">
                             </div>
                         </div>
                         <div>
@@ -27,7 +27,7 @@
                                         </button>
                                         <input type="hidden" value="{{ $item }}" name="images[]">
                                         <div class="ratio ratio-1x1">
-                                            <img src="{{ $item }}" alt="{{ $item }}" class="object-fit-cover w-100 h-100" width="150" height="150">
+                                            <img src="{{ $item }}" alt="{{ $item }}" class="object-fit-contain w-100 h-100" width="150" height="150">
                                         </div>
                                     </div>
                                 @endforeach

@@ -37,32 +37,6 @@ class ProductVariantService implements BaseServiceInterface
 		return $this->moduleRepository->detailById($id);
 	}
 
-	public function update($id, $data)
-	{
-		DB::beginTransaction();
-		try {
-			$data['price']               = !empty($data['price']) ? $data['price'] : 0;
-			$data['discount']            = !empty($data['discount']) ? $data['discount'] : 0;
-			$data['stock']               = !empty($data['stock']) ? $data['stock'] : 0;
-			$data['suggest_product_ids'] = json_encode($data['suggest_product_ids'] ?? []);
-			if(!empty($data['quick_update'])) {
-				unset($data['suggest_product_ids'], $data['quick_update']);
-			}
-			if(empty($data['name'])) {
-				$variant      = $this->moduleRepository->detailById($id);
-				$data['name'] = $variant->product->name;
-				$variant->update($data);
-			} else {
-				$this->moduleRepository->updateById($id, $data);
-			}
-			session()->flash('success', trans('Updated successfully.'));
-			DB::commit();
-		} catch(Exception $exception) {
-			session()->flash('error', trans('Updated error.'));
-			DB::rollBack();
-		}
-	}
-
 	public function delete($id)
 	{
 		DB::beginTransaction();
@@ -89,5 +63,30 @@ class ProductVariantService implements BaseServiceInterface
 		$data['images'] = json_encode($data['images']);
 		$data['images'] = replaceOldUrl($data['images']);
 		$this->moduleRepository->detailById($id)->update($data);
+	}
+
+	public function update($id, $data)
+	{
+		DB::beginTransaction();
+		try {
+			$data['price']               = !empty($data['price']) ? $data['price'] : 0;
+			$data['discount']            = !empty($data['discount']) ? $data['discount'] : 0;
+			$data['stock']               = !empty($data['stock']) ? $data['stock'] : 0;
+			$data['suggest_product_ids'] = json_encode($data['suggest_product_ids'] ?? []);
+			if(!empty($data['quick_update'])) {
+				unset($data['suggest_product_ids'], $data['quick_update']);
+			}
+			$variant        = $this->moduleRepository->detailById($id);
+			$images         = json_decode($variant->images, 1);
+			$images['main'] = $data['images']['main'];
+			$data['name']   = !empty($data['name']) ? $data['name'] : $variant->product->name;
+			$data['images'] = json_encode($images);
+			$variant->update($data);
+			session()->flash('success', trans('Updated successfully.'));
+			DB::commit();
+		} catch(Exception $exception) {
+			session()->flash('error', trans('Updated error.'));
+			DB::rollBack();
+		}
 	}
 }

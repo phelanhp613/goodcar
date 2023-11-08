@@ -64,11 +64,10 @@
                                         <label for="quantity_sold" class="form-label">{{ trans('Quantity Sold') }}</label>
                                         <input type="text" name="quantity_sold" class="form-control" id="quantity_sold" value="{{ $data->quantity_sold ?? old('quantity_sold') }}">
                                     </div>
-                                    {{--<div class="col-md-8 form-group">
-                                        <label for="suggest-products" class="form-label">{{ trans('Suggest Products') }}</label>
-                                        @php($suggest_product_ids = json_decode($data->suggest_product_ids ?? '[]', 1))
-                                        <x-base::autocomplete-field name="suggest_product_ids[]" id="suggest_products" action="{{ route('get.product_variant.find') }}" :options="$suggestProducts ?? []" :selected-options="$suggest_product_ids" :multiple="true"/>
-                                    </div>--}}
+                                    <div class="col-md-4 form-group">
+                                        <label for="status" class="form-label">{{ trans('Suggest Products') }}</label>
+                                        <x-base::select-status id="status" name="status" status="{{ $data->status ?? 1 }}"/>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
