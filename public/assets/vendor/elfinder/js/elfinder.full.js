@@ -4879,7 +4879,7 @@ var elFinder = function(elm, opts, bootCallback) {
 						}
 					}
 				} catch (e) {
-					self.sync();
+					// self.sync();
 				}
 			}
 		});
