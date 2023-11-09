@@ -45,7 +45,7 @@ $locale = env('APP_LANG', 'en');
 <script src="{{ asset('assets/vendor/datetimepicker/js/datetimepicker.js') }}"></script>
 <script src="{{ asset('assets/vendor/datetimepicker/js/datetimepicker_main.js') }}"></script>
 <script src="{{ asset('assets/vendor/jsvalidation/jsvalidation.min.js') }}"></script>
-<script src="{{ asset('assets/vendor/elfinder/js/elfinder.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/elfinder/js/elfinder.full.js') }}"></script>
 <script src="{{ asset("assets/vendor/elfinder/js/i18n/elfinder.". ($locale ?? 'LANG') .".js") }}"></script>
 <script src="{{ asset('assets/js/sweetalert.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/js/modal.js') }}?v={{ env('APP_VERSION', '1') }}"></script>

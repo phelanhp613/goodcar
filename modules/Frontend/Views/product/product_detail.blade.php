@@ -80,28 +80,13 @@
                             @include('Frontend::product._form_product_detail')
                             <div class="product-content text-content">
                                 @if(!empty($data->content))
-										<?php $content = json_decode($data->content ?? []); ?>
+                                    @php($content = json_decode($data->content ?? []))
                                     <x-product::product-content :content="$content"/>
                                 @endif
                             </div>
                         </div>
                         <hr>
                     </div>
-                    @if($related_products->isNotEmpty())
-                        <div class="product-related mb-3">
-                            <div class="section-title">
-                                <h2 class="fs-4">{{ trans('Related Product') }}</h2>
-                            </div>
-                            <div class="product-owl-carousel invisible" id="product-related">
-                                @foreach($related_products as $related_product)
-                                    <div class="p-1">
-                                        <x-product::product-card :product="$related_product"/>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="arrows-container-product-related d-flex justify-content-center"></div>
-                        </div>
-                    @endif
                 </div>
             @else
                 <div class="text-center d-flex justify-content-center align-items-center" style="height: 60vh">
@@ -112,11 +97,6 @@
                 </div>
             @endif
         </div>
-        @if(!empty($variant_selected))
-            <button type="button" class="btn-order-mobile btn btn-sm btn-info border border-info p-0 position-fixed shadow rounded-5 d-block d-md-none" data-bs-toggle="modal" data-bs-target="#product-order-modal">
-                <span class="fw-semibold border boder-white rounded-5 w-100 d-inline-block py-1 text-white">{{ trans('Order Now') }}</span>
-            </button>
-        @endif
     </div>
 @endsection
 

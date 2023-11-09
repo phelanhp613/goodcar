@@ -67,7 +67,6 @@ class ProductService implements BaseServiceInterface
 			$attribute_ids = array_keys($attrs);
 			$data          = $this->moduleRepository->updateById($id,
 				['attribute_ids' => json_encode($attrs)], true);
-
 			$data->variants->each->delete();
 			if(!empty($attribute_ids)) {
 				$attributes = $this->productAttributeRepository->findBy()
@@ -132,10 +131,10 @@ class ProductService implements BaseServiceInterface
 			foreach($data[$index] as $item) {
 				if($index == count($data) - 1) {
 					$this->attributeVariants[] = array_merge($ids,
-						[["attribute_id" => $item['parent_id'], "value" => $item['name']]]);
+						[["attribute_id" => $item['parent_id'], "attribute_key" => $item['key'], "value" => $item['name']]]);
 				} else {
 					$newIds = array_merge($ids,
-						[["attribute_id" => $item['parent_id'], "value" => $item['name']]]);
+						[["attribute_id" => $item['parent_id'], "attribute_key" => $item['key'], "value" => $item['name']]]);
 					$this->generateAttributeVariants($data, $index + 1, $newIds);
 				}
 			}

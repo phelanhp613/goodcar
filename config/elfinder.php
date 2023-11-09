@@ -102,7 +102,8 @@ return [
 					return $name . $ext;
 				}
 			]
-		]
+		],
+		'aaa' => 'cc'
 	],
 
 	/*

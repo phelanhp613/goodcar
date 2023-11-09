@@ -90,6 +90,20 @@
 		$.each(headerMenuItem, function (index, item) {
 			$(item).parents('.nav-item').find('.parent-menu').addClass('active');
 		});
+
+		$(document).find('.lazy').each((index, item) => {
+			window.addEventListener("scroll", function () {
+				const position = item.getBoundingClientRect();
+				if (position.top < 1000) {
+					const dataSrc = item.getAttribute('data-src');
+					console.log(dataSrc);
+					if (dataSrc && dataSrc !== "null" && dataSrc !== null) {
+						item.setAttribute('src', item.getAttribute('data-src'));
+						item.setAttribute('data-src', "null");
+					}
+				}
+			});
+		})
 	});
 })(jQuery);
 

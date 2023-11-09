@@ -14,7 +14,6 @@ class ElfinderController extends BaseElfinderController
      */
     public function index()
     {
-
         return view('Setting::file-management.file-management');
     }
 
