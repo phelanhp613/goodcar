@@ -38,7 +38,7 @@
                                             <div class="attribute-input-group">
                                                 <label class="btn btn-primary fs-7 fs-md-6">
                                                     <span>{{ $child->name }}</span>
-                                                    <input type="radio" name="attr[{{ $child->parent_id }}]" value="{{ $child->id }}" class="btn-attribute btn-check" checked/>
+                                                    <input type="radio" name="attr[{{ $child->parent_id }}]" value="{{ $child->key }}" class="btn-attribute btn-check" checked/>
                                                 </label>
                                             </div>
                                         </div>
@@ -47,7 +47,7 @@
                                             <div class="attribute-input-group">
                                                 <label class="btn btn-outline-primary fs-7 fs-md-6">
                                                     <span>{{ $child->name }}</span>
-                                                    <input type="radio" name="attr[{{ $child->parent_id }}]" value="{{ $child->id }}" class="btn-attribute btn-check"/>
+                                                    <input type="radio" name="attr[{{ $child->parent_id }}]" value="{{ $child->key }}" class="btn-attribute btn-check"/>
                                                 </label>
                                             </div>
                                         </div>

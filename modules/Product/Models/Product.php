@@ -140,7 +140,8 @@ class Product extends BaseModel
 			foreach($productAttributesDB as $productAttribute) {
 				$children = [];
 				foreach($productAttribute->children as $child) {
-					if(in_array($child->id, $attrs[$productAttribute->id])) {
+					$valueKey = $attrs[$productAttribute->id] ?? [];
+					if(in_array($child->key, $valueKey)) {
 						$children[] = $child;
 					}
 				}
@@ -186,7 +187,7 @@ class Product extends BaseModel
 		$productAttributeNames = $cacheService->get($keyCacheAttrNames);
 		if(!$productAttributeNames) {
 			$productAttributeNames = ProductAttribute::query()
-			                                         ->whereIn('id', $attr)
+			                                         ->whereIn('key', $attr)
 			                                         ->orderBy('name')
 			                                         ->pluck('name')
 			                                         ->toArray();

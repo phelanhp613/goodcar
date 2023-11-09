@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta http-equiv="Cache-control" content="public">
-    <title>{{ session()->get('meta_title') ?? 'Basic' }}</title>
+    <title>{{ getSetting(Website::WEBSITE_NAME) ?? 'GoodCar' }}</title>
     @php($faviconURL = cache('setting_website')[Website::FAVICON]['value'] ?? getSetting(Website::FAVICON))
     <link rel="icon" type="image/x-icon" href="{{ !empty($faviconURL) ? $faviconURL : 'https://abctech.vn/wp-content/uploads/2017/06/logo-nen-xanh.jpg' }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/slick/css/slick.min.css') }}">

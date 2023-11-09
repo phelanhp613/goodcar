@@ -77,7 +77,8 @@ class ProductService implements BaseServiceInterface
 				$children   = [];
 				foreach($attributes as $key => $attribute) {
 					foreach($attribute['children'] as $child) {
-						if(in_array($child['id'], $attrs[$attribute['id']])) {
+						$valueID = array_keys($attrs[$attribute['id']] ?? []);
+						if(in_array($child['id'], $valueID)) {
 							$children[$key][] = $child;
 						}
 					}

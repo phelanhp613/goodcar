@@ -69,7 +69,7 @@ class ProductAttributeService implements BaseServiceInterface
 				$children[]  = [
 					'name'        => $value,
 					'description' => $description,
-					'key'         => Str::slug($data['name']) . '-' . Str::slug($value),
+					'key'         => Str::slug($id) . '-' . Str::slug($data['name']) . '-' . Str::slug($value),
 					'parent_id'   => $id,
 					'created_at'  => $now,
 					'updated_at'  => $now,

@@ -76,7 +76,7 @@
                                     <div class="ps-3">
                                         @foreach($attribute->children as $value)
                                             <label class="d-block">
-                                                <input type="checkbox" name="attrs[{{ $attribute->id }}][]" value="{{ $value->id }}">
+                                                <input type="checkbox" name="attrs[{{ $attribute->id }}][{{ $value->id }}]" value="{{ $value->key }}">
                                                 <span class="fw-normal">{{ $value->name }}</span>
                                             </label>
                                         @endforeach
