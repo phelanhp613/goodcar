@@ -13,16 +13,8 @@ Route::get('/order', [FrontendOrderController::class, 'getOrder'])
      ->name('frontend.get.order');
 Route::post('/order', [FrontendOrderController::class, 'postOrder'])
      ->name('frontend.post.order');
-Route::get('/order/confirm-order/{code}', [FrontendOrderController::class, 'orderConfirm'])
-     ->name('frontend.order.confirm');
-Route::post('/order/confirm-order/{code}', [FrontendOrderController::class, 'postOrderConfirm'])
-     ->name('frontend.post.order.confirm');
-Route::get('/order/abort-order/{code}', [FrontendOrderController::class, 'orderAbort'])
-     ->name('frontend.order.abort');
 Route::get('/order/completed/{code}', [FrontendOrderController::class, 'orderCompleted'])
      ->name('frontend.order.completed');
-Route::get('/order/resend-sms/{code}', [FrontendOrderController::class, 'resendSMS'])
-     ->name('frontend.order.resendSMS');
 
 Route::get('/tin-tuc', [FrontendController::class, 'news'])->name('frontend.get.news');
 Route::get('/tu-van', [FrontendController::class, 'getConsult'])->name('frontend.get.consult');

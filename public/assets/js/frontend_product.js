@@ -22,7 +22,7 @@
 					$(document).find('.product-attributes-order-now').html($(response).find('.product-attributes-order-now').html());
 					$(document).find('#total-price').html($(response).find('#total-price').html());
 					$(document).find('.btn-submit-order-now-group').html($(response).find('.btn-submit-order-now-group').html());
-					$(document).find('.product-suggest').html($(response).find('.product-suggest').html());
+					$(document).find('.btn-order-fixed').html($(response).find('.btn-order-fixed').html());
 					if ($('.product-owl-carousel').length > 0) {
 						slickOwlCarousel(".product-owl-carousel.invisible", 4);
 						$(document).find('.product-owl-carousel').removeClass('invisible');

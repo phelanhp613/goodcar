@@ -93,25 +93,10 @@
                                     @endif
                                 </h4>
                                 <div>
-                                    @if(!empty($data->voucher_code))
-                                        <h5 class="fw-semibold">
-                                            {{ trans('Total Price') }}:
-                                            <span class="text-primary me-2">{{ currency_format($data->total_price ?? 0) }}</span>
-                                        </h5>
-                                        <h5 class="fw-semibold">
-                                            {{ trans('Voucher Price') }}:
-                                            <span class="text-primary me-2">-{{ currency_format($data->voucher_price ?? 0) }} ({{ trans('Code') . ': ' . $data->voucher_code }})</span>
-                                        </h5>
-                                        <h3>
-                                            {{ trans('Final Price') }}:
-                                            <span class="text-success me-2">{{ currency_format($data->total_price - $data->voucher_price) }}</span>
-                                        </h3>
-                                    @else
-                                        <h3 class="fw-semibold">
-                                            {{ trans('Final Price') }}:
-                                            <span class="text-success me-2">{{ currency_format($data->total_price ?? 0) }}</span>
-                                        </h3>
-                                    @endif
+                                    <h3 class="fw-semibold">
+                                        {{ trans('Final Price') }}:
+                                        <span class="text-success me-2">{{ currency_format($data->total_price ?? 0) }}</span>
+                                    </h3>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -130,88 +115,78 @@
                         <h5>{{ trans("Order Detail") }}</h5>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th style="width: 50px">#</th>
-                                    <th>{{ trans('Product Name') }}</th>
-                                    <th style="width: 130px">{{ trans('SKU') }}</th>
-                                    <th>{{ trans('Attributes') }}</th>
-                                    <th style="width: 115px;">{{ trans('Price') }}</th>
-                                    <th style="width: 115px;">{{ trans('Discount') }}</th>
-                                    <th style="width: 115px;">{{ trans('Quantity') }}</th>
-                                    <th style="width: 115px;"></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @php($key = 1)
-                                @foreach($data->details as $item)
-                                    <tr>
-                                        <td><span class="number">{{$key++}}</span></td>
-                                        <td>
-                                            <a class="text-decoration-underline" href="{{ route('get.product.update', $item->product_id) }}">{{ $item->product_name }}</a>
-                                        </td>
-                                        <td>{{ $item->sku }}</td>
-                                        <td>{{ implode(", ", json_decode($item->product_attributes, 1)) }}</td>
-                                        <td>{{ currency_format($item->price) }}</td>
-                                        <td>{{ currency_format($item->discount) }}</td>
-                                        <td class="text-center">{{ $item->quantity }}</td>
-                                        <td>
-                                            @if($status == 2)
-                                                <a href="{{ route("get.order.updateDetail", $item->id) }}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#form-modal" data-title="{{ trans('Update Order Detail') }}">
-                                                    <i class="fas fa-pencil"></i>
-                                                </a>
-                                                <a href="{{ route("get.order.deleteDetail", [$data->id, $item->id]) }}" class="btn btn-danger text-white"><i class="fas fa-trash"></i></a>
+                        @foreach($data->details as $item)
+                            @php($variant = $item->productVariant)
+                            @if(!empty($variant))
+                                <h2 class="">{{ $variant->name }}</h2>
+                                <div class="w-md-50 ratio ratio-16x9">
+                                    <img src="{{ getMainImage($variant->images) }}" class="w-100 h-100 object-fit-contain" alt="">
+                                </div>
+                                <div class="">
+                                    <h3>{{ trans('Price') }}</h3>
+                                    @php($saleOff = 100 - (int)(($variant->discount/($variant->price)) * 100))
+                                    @if($saleOff > 0)
+                                        <div class="py-2 product-price fw-semibold mb-4">
+                                            @if($variant->stock > 0)
+                                                @if($variant->discount == 0)
+                                                    <span class="fs-md-3 fs-5 text-success">{{ currency_format($variant->price ?? 0) }}</span>
+                                                @else
+                                                    <div class="d-inline-block">
+                                                        <div class="price-discount">
+                                                            <span class="price fs-md-3 fs-5 text-success">{{ currency_format($variant->discount ?? 0, ' VNĐ') }}</span>
+                                                            <span class="discount text-decoration-line-through fs-md-6 fs-8 text-danger">{{ currency_format($variant->price ?? 0, ' VNĐ') }}</span>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            @else
+                                                <span class="fs-4 text-decoration-underline"><i>{{ trans('Sold out') }}</i></span>
                                             @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="table-responsive">
+                                    <h3>{{ trans('Attribute') }}</h3>
+                                    @php($productAttributes = [])
+                                    @if(!empty($variant->attributes))
+                                        <table class="table table-bordered">
+                                            @foreach($variant->attributes as $key => $attribute)
+                                                @php($productAttributes[$attribute->id] = ['name' => $attribute->name, 'value' => $attribute->pivot->value])
+                                                <tr>
+                                                    <td style="width: 200px">
+                                                        <label class="fw-semibold">{{ $attribute->name }}</label>
+                                                    </td>
+                                                    <td>{{ $attribute->pivot->value }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </table>
+                                    @endif
+                                </div>
+                                <div class="">
+                                    <h3>{{ trans('Specification') }}</h3>
+                                    @if(!empty($variant->attributes))
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <td class="fw-semibold" style="width: 200px">{{ trans('Engine') }}</td>
+                                                <td>{{ $variant->engine }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold" style="width: 200px">{{ trans('Power') }}</td>
+                                                <td>{{ $variant->power }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold" style="width: 200px">{{ trans('Drive System') }}</td>
+                                                <td>{{ $variant->drive_system }}</td>
+                                            </tr>
+                                        </table>
+                                    @endif
+                                </div>
+                                <input type="hidden" name="product_variant_id" value="{{ $variant->id }}">
+                                <input type="hidden" name="product_id" value="{{ $variant->product->id }}">
+                                <input type="hidden" name="product_attributes" value="{{ json_encode($productAttributes) }}">
+                            @endif
+                        @endforeach
                     </div>
                 </div>
-                @if(!empty($data->invoice_info))
-                    @php($invoice = !empty($data->invoice_info) ? json_decode($data->invoice_info, 1) : null)
-                    <div class="card">
-                        <div class="card-header bg-white">
-                            <h5>{{ trans("Invoice Information") }}</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="invoice-info-content">
-                                <table class="table">
-                                    <tr>
-                                        <td><label>{{ trans('Invoice Type') }} </label></td>
-                                        <td>
-                                            <span class="text-info fw-bold">{{ trans(Order::INVOICE_TYPES[$invoice['type']] ?? 'N/A') }}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>{{ $invoice['type'] == Order::INVOICE_PERSONAL ? trans('Full Name') : trans('Company Name') }} </label>
-                                        </td>
-                                        <td><span>{{ $invoice['data']['name'] ?? 'N/A' }}</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label>{{ trans('Email') }} </label></td>
-                                        <td><span>{{ $invoice['data']['email'] ?? 'N/A' }}</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label>{{ trans('Phone') }} </label></td>
-                                        <td><span>{{ $invoice['data']['phone'] ?? 'N/A' }}</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>{{ $invoice['type'] == Order::INVOICE_PERSONAL ? trans('Invoice delivery address') : trans('Registered business address') }}: </label>
-                                        </td>
-                                        <td><span>{{ $invoice['data']['address'] ?? 'N/A' }}</span></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                @endif
             </div>
         </div>
     </div>

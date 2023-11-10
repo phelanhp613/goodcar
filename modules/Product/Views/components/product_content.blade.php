@@ -1,4 +1,4 @@
-<div class="bg-primary position-fixed product-tab-nav shadow-sm w-100" id="product-tab-nav">
+{{--<div class="bg-primary position-fixed product-tab-nav shadow-sm w-100" id="product-tab-nav">
     <div class="container text-center">
         <div class="navbar-nav row row-cols-{{ count($content) }} g-0">
             @foreach($content as $key => $item)
@@ -10,7 +10,7 @@
             @endforeach
         </div>
     </div>
-</div>
+</div>--}}
 
 <div class="content mb-5">
     @if(!empty($content))

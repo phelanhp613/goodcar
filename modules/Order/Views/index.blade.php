@@ -36,9 +36,6 @@
                                 <th>{{ trans('Phone') }}</th>
                                 <th style="width: 300px;">{{ trans('Delivery address') }}</th>
                                 <th>{{ trans('Total Price') }}</th>
-                                <th>{{ trans('Voucher Price') }}</th>
-                                <th>{{ trans('Invoice') }}</th>
-                                <th>{{ trans('OTP') }}</th>
                                 <th class="text-center" style="width: 100px">{{ trans('Status') }}</th>
                                 <th style="width: 180px">{{ trans('Created At') }}</th>
                                 <th class="action" style="width: 150px">{{ trans('Action') }}</th>
@@ -54,53 +51,6 @@
                                     <td>{{ $item->phone }}</td>
                                     <td>{{ $item->address }}</td>
                                     <td class="fw-bold text-primary">{{ currency_format($item->total_price) }}</td>
-                                    <td class="fw-bold text-primary">{{ currency_format($item->voucher_price) }}</td>
-                                    <td>
-                                        @php($invoice = !empty($item->invoice_info) ? json_decode($item->invoice_info, 1) : null)
-                                        <!-- Button trigger modal -->
-                                        @if(!empty($invoice['type']))
-                                            <a href="#invoice-info-modal" role="button" data-bs-toggle="modal" class="invoice-info-btn">
-                                                <span class="badge @if($invoice['type'] == Order::INVOICE_PERSONAL) bg-info @else bg-success @endif w-100">
-                                                {{ trans(Order::INVOICE_TYPES[$invoice['type']] ?? 'None') }}
-                                            </span>
-                                            </a>
-                                            <div class="d-none">
-                                                <div class="invoice-info-content">
-                                                    <table class="table">
-                                                        <tr>
-                                                            <td><label>{{ trans('Invoice Type') }} </label></td>
-                                                            <td>
-                                                                <span class="text-info fw-bold">{{ trans(Order::INVOICE_TYPES[$invoice['type']] ?? 'N/A') }}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <label>{{ $invoice['type'] == Order::INVOICE_PERSONAL ? trans('Full Name') : trans('Company Name') }} </label>
-                                                            </td>
-                                                            <td><span>{{ $invoice['data']['name'] ?? 'N/A' }}</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><label>{{ trans('Email') }} </label></td>
-                                                            <td><span>{{ $invoice['data']['email'] ?? 'N/A' }}</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><label>{{ trans('Phone') }} </label></td>
-                                                            <td><span>{{ $invoice['data']['phone'] ?? 'N/A' }}</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <label>{{ $invoice['type'] == Order::INVOICE_PERSONAL ? trans('Invoice delivery address') : trans('Registered business address') }}: </label>
-                                                            </td>
-                                                            <td><span>{{ $invoice['data']['address'] ?? 'N/A' }}</span></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        @else
-                                            <span class="badge bg-gray w-100">{{ trans('None') }}</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ $item->otp_code }}</td>
                                     <td>
                                         @php($status = $item->status)
                                         @if ($status == 0)
@@ -138,29 +88,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="invoice-info-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">{{ trans('Invoice Information') }}</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body"></div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('Close') }}</button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
-@push('js')
-    <script>
-		$(document).ready(function () {
-			$(document).on('click', '.invoice-info-btn', function () {
-				$(document).find('#invoice-info-modal').find('.modal-body').html($(this).parent('td').find('.invoice-info-content').html());
-			})
-		})
-    </script>
-@endpush

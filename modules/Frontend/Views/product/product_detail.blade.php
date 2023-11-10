@@ -1,5 +1,4 @@
-@extends('Base::frontend.master')
-@php
+@extends('Base::frontend.master')@php
     $image = getMainImage($variant_selected->images ?? $data->rootVariant()->images);
 @endphp
 @push('css')
@@ -98,6 +97,11 @@
             @endif
         </div>
     </div>
+    @if(!empty($variant_selected))
+        <div class="position-fixed btn-order-fixed">
+            <a href="{{ route('frontend.get.order', ['variant_id' => $variant_selected->id]) }}" class="btn btn-danger py-3 text-white fw-semibold">{{ trans('Order now') }} {{ $variant_selected->name }}</a>
+        </div>
+    @endif
 @endsection
 
 @push('js')

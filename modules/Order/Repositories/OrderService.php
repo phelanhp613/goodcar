@@ -87,7 +87,7 @@ class OrderService implements BaseServiceInterface
 			}
 			$data['code']     = sprintf("%02d",
 				$this->moduleRepository->findBy()->withTrashed()->count() + 1);
-			$data['status']   = Order::STATUS_UNCONFIRMED;
+			$data['status']   = Order::STATUS_PENDING;
 			$data['otp_code'] = strtoupper(Str::random(6));
 			$order            = $this->moduleRepository->create($data);
 			$orderDetails     = [];
