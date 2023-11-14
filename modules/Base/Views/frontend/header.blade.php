@@ -8,21 +8,20 @@
                 </a>
                 <!-- <span class="text-white">GOOD CAR</span> -->
             </div>
-
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">TRANG CHỦ</a>
+                        <a class="nav-link text-white" href="{{ route('frontend.home') }}">TRANG CHỦ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">SẢN PHẢM</a>
+                        <a class="nav-link text-white" href="{{ route('frontend.product.search') }}">SẢN PHẢM</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">LIÊN HỆ</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form action="{{ route('frontend.product.search') }}" class="d-flex" role="search" method="get">
+                    <input name="keyword" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-white" type="submit">Tìm</button>
                 </form>
             </div>

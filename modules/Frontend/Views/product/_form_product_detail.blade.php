@@ -32,7 +32,7 @@
                                 {{ str_replace($data->name . ' - ', '', $product_attribute->name) }}
                             </label>
                             <div class="row g-2 row-cols-auto fs-7 fs-md-6">
-                                @foreach($product_attribute->selectedChildren as $key => $child)
+                                @foreach($product_attribute->selectedChildren ?? [] as $key => $child)
                                     @if(in_array($child->name, $attribute_pivots_names))
                                         <div class="col">
                                             <div class="attribute-input-group">

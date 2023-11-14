@@ -1,7 +1,4 @@
-@extends('Base::frontend.master')@php
-    session('meta_title', 'Basic Frontend');
-    session('meta_description', 'Basic Description Frontend')
-@endphp
+@extends('Base::frontend.master')
 @push('css')
     <style>
 		.quantity-input.is-valid {

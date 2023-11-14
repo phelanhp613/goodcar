@@ -120,49 +120,37 @@ class ProductVariant extends BaseModel
 
 		/** Get product attributes */
 		$productAttributes = $cacheService->get('product_attributes_' . $product->id);
-		if(!$productAttributes) {
-			$productAttributes = ProductAttribute::query()
-			                                     ->with('children')
-			                                     ->whereIn('id',
-				                                     json_decode($product->attribute_ids, 1))
-			                                     ->get();
+		if (!$productAttributes) {
+			$attrs               = json_decode($product->attribute_ids, 1);
+			$attribute_ids       = array_keys($attrs);
+			$productAttributesDB = ProductAttribute::query()
+			                                       ->with('children')
+			                                       ->whereIn('id', $attribute_ids)
+			                                       ->get();
+
+			$productAttributes = [];
+			foreach ($productAttributesDB as $productAttribute) {
+				$children = [];
+				foreach ($productAttribute->children as $child) {
+					$valueKey = $attrs[$productAttribute->id] ?? [];
+					if (in_array($child->key, $valueKey)) {
+						$children[] = $child;
+					}
+				}
+				$productAttribute->selectedChildren = $children;
+				$productAttributes[]                = $productAttribute;
+			}
 
 			$cacheService->cache('product_attributes_' . $product->id, $productAttributes);
 		}
-		$variantSelected                   = $product->variants->where('slug', $data->slug)
-		                                                       ->first();
-		$variantSelected->suggest_products = ProductVariant::query()
-		                                                   ->with('product', function($pq) {
-			                                                   $pq->with('variants');
-		                                                   })
-		                                                   ->whereHas('product', function($pq) {
-			                                                   $pq->where('deleted_at', null);
-		                                                   })
-		                                                   ->whereIn('id',
-			                                                   json_decode($variantSelected->suggest_product_ids,
-				                                                   1))
-		                                                   ->get();
-
-		/** Get related products */
-		$related_products = $product->category
-			                    ->products
-			                    ->where('id', '<>', $product->id)
-			                    ->where('status', Status::STATUS_ACTIVE)
-			                    ->take(20) ?? [];
+		$variantSelected = $product->variants->where('slug', $data->slug)->first();
 
 		/** Get comments */
-		$commentService = new CommentService(new CommentRepository());
-		$comments       = $commentService->listFrontend([
-			//			'status' => 1,
-			'product_id' => $product->id,
-		]);
 
 		return [
 			'data'               => $data->data,
-			'related_products'   => $related_products ?? [],
 			'product_attributes' => $productAttributes ?? [],
-			'variant_selected'   => $variantSelected ?? [],
-			'comments'           => $comments ?? [],
+			'variant_selected'   => $variantSelected,
 		];
 	}
 }

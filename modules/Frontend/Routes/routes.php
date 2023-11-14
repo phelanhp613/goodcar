@@ -7,22 +7,14 @@ use Modules\Frontend\Controllers\FrontendOrderController;
 Route::get('/', [FrontendController::class, 'index'])->name('frontend.home');
 Route::get('404', [FrontendController::class, 'pageNotFound'])->name('frontend.pageNotFound');
 
-Route::get('/order-now/{slug}', [FrontendOrderController::class, 'getOrderNow'])
-     ->name('frontend.get.order_now');
-Route::get('/order', [FrontendOrderController::class, 'getOrder'])
-     ->name('frontend.get.order');
-Route::post('/order', [FrontendOrderController::class, 'postOrder'])
-     ->name('frontend.post.order');
-Route::get('/order/completed/{code}', [FrontendOrderController::class, 'orderCompleted'])
-     ->name('frontend.order.completed');
+Route::prefix('order')->group(function() {
+	Route::get('/', [FrontendOrderController::class, 'getOrder'])->name('frontend.get.order');
+	Route::post('/', [FrontendOrderController::class, 'postOrder'])->name('frontend.post.order');
+	Route::get('/completed/{code}', [FrontendOrderController::class, 'orderCompleted'])
+	     ->name('frontend.order.completed');
+});
 
-Route::get('/tin-tuc', [FrontendController::class, 'news'])->name('frontend.get.news');
-Route::get('/tu-van', [FrontendController::class, 'getConsult'])->name('frontend.get.consult');
-Route::get('/bao-hanh-dien-tu', [FrontendController::class, 'getWarranty'])->name('frontend.get.warranty');
-Route::get('/tiem-kiem', [FrontendController::class, 'searchProduct'])->name('frontend.product.search');
-	Route::get('/flashsale', [FrontendController::class, 'flashSale'])->name('frontend.product.flashsale');
-// Route::get('/contact-us', [FrontendController::class, 'getContact'])->name('frontend.get.contact');
-Route::post('/contact-us', [FrontendController::class, 'postContact'])->name('frontend.post.contact');
-
+Route::get('/tim-kiem-san-pham', [FrontendController::class, 'searchProduct'])
+     ->name('frontend.product.search');
 Route::get('/{slug}', [FrontendController::class, 'redirectToPage'])
      ->name('frontend.redirect_to_page');

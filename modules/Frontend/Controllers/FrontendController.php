@@ -5,6 +5,7 @@ namespace Modules\Frontend\Controllers;
 use App\Commons\CacheData\CacheDataService;
 use App\Commons\Slug\SlugInterface;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Modules\Frontend\Repositories\FrontendService;
 use Modules\Product\Services\ProductService;
 use Modules\Product\Services\ProductCategoryService;
@@ -20,6 +21,7 @@ class FrontendController extends Controller
 	private $productService;
 
 	private $productCategoryService;
+
 	/**
 	 * Create a new authentication controller instance.
 	 *
@@ -32,11 +34,11 @@ class FrontendController extends Controller
 		ProductService $productService,
 		ProductCategoryService $productCategoryService
 	) {
-		$this->slugInterface   = $slugInterface;
-		$this->frontendService = $frontendService;
-		$this->cacheService    = $cacheService;
-		$this->productService  = $productService;
-		$this->productCategoryService  = $productCategoryService;
+		$this->slugInterface          = $slugInterface;
+		$this->frontendService        = $frontendService;
+		$this->cacheService           = $cacheService;
+		$this->productService         = $productService;
+		$this->productCategoryService = $productCategoryService;
 	}
 
 	/**
@@ -44,14 +46,22 @@ class FrontendController extends Controller
 	 */
 	public function index()
 	{
-		$products = $this->productService->findBy()->get()->take(4);
-		$productCategories = $this->productCategoryService->findBy()->where('type', 'brand')->get()->take(4);
+		$products          = $this->productService->findBy()->get()->take(4);
+		$productCategories = $this->productCategoryService->findBy()
+		                                                  ->where('type', 'brand')
+		                                                  ->get()
+		                                                  ->take(4);
 		$productByCategory = [];
-		foreach ($productCategories as $item) {
-			$productByCategory[$item->id] = $this->productService->findBy()->whereJsonContains('product_category_ids', (string) $item->id)->get()->take(4);
+		foreach($productCategories as $item) {
+			$productByCategory[$item->id] = $this->productService->findBy()
+			                                                     ->whereJsonContains('product_category_ids',
+				                                                     (string) $item->id)
+			                                                     ->get()
+			                                                     ->take(4);
 		}
 
-		return view('Frontend::index', compact('products', 'productByCategory', 'productCategories'));
+		return view('Frontend::index',
+			compact('products', 'productByCategory', 'productCategories'));
 	}
 
 	/**
@@ -63,12 +73,12 @@ class FrontendController extends Controller
 	{
 		$key      = "view_frontend_$slug";
 		$dataView = $this->cacheService->get($key);
-		if (env('CACHE_VIEW', false) && $dataView) {
+		if(env('CACHE_VIEW', false) && $dataView) {
 			return $dataView;
 		}
 
 		$dataBySlug = $this->slugInterface->setSlug($slug)->init();
-		if (empty($dataBySlug->model) || empty($dataBySlug->data)) {
+		if(empty($dataBySlug->model) || empty($dataBySlug->data)) {
 
 			session()->flash('error', trans('Cannot find this page'));
 
@@ -87,5 +97,19 @@ class FrontendController extends Controller
 	public function pageNotFound()
 	{
 		return view('Frontend::404');
+	}
+
+	/**
+	 * @param \Illuminate\Http\Request $request
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+	 */
+	public function searchProduct(Request $request)
+	{
+		$keyword = $request->keyword;
+		$categories = $this->productCategoryService->getArray();
+		$data = $this->productService->search($request->all(), 9);
+
+		return view('Frontend::product.product_search', compact('data', 'keyword', 'categories'));
 	}
 }

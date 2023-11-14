@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 use Modules\Base\Components\TextareaContentTab;
 use Modules\Base\Repositories\BaseServiceInterface;
 use Modules\Product\Models\FlashSaleConfig;
+use Modules\Product\Models\ProductCategory;
+use Modules\Product\Models\ProductVariant;
 use Modules\Product\Repositories\ProductAttributeRepository;
 use Modules\Product\Repositories\ProductRepository;
 use Modules\Product\Repositories\ProductVariantRepository;
@@ -47,6 +49,64 @@ class ProductService implements BaseServiceInterface
 		}
 
 		return $this->moduleRepository->paginate($data);
+	}
+
+	public function search($filter = [], $perPage = 20)
+	{
+		$data = $this->productVariantRepository->findBy()->with('product');
+		$data = $data->select(
+			'name',
+			'slug',
+			'price',
+			'discount',
+			'status',
+			'product_id',
+			'images',
+			DB::raw("COALESCE(NULLIF(MIN(discount), 0), NULLIF(MIN(price), 0)) as final_price"),
+		)->groupBy([
+			'name',
+			'slug',
+			'price',
+			'discount',
+			'status',
+			'product_id',
+			'images',
+		]);
+
+		if(!empty($filter['keyword'])) {
+			$data = $data->where('name', 'LIKE', '%' . $filter['keyword'] . '%')
+			             ->orWhere('sku', 'LIKE', '%' . $filter['keyword'] . '%');
+		}
+		if(($filter['sort_by'] ?? '') === "price_up") {
+			$data = $data->orderBy('final_price');
+		} else {
+			$data = $data->orderBy('final_price', 'desc');
+		}
+		if(!empty($filter['categories'])) {
+			$category_ids = ProductCategory::query()
+			                               ->whereIn('slug', $filter['categories'])
+			                               ->pluck('id');
+
+			$data = $data->whereHas('product', function($pq) use ($category_ids) {
+				$pq->where(function($q) use ($category_ids) {
+					$q = $q->orWhereIn('product_category_id', $category_ids);
+					foreach($category_ids as $category_id) {
+						$q = $q->orWhereJsonContains('product_category_ids', (string) $category_id);
+					}
+				});
+			});
+		}
+		$minPrice = $filter['min_price'] ?? 0;
+		$maxPrice = $filter['max_price'] ?? 10000000000000;
+		$data     = $data->havingBetween("final_price", [$minPrice, $maxPrice]);
+
+
+		return $data->paginate($perPage);
+	}
+
+	public function findBy($data = [])
+	{
+		return $this->moduleRepository->findBy($data);
 	}
 
 	public function detail($id)
@@ -112,11 +172,6 @@ class ProductService implements BaseServiceInterface
 		} catch(Exception $exception) {
 			session()->flash('error', trans('Deleted error.'));
 		}
-	}
-
-	public function findBy($data = [])
-	{
-		return $this->moduleRepository->findBy($data);
 	}
 
 	/**

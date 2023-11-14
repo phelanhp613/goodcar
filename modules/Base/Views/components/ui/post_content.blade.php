@@ -1,4 +1,4 @@
-<div class="accordion px-md-5 px-0" id="accordion-table-of-contents">
+{{--<div class="accordion px-md-5 px-0" id="accordion-table-of-contents">
     <div class="accordion-item mb-3">
         <div class="accordion-button cursor-pointer fw-semibold fs-md-5 fs-6"
              role="button"
@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>--}}
 <div class="content mb-5">
     @if(!empty($content))
         <div class="body-content mb-4">

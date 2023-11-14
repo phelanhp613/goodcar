@@ -83,7 +83,7 @@ class ProductVariantService implements BaseServiceInterface
 				$data['name']   = !empty($data['name']) ? $data['name'] : $variant->product->name;
 				$data['images'] = json_encode($images);
 			}
-			$variant->update($data);
+			$this->moduleRepository->updateById($id, $data);
 			session()->flash('success', trans('Updated successfully.'));
 			DB::commit();
 		} catch(Exception $exception) {

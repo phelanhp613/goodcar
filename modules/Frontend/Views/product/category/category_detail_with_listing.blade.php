@@ -9,11 +9,6 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb fs-md-6 fs-8">
                 <li class="breadcrumb-item"><a href="{{ route('frontend.home') }}">Home</a></li>
-                @if(!empty($data->parent))
-                    <li class="breadcrumb-item">
-                        <a href="{{ route('frontend.redirect_to_page', $data->parent->slug) }}">{{ $data->parent->name }}</a>
-                    </li>
-                @endif
                 <li class="breadcrumb-item active" aria-current="page">{{ $data->name }}</li>
             </ol>
         </nav>
@@ -38,7 +33,8 @@
                 @endforeach
             </div>
             <hr class="mt-0">
-            @include('Frontend::product._search_group')
+            <h2 class="h4">{{ trans('Filter') }}</h2>
+            @include('Frontend::product.category._search_group')
             <div class="py-4">
                 <hr class="mt-0">
             </div>

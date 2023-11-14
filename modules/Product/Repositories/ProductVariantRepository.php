@@ -35,7 +35,7 @@ class ProductVariantRepository extends BaseRepository
 	{
 		$result = $this->model->create($data);
 		$result->sluggable()
-		       ->create(['slug' => $result->product->slug . "-" . Str::slug($result->name)]);
+		       ->create(['slug' => Str::slug($result->name)]);
 
 		return $result;
 	}
@@ -55,7 +55,7 @@ class ProductVariantRepository extends BaseRepository
 		$result->sluggable()->updateOrCreate([
 			'sluggable_id'   => $result->sluggable->sluggable_id ?? null,
 			'sluggable_type' => $result->sluggable->sluggable_type ?? null,
-		], ['slug' => Str::slug($result->slug) ?? Str::slug($result->name)]);
+		], ['slug' => Str::slug($result->name)]);
 
 		return $result;
 	}

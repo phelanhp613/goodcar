@@ -48,12 +48,12 @@ class SlugService implements SlugInterface
 		$query = $cacheService->get('slug_'.$this->slug);
 		if (!$query) {
 			$query = Slug::query()->where('slug', $this->slug)->first();
+
 			$cacheService->cache('slug_'.$this->slug, $query);
 		}
 		/*if (!empty($this->id)) {
 			$query = $query->where('sluggable_id', $this->id);
 		}*/
-
 		if (!empty($query)) {
 			$this->modelName = $query->sluggable_type;
 			$this->model     = app($query->sluggable_type);
