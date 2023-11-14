@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Modules\Base\Repositories\BaseServiceInterface;
+use Modules\Customer\Repositories\CustomerRepository;
 use Modules\Order\Models\Order;
 use Modules\Product\Repositories\ProductVariantRepository;
 use Modules\Setting\Models\MailConfig;
@@ -24,6 +25,8 @@ class OrderService implements BaseServiceInterface
 
 	private $orderDetailRepository;
 
+	private $customerRepository;
+
 	private $sendSMSService;
 
 	public function __construct(
@@ -31,10 +34,12 @@ class OrderService implements BaseServiceInterface
 		OrderDetailRepository $orderDetailRepository,
 		ProductVariantRepository $productVariantRepository,
 		CMCSMSService $CMCSMSService,
+		CustomerRepository $customerRepository
 	) {
 		$this->moduleRepository         = $moduleRepository;
 		$this->productVariantRepository = $productVariantRepository;
 		$this->orderDetailRepository    = $orderDetailRepository;
+		$this->customerRepository       = $customerRepository;
 		$this->sendSMSService           = $CMCSMSService;
 	}
 
@@ -89,8 +94,19 @@ class OrderService implements BaseServiceInterface
 				$this->moduleRepository->findBy()->withTrashed()->count() + 1);
 			$data['status']   = Order::STATUS_PENDING;
 			$data['otp_code'] = strtoupper(Str::random(6));
-			$order            = $this->moduleRepository->create($data);
-			$orderDetails     = [];
+
+			$customer = $this->customerRepository->findBy(['phone' => $data['phone']])->first();
+			if(empty($customer)) {
+				$customer = $this->customerRepository->create([
+					'name'    => $data['name'] ?? "",
+					'phone'   => $data['phone'] ?? "",
+					'email'   => $data['email'] ?? "",
+					'address' => $data['address'] ?? "",
+				]);
+			}
+			$data['customer_id'] = $customer->id;
+			$order        = $this->moduleRepository->create($data);
+			$orderDetails = [];
 			foreach($products as $product) {
 				$product['total_price'] = !empty($product['final_price']) ? $product['final_price'] * $product['quantity'] : $product['total_price'];
 				$orderDetail            = [
@@ -123,14 +139,6 @@ class OrderService implements BaseServiceInterface
 			DB::rollBack();
 			session()->flash('error', trans('Created error.'));
 		}
-	}
-
-	public function sendSMS($phone, $otpCode, $code)
-	{
-		$this->sendSMSService->to($phone)
-		                     ->message("BASICS - Ma OTP cua Quy Khach qua https://basicgalaxy.vn/ la: $otpCode")
-		                     ->messageID('ctybasics2_order_' . $code)
-		                     ->sendNormal();
 	}
 
 	public function findBy($data)
@@ -169,6 +177,14 @@ class OrderService implements BaseServiceInterface
 			}
 		}
 
+	}
+
+	public function sendSMS($phone, $otpCode, $code)
+	{
+		$this->sendSMSService->to($phone)
+		                     ->message("BASICS - Ma OTP cua Quy Khach qua https://basicgalaxy.vn/ la: $otpCode")
+		                     ->messageID('ctybasics2_order_' . $code)
+		                     ->sendNormal();
 	}
 
 	public function detail($id)
