@@ -1,5 +1,4 @@
 <div class="form-group mb-2">
-    <label class="fw-semibold mb-2">{{ trans('Range Price') }}</label>
     <x-base::range-two-point min-name="min_price" max-name="max_price"/>
 </div>
 <div class="form-group mb-3">

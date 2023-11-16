@@ -14,7 +14,7 @@ class RangeTwoPoint extends Component
 
 	public $max_name;
 
-	public function __construct($minName, $maxName, $min = 0, $max = 100000000)
+	public function __construct($minName, $maxName, $min = 0, $max = 10000000000)
 	{
 		$this->min      = $min;
 		$this->max      = $max;

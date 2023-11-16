@@ -1,17 +1,19 @@
 @php
-$minValue = (int)(request($min_name) ?? $min);
-$maxValue = (int)(request($max_name) ?? $max);
+    $minValue = (int)(request($min_name) ?? $min);
+    $maxValue = (int)(request($max_name) ?? $max);
 @endphp
 <div id="range-two-point">
-    <div class="range-input-group row mb-4">
-        <div class="col-6">
+    <div class="range-input-group mb-4">
+        <label class="w-100">
+            <span class="fw-semibold">{{ trans('Price') }} {{ trans('From') }}</span>
             <input type="text" class="form-control range-min-display" value="{{ currency_format($minValue) }}" aria-label="Min price display">
-        </div>
-        <div class="col-6">
+        </label>
+        <label class="w-100">
+            <span class="fw-semibold">{{ trans('To') }}</span>
             <input type="text" class="form-control range-max-display" value="{{ currency_format($maxValue) }}" aria-label="Max price display">
-        </div>
+        </label>
     </div>
-    <div class="range-slide w-100 mb-3">
+    <div class="range-slide w-100 mb-3 d-none">
         <div class="slide">
             <div class="range-line" style="left: {{ ($minValue/$max) * 100 }}%; right: {{ 100 - (($maxValue/$max) * 100) }}%"></div>
             <span class="thumb" id="range-thumb-min" style="left: {{ ($minValue/$max) * 100 }}%;"></span>
@@ -24,8 +26,8 @@ $maxValue = (int)(request($max_name) ?? $max);
 
 @push('js')
     <script>
-        $(document).ready(function () {
-	        handleRangeTwoPoint({{ $min }}, {{ $max }});
-        });
+		$(document).ready(function () {
+			handleRangeTwoPoint({{ $min }}, {{ $max }});
+		});
     </script>
 @endpush
