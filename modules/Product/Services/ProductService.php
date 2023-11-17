@@ -88,12 +88,9 @@ class ProductService implements BaseServiceInterface
 			                               ->pluck('id');
 
 			$data = $data->whereHas('product', function($pq) use ($category_ids) {
-				$pq->where(function($q) use ($category_ids) {
-					$q = $q->orWhereIn('product_category_id', $category_ids);
-					foreach($category_ids as $category_id) {
-						$q = $q->orWhereJsonContains('product_category_ids', (string) $category_id);
-					}
-				});
+				foreach($category_ids as $category_id) {
+					$pq->whereJsonContains('product_category_ids', (string) $category_id);
+				}
 			});
 		}
 		$minPrice = $filter['min_price'] ?? 0;
