@@ -27,15 +27,6 @@
                 <div class="card-body">
                     @php($attribute_ids = !empty($data) ? json_decode($data->attribute_ids) : [])
                     <div class="form-group w-100 w-md-50">
-                        {{--<label for="tags" id="attribute-select" class="form-label">{{ trans('Config Attribute') }}</label>
-                        <select name="attribute_ids[]" id="attribute-select" class="select2-multiple form-control w-100" multiple="multiple">
-                            @foreach($attributes as $attribute)
-                                <option value="{{ $attribute->id }}" @if(in_array($attribute->id, $attribute_ids)) selected @endif>
-                                    {{ $attribute->name . ": " . implode(', ', $attribute->children->pluck('name')->toArray()) }}
-                                </option>
-                            @endforeach
-                        </select>--}}
-                        <!-- Button trigger modal -->
                         <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#attribute-select">
                             {{ trans('Config Attribute') }}
                         </button>
@@ -112,21 +103,6 @@
 					closeOnSelect: true,
 					tags: true
 				});
-			})
-			$(document).on('change', '#attribute-select', function () {
-				const attribute_ids = $(this).val();
-				/*$.ajax({
-					url: "{{ route('post.product_variant.updateAttribute', $data->id) }}",
-					method: "POST",
-					data: {'attribute_ids': attribute_ids},
-				}).done(function (response) {
-					$(document).find('#attribute-value').html($(response).find('#attribute-value').html());
-				});
-				$(this).parents('form').find(".select2-multiple").select2({
-					theme: 'bootstrap-5',
-					closeOnSelect: true,
-					tags: true
-				});*/
 			});
 		});
     </script>

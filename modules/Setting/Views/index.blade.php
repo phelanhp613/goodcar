@@ -25,15 +25,15 @@
                     </div>
                 </div>
             </div>
-            {{--<div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-2">
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="card-title">{{ trans('Email Setting') }}</h3>
-                        <p class="card-text">{{ trans('To configuration the site email and SMTP.') }}</p>
-                        <a href="{{ route("get.setting.emailConfig") }}" class="btn btn-success text-white">{{ trans('Go to config') }}</a>
+                        <h3 class="card-title">{{ trans('Payment Config') }}</h3>
+                        <p class="card-text">{{ trans('To configuration the Payment.') }}</p>
+                        <a href="{{ route("get.setting.paymentConfig") }}" class="btn btn-success text-white">{{ trans('Go to config') }}</a>
                     </div>
                 </div>
-            </div>--}}
+            </div>
         </div>
     </div>
 @endsection

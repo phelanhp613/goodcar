@@ -420,5 +420,7 @@
   "Update Customer": "Cập nhật khách hàng",
   "Orders": "Đơn hàng",
   "From": "Từ",
-  "To": "Đến"
+  "To": "Đến",
+  "Bank transfer 100%": "Trả toàn bộ giá trị xe",
+  "Bank transfer 20%": "Trả trước 20% giá trị xe"
 }

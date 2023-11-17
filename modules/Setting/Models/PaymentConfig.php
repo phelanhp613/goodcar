@@ -22,8 +22,8 @@ class PaymentConfig extends Setting
 	];
 
 	const PAYMENT_METHOD = [
-		"cod" => 'Cash On Delivery (COD)',
-		"bank" => 'Bank transfer',
+		"bank_20"  => 'Bank transfer 20%',
+		"bank_100" => 'Bank transfer 100%',
 	];
 
 	public static function getPaymentConfig()

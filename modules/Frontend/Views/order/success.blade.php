@@ -94,36 +94,36 @@
                         </div>
                         <div class="card">
                             <div class="card-body">
-                                @if($data->payment_method === 'bank')
-                                    <div>
-                                        <div class="mb-2">
-                                            <div>Để hoàn tất đơn hàng, Quý khách vui lòng điền
-                                                <span class="fw-semibold">Mã Đơn Hàng</span> của Quý khách trong phần nội dung thanh toán.
-                                            </div>
-                                            <div>Chúng tôi sẽ thực hiện giao hàng khi nhận được thông tin chuyển khoản thành công từ Quý khách!</div>
-                                            <div>Trân trọng cảm ơn!</div>
+                                <div>
+                                    <div class="mb-2">
+                                        <div>Để hoàn tất đơn hàng, Quý khách vui lòng điền
+                                            <span class="fw-semibold text-danger">Mã Đơn Hàng - #{{ $data->code }}</span> của Quý khách trong phần nội dung thanh toán.
                                         </div>
-                                        <h2 class="fs-4">Thông tin chuyển khoản ngân hàng</h2>
-                                        @if( empty($paymentConfig['BANK_ACCOUNT_NAME']) || empty($paymentConfig['BANK_NAME']) || empty($paymentConfig['BANK_ACCOUNT_NUMBER']))
-                                            <a href="{{ route('frontend.redirect_to_page', 'lien-he') }}" class="text-decoration-underline fw-semibold">{{ trans('Vui lòng liên hệ với chúng tôi') }}</a>
-                                        @else
-                                            <div class="ps-3">
-                                                <div class="fs-5 fw-semibold">{{ $paymentConfig['BANK_ACCOUNT_NAME'] ?? '' }}</div>
-                                                <div>- Ngân hàng:
-                                                    <span class="fw-semibold">{{ $paymentConfig['BANK_NAME'] ?? '' }}</span>
-                                                </div>
-                                                <div>- Số tài khoản:
-                                                    <span class="fw-semibold">{{ $paymentConfig['BANK_ACCOUNT_NUMBER'] ?? '' }}</span>
-                                                </div>
-                                                <div>- Nội dung:
-                                                    <span class="fw-semibold">#{{ $data->code }}</span>
-                                                </div>
-                                            </div>
-                                        @endif
+                                        <div>Chúng tôi sẽ thực hiện giao hàng khi nhận được thông tin chuyển khoản thành công từ Quý khách!</div>
+                                        <div>Trân trọng cảm ơn!</div>
                                     </div>
-                                @else
-                                    <div class="fs-5">Nhận hàng – Kiểm tra – Thanh toán</div>
-                                @endif
+                                    <h2 class="fs-4">Thông tin chuyển khoản ngân hàng</h2>
+                                    @if( empty($paymentConfig['BANK_ACCOUNT_NAME']) || empty($paymentConfig['BANK_NAME']) || empty($paymentConfig['BANK_ACCOUNT_NUMBER']))
+                                        <a href="{{ route('frontend.redirect_to_page', 'lien-he') }}" class="text-decoration-underline fw-semibold">{{ trans('Vui lòng liên hệ với chúng tôi') }}</a>
+                                    @else
+                                        <div class="ps-3">
+                                            <div class="fs-5 fw-semibold">{{ $paymentConfig['BANK_ACCOUNT_NAME'] ?? '' }}</div>
+                                            <div>- Ngân hàng:
+                                                <span class="fw-semibold">{{ $paymentConfig['BANK_NAME'] ?? '' }}</span>
+                                            </div>
+                                            <div>- Số tài khoản:
+                                                <span class="fw-semibold">{{ $paymentConfig['BANK_ACCOUNT_NUMBER'] ?? '' }}</span>
+                                            </div>
+                                            <div>- Số tiền chuyển khoản:
+                                                @php($bankTransfer = (($data->payment_method == 'bank_20') ? 20 : 100))
+                                                <span class="fw-semibold">{{ currency_format($data->total_price * $bankTransfer / 100, 'đ') }}</span>
+                                            </div>
+                                            <div>- Nội dung:
+                                                <span class="fw-semibold">#{{ $data->code }}</span>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     @endif

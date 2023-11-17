@@ -128,8 +128,6 @@ class OrderService implements BaseServiceInterface
 			}
 			$this->orderDetailRepository->bulkCreate($orderDetails);
 
-			$this->sendEmailNotify($order->code, $order->id);
-			$this->sendSMS($order->phone, $order->otp_code, $order->code);
 			DB::commit();
 			session()->remove('shopping_cart');
 			session()->remove('order_now_products');
@@ -144,47 +142,6 @@ class OrderService implements BaseServiceInterface
 	public function findBy($data)
 	{
 		return $this->moduleRepository->findBy($data);
-	}
-
-	/**
-	 * @param $code
-	 * @param $id
-	 *
-	 * @return void
-	 */
-	private function sendEmailNotify($code, $id)
-	{
-		$emails = MailConfig::getValueByKey(MailConfig::MAIL_LIST);
-		if(!empty(trim($emails))) {
-			$emails = explode(',', $emails);
-
-			foreach($emails as $email) {
-				$email      = trim($email);
-				$subject    = trans('New Order');
-				$title      = trans("Order") . ' #' . $code . ' ' . trans("has been created");
-				$body       = '<div>';
-				$body       .= '<a href="' . env('APP_URL') . '/admin/order/update/' . $id . '">' . trans('Check order') . ' #' . $code . '</a>';
-				$body       .= '</div>';
-				$body       .= '<p></p>';
-				$body       .= '<div>' . trans('Thank you and best regards') . '!</div>';
-				$dispatcher = app(Dispatcher::class);
-				$job        = app(SendMailJob::class)->subject($subject)
-				                                     ->title($title)
-				                                     ->body($body)
-				                                     ->email($email)
-				                                     ->onQueue(config('queue.connections.database_send_mail.queue'));
-				$dispatcher->dispatch($job);
-			}
-		}
-
-	}
-
-	public function sendSMS($phone, $otpCode, $code)
-	{
-		$this->sendSMSService->to($phone)
-		                     ->message("BASICS - Ma OTP cua Quy Khach qua https://basicgalaxy.vn/ la: $otpCode")
-		                     ->messageID('ctybasics2_order_' . $code)
-		                     ->sendNormal();
 	}
 
 	public function detail($id)

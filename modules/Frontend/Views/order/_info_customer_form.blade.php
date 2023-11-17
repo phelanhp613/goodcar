@@ -30,8 +30,8 @@
                 {{ trans('Payment Method') }} <span class="text-danger">*</span>
             </label>
             <select name="payment_method" class="form-control" id="payment-method">
-                <option value="cod">{{ trans('Cash On Delivery (COD)') }}</option>
-                <option value="bank">{{ trans('Bank transfer') }}</option>
+                <option value="bank_100">{{ trans('Bank transfer 100%') }}</option>
+                <option value="bank_20">{{ trans('Bank transfer 20%') }}</option>
             </select>
         </div>
         <div class="form-outline mb-3">
