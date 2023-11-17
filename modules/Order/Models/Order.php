@@ -9,13 +9,17 @@ class Order extends BaseModel
 {
 	use SoftDeletes;
 
-	const STATUS_UNCONFIRMED = -1;
-
-	const STATUS_PENDING = 2;
-
 	const STATUS_INACTIVE = 0;
 
 	const STATUS_ACTIVE = 1;
+
+	const STATUS_PENDING = 2;
+
+	const STATUS_PREPARE = 3;
+
+	const STATUS_READY = 4;
+
+	const STATUS_DELIVERED = 5;
 
 	const INVOICE_BUSINESS = 'business';
 
@@ -41,23 +45,9 @@ class Order extends BaseModel
 	 */
 	public static function getStatus($status)
 	{
-		$name = '';
-		switch($status) {
-			case self::STATUS_ACTIVE:
-				$name = trans('Accepted');
-				break;
-			case self::STATUS_INACTIVE:
-				$name = trans('Abort');
-				break;
-			case self::STATUS_PENDING:
-				$name = trans('Pending');
-				break;
-			case self::STATUS_UNCONFIRMED:
-				$name = trans('Unconfirmed');
-				break;
-		}
+		$statuses = self::getStatuses();
 
-		return $name;
+		return $statuses[$status];
 	}
 
 	/**
@@ -66,10 +56,12 @@ class Order extends BaseModel
 	public static function getStatuses()
 	{
 		return [
-			self::STATUS_ACTIVE      => trans('Accepted'),
-			self::STATUS_INACTIVE    => trans('Abort'),
-			self::STATUS_PENDING     => trans('Pending'),
-			self::STATUS_UNCONFIRMED => trans('Unconfirmed'),
+			self::STATUS_PENDING   => trans('Pending'),
+			self::STATUS_ACTIVE    => trans('Accepted'),
+			self::STATUS_PREPARE   => trans('Prepare'),
+			self::STATUS_READY     => trans('Ready'),
+			self::STATUS_DELIVERED => trans('Delivered'),
+			self::STATUS_INACTIVE  => trans('Abort'),
 		];
 	}
 

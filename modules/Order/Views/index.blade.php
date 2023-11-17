@@ -55,12 +55,12 @@
                                         @php($status = $item->status)
                                         @if ($status == 0)
                                             <span class="badge bg-danger text-white w-100">{{ Order::getStatus($status) }}</span>
-                                        @elseif($status == 1)
-                                            <span class="badge bg-success w-100">{{ Order::getStatus($status) }}</span>
                                         @elseif($status == 2)
                                             <span class="badge bg-warning w-100">{{ Order::getStatus($status) }}</span>
+                                        @elseif($status == 5)
+                                            <span class="badge bg-success w-100">{{ Order::getStatus($status) }}</span>
                                         @else
-                                            <span class="badge bg-gray w-100">{{ Order::getStatus($status) }}</span>
+                                            <span class="badge bg-info w-100">{{ Order::getStatus($status) }}</span>
                                         @endif
                                     </td>
                                     <td>{{ formatDate($item->created_at,'d-m-Y H:i') }}</td>

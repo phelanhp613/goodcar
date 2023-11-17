@@ -47,22 +47,17 @@
                                 <textarea name="address" class="form-control" id="address" rows="3">{{ $data->address ?? '' }}</textarea>
                             </div>
                             <div class="form-outline mb-3">
-                                <label class="form-label fw-semibold" for="payment-method">{{ trans('Payment Method') }}
+                                <label class="form-label fw-semibold" for="status">{{ trans('Status') }}
                                     <span class="text-danger">*</span></label>
-                                {!! Form::select('payment_method', ['cod' => trans('Cash On Delivery (COD)'), 'bank' => trans('Bank transfer')], $data->payment_method ?? 'cod',
+                                {!! Form::select('status', Order::getStatuses(), $data->status ?? 2,
                                     ['class' => 'select2 form-control w-100', 'id' => 'status']) !!}
                             </div>
-                            <div class="form-group">
-                                <label for="status" class="me-2">{{ trans('Status') }}:</label>
-                                @if ($status == 0)
-                                    <span class="badge bg-danger text-white">{{ Order::getStatus($status) }}</span>
-                                @elseif($status == 1)
-                                    <span class="badge bg-success">{{ Order::getStatus($status) }}</span>
-                                @elseif($status == -1)
-                                    <span class="badge bg-gray">{{ Order::getStatus($status) }}</span>
-                                @else
-                                    <span class="badge bg-warning">{{ Order::getStatus($status) }}</span>
-                                @endif
+                            <div class="form-outline mb-3">
+                                <label class="form-label fw-semibold" for="payment-method">{{ trans('Payment Method') }}
+                                    <span class="text-danger">*</span>
+                                </label>
+                                {!! Form::select('payment_method', ['bank_100' => trans('Bank transfer 100%'), 'bank_20' => trans('Bank transfer 20%')], $data->payment_method ?? 'bank_100',
+                                    ['class' => 'select2 form-control w-100', 'id' => 'payment-method']) !!}
                             </div>
                             <div class="form-group">
                                 <label for="note">{{ trans('Note') }}</label>
@@ -84,12 +79,12 @@
                                 <h4>
                                     @if ($status == 0)
                                         <span class="badge bg-danger text-white">{{ Order::getStatus($status) }}</span>
-                                    @elseif($status == 1)
-                                        <span class="badge bg-success">{{ Order::getStatus($status) }}</span>
-                                    @elseif($status == -1)
-                                        <span class="badge bg-gray">{{ Order::getStatus($status) }}</span>
-                                    @else
+                                    @elseif($status == 2)
                                         <span class="badge bg-warning">{{ Order::getStatus($status) }}</span>
+                                    @elseif($status == 5)
+                                        <span class="badge bg-success">{{ Order::getStatus($status) }}</span>
+                                    @else
+                                        <span class="badge bg-info">{{ Order::getStatus($status) }}</span>
                                     @endif
                                 </h4>
                                 <div>

@@ -49,7 +49,7 @@ class OrderRepository extends BaseRepository
 		if (!empty($filters['phone'])) {
 			$query = $query->where('phone', 'LIKE', '%' . $filters['phone'] . '%');
 		}
-		if (!empty($filters['status'])) {
+		if (isset($filters['status'])) {
 			$query = $query->where('status', $filters['status']);
 		}
 		if (!empty($filters['from_date']) && empty($filters['to_date'])) {
