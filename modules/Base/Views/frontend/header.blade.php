@@ -17,7 +17,7 @@
                         <a class="nav-link text-white" href="{{ route('frontend.product.search') }}">SẢN PHẢM</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">LIÊN HỆ</a>
+                        <a class="nav-link text-white" href="{{ route('frontend.contact.contact') }}">LIÊN HỆ</a>
                     </li>
                 </ul>
                 <form action="{{ route('frontend.product.search') }}" class="d-flex" role="search" method="get">

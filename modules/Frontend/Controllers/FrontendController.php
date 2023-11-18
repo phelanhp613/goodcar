@@ -48,20 +48,24 @@ class FrontendController extends Controller
 	{
 		$products          = $this->productService->findBy()->get()->take(4);
 		$productCategories = $this->productCategoryService->findBy()
-		                                                  ->where('type', 'brand')
-		                                                  ->get()
-		                                                  ->take(4);
+			->where('type', 'brand')
+			->get()
+			->take(4);
 		$productByCategory = [];
-		foreach($productCategories as $item) {
+		foreach ($productCategories as $item) {
 			$productByCategory[$item->id] = $this->productService->findBy()
-			                                                     ->whereJsonContains('product_category_ids',
-				                                                     (string) $item->id)
-			                                                     ->get()
-			                                                     ->take(4);
+				->whereJsonContains(
+					'product_category_ids',
+					(string) $item->id
+				)
+				->get()
+				->take(4);
 		}
 
-		return view('Frontend::index',
-			compact('products', 'productByCategory', 'productCategories'));
+		return view(
+			'Frontend::index',
+			compact('products', 'productByCategory', 'productCategories')
+		);
 	}
 
 	/**
@@ -73,12 +77,12 @@ class FrontendController extends Controller
 	{
 		$key      = "view_frontend_$slug";
 		$dataView = $this->cacheService->get($key);
-		if(env('CACHE_VIEW', false) && $dataView) {
+		if (env('CACHE_VIEW', false) && $dataView) {
 			return $dataView;
 		}
 
 		$dataBySlug = $this->slugInterface->setSlug($slug)->init();
-		if(empty($dataBySlug->model) || empty($dataBySlug->data)) {
+		if (empty($dataBySlug->model) || empty($dataBySlug->data)) {
 
 			session()->flash('error', trans('Cannot find this page'));
 
@@ -111,5 +115,15 @@ class FrontendController extends Controller
 		$data = $this->productService->search($request->all(), 9);
 
 		return view('Frontend::product.product_search', compact('data', 'keyword', 'categories'));
+	}
+
+	/**
+	 * @param \Illuminate\Http\Request $request
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+	 */
+	public function contact(Request $request)
+	{
+		return view('Frontend::contact.contact');
 	}
 }

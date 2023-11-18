@@ -34,7 +34,7 @@ class ProductCategoryRepository extends BaseRepository
 	{
 		return $this->model->query()
 			->tree()
-			->select('id', 'name', 'slug', 'parent_id', 'level', 'status')
+			->select('id', 'name', 'slug', 'parent_id', 'level', 'type', 'status')
 			->where('status', TRUE)
 			->get()
 			->toTree()

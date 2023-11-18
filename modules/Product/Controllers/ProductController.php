@@ -78,8 +78,10 @@ class ProductController extends BaseController
 		$tags       = $this->tagService->getArray();
 		$attributes = $this->productAttributeService->getArray();
 
-		return view('Product::product.create',
-			compact('statuses', 'categories', 'tags', 'attributes'));
+		return view(
+			'Product::product.create',
+			compact('statuses', 'categories', 'tags', 'attributes')
+		);
 	}
 
 	/**
@@ -90,10 +92,12 @@ class ProductController extends BaseController
 	public function postCreate(ProductRequest $request)
 	{
 		$data = $this->moduleService->create($request->all());
-		if(!empty($data)) {
-			if((int) $data->has_variant == 0) {
-				return redirect()->route('get.product.update',
-					[$data->id, 'next-step' => 1]);
+		if (!empty($data)) {
+			if ((int) $data->has_variant == 0) {
+				return redirect()->route(
+					'get.product.update',
+					[$data->id, 'next-step' => 1]
+				);
 			} else {
 				return redirect()->route('get.product_variant.list', $data->id);
 			}
@@ -110,7 +114,7 @@ class ProductController extends BaseController
 	public function getUpdate($id)
 	{
 		$data = $this->moduleService->detail($id);
-		if(empty($data)) {
+		if (empty($data)) {
 			return redirect()->route('get.product.list');
 		}
 		$statuses             = Status::getStatuses();
@@ -121,21 +125,27 @@ class ProductController extends BaseController
 			? json_decode($data->rootVariant()->suggest_product_ids ?? '[]', 1)
 			: [];
 		$suggestProductsQuery = $this->productVariantRepository->query()
-		                                                       ->select('id', 'name', 'sku',
-			                                                       'product_id')
-		                                                       ->with('product')
-		                                                       ->whereHas('product', function($pq) {
-			                                                       $pq->where('deleted_at', null);
-		                                                       })
-		                                                       ->whereIn('id', $suggest_product_ids)
-		                                                       ->get();
+			->select(
+				'id',
+				'name',
+				'sku',
+				'product_id'
+			)
+			->with('product')
+			->whereHas('product', function ($pq) {
+				$pq->where('deleted_at', null);
+			})
+			->whereIn('id', $suggest_product_ids)
+			->get();
 		$suggestProducts      = [];
-		foreach($suggestProductsQuery as $suggestProduct) {
+		foreach ($suggestProductsQuery as $suggestProduct) {
 			$suggestProducts[$suggestProduct->id] = $suggestProduct->name . ' | ' . $suggestProduct->sku;
 		}
 
-		return view('Product::product.update',
-			compact('data', 'statuses', 'categories', 'tags', 'attributes', 'suggestProducts'));
+		return view(
+			'Product::product.update',
+			compact('data', 'statuses', 'categories', 'tags', 'attributes', 'suggestProducts')
+		);
 	}
 
 	/**
@@ -158,14 +168,16 @@ class ProductController extends BaseController
 	 */
 	public function addAttributeInput(Request $request)
 	{
-		if(!$request->ajax()) {
+		if (!$request->ajax()) {
 			return redirect()->back();
 		}
 		$data       = !empty($request->product_id) ? $this->moduleService->detail($request->product_id) : [];
 		$attributes = $this->productAttributeService->getArray();
 
-		return view('Product::product.attributes.' . (!empty($request->hasVersion) && $request->hasVersion == 1 ? '_variant' : '_attribute'),
-			compact('data', 'attributes'));
+		return view(
+			'Product::product.attributes.' . (!empty($request->hasVersion) && $request->hasVersion == 1 ? '_variant' : '_attribute'),
+			compact('data', 'attributes')
+		);
 	}
 
 	/**
@@ -205,32 +217,32 @@ class ProductController extends BaseController
 	public function view(Request $request, $id)
 	{
 		$data = $this->moduleService->detail($id);
-		if(!empty($request->attr)) {
+		if (!empty($request->attr)) {
 			$attr                  = $request->attr;
 			$productAttributeNames = ProductAttribute::query()
-			                                         ->whereIn('id', $attr)
-			                                         ->pluck('name')
-			                                         ->toArray();
+				->whereIn('id', $attr)
+				->pluck('name')
+				->toArray();
 
 			$productValue = ProductValue::query()
-			                            ->with('variant')
-			                            ->whereHas('variant', function($vq) use ($data) {
-				                            $vq->where('product_id', $data->id);
-			                            })
-			                            ->whereIn('value', $productAttributeNames)
-			                            ->get();
+				->with('variant')
+				->whereHas('variant', function ($vq) use ($data) {
+					$vq->where('product_id', $data->id);
+				})
+				->whereIn('value', $productAttributeNames)
+				->get();
 
 			$productValueGroups = [];
-			foreach($data->variants->pluck('id') as $variant_ids) {
-				foreach($productValue as $value) {
-					if($variant_ids == $value->product_id) {
+			foreach ($data->variants->pluck('id') as $variant_ids) {
+				foreach ($productValue as $value) {
+					if ($variant_ids == $value->product_id) {
 						$productValueGroups[$value->product_id][] = $value->toArray();
 					}
 				}
 			}
 			$variant_selected = [];
-			foreach($productValueGroups as $key => $group) {
-				if(count($group) == count($attr)) {
+			foreach ($productValueGroups as $key => $group) {
+				if (count($group) == count($attr)) {
 					$variant_selected = ProductVariant::query()->find($key);
 					break;
 				}
@@ -239,26 +251,34 @@ class ProductController extends BaseController
 			$variant_selected = $data->rootVariant();
 		}
 		$variant_selected->suggest_products = ProductVariant::query()
-		                                                    ->with('product', function($pq) {
-			                                                    $pq->with('variants');
-		                                                    })
-		                                                    ->whereHas('product', function($pq) {
-			                                                    $pq->where('deleted_at', null);
-		                                                    })
-		                                                    ->whereIn('id',
-			                                                    json_decode($variant_selected->suggest_product_ids,
-				                                                    1))
-		                                                    ->get();
+			->with('product', function ($pq) {
+				$pq->with('variants');
+			})
+			->whereHas('product', function ($pq) {
+				$pq->where('deleted_at', null);
+			})
+			->whereIn(
+				'id',
+				json_decode(
+					$variant_selected->suggest_product_ids,
+					1
+				)
+			)
+			->get();
 
 		$product_attributes = ProductAttribute::query()
-		                                      ->with('children')
-		                                      ->whereIn('id',
-			                                      json_decode($data->attribute_ids, 1))
-		                                      ->get();
+			->with('children')
+			->whereIn(
+				'id',
+				json_decode($data->attribute_ids, 1)
+			)
+			->get();
 		$related_products   = $data->category->products->where('id', '<>', $data->id)->take(20);
 
-		return view('Frontend::product.product_detail',
-			compact('data', 'variant_selected', 'product_attributes', 'related_products'));
+		return view(
+			'Frontend::product.product_detail',
+			compact('data', 'variant_selected', 'product_attributes', 'related_products')
+		);
 	}
 
 	/**
@@ -275,7 +295,7 @@ class ProductController extends BaseController
 				'messeage' => 'Successfully',
 				'data'     => $this->moduleService->list($filter),
 			];
-		} catch(Exception $e) {
+		} catch (Exception $e) {
 			$data = [
 				'status'   => 500,
 				'messeage' => $e->getMessage(),
@@ -319,11 +339,11 @@ class ProductController extends BaseController
 		$data                 = FlashSaleConfig::getFlashSaleConfig();
 		$addMoreProductIds    = json_decode($data['FLASH_SALE_ADD_MORE_PRODUCTS'] ?? '[]', 1);
 		$addMoreProductsQuery = $this->moduleService->findBy()
-		                                            ->select('id', 'name', 'sku')
-		                                            ->whereIn('id', $addMoreProductIds)
-		                                            ->get();
+			->select('id', 'name', 'sku')
+			->whereIn('id', $addMoreProductIds)
+			->get();
 		$addMoreProducts      = [];
-		foreach($addMoreProductsQuery as $addMoreProduct) {
+		foreach ($addMoreProductsQuery as $addMoreProduct) {
 			$addMoreProducts[$addMoreProduct->id] = $addMoreProduct->name . ' | ' . $addMoreProduct->sku;
 		}
 

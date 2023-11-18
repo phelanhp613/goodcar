@@ -2,10 +2,10 @@
     @csrf
     @php(($prompt = ['' => trans('Select')]))
     <div class="row">
-        <div class="col-md-12 mb-3 d-flex">
+        {{-- <div class="col-md-12 mb-3 d-flex">
             <button type="submit" class="btn btn-info text-white me-2">{{ trans('Save') }}</button>
             <button type="reset" class="btn btn-outline-dark">{{ trans('Reset') }}</button>
-        </div>
+        </div> --}}
         <div class="col-md-8">
             <div class="row">
                 <div class="col-md-6 form-group">
@@ -41,7 +41,9 @@
                 <label for="type" class="form-label">{{ trans('Category Type') }}</label>
                 <select name="type" class="form-control select2 w-100" id="type">
                     <option value="">{{ trans('Select') }}</option>
-                    <option value="brand" @if(($data->type ?? '') === 'brand' || request()->type === 'brand') selected @endif>{{ trans('Brand') }}</option>
+                    <option value="Thương hiệu" @if(($data->type ?? '') === 'Thương hiệu' || request()->type === 'Thương hiệu') selected @endif>Thương hiệu</option>
+                    <option value="Kiểu dáng" @if(($data->type ?? '') === 'Kiểu dáng' || request()->type === 'Kiểu dáng') selected @endif>Kiểu dáng</option>
+                    <option value="Số chỗ ngồi" @if(($data->type ?? '') === 'Số chỗ ngồi' || request()->type === 'Số chỗ ngồi') selected @endif>Số chỗ ngồi</option>
                 </select>
             </div>
             <div class="form-group">

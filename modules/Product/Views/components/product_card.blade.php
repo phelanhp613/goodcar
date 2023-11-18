@@ -32,7 +32,7 @@
     <a class="text-decoration-none " href="{{ route('frontend.redirect_to_page', $product->slug ?? $product['slug']) }}" title="{{ $product->name  ?? $product['name'] }}">
         <div class="card card-product position-relative">
             <div class="ratio ratio-16x9">
-                <img loading="lazy" src="{{ env('APP_URL') . getMainImage($product->images ?? $product['images']) }}" class="lazy object-fit-contain card-img-top w-100 h-100 mb-2" width="1" height="1" alt="...">
+                <img loading="lazy" data-src="{{ env('APP_URL') . getMainImage($product->images ?? $product['images']) }}" class="lazy object-fit-contain card-img-top w-100 h-100 mb-2" width="1" height="1" alt="...">
             </div>
             <div class="card-body p-md-2 p-1">
                 <div class="card-title">

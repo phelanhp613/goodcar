@@ -42,9 +42,9 @@ class ProductService implements BaseServiceInterface
 
 	public function list($data)
 	{
-		if(!empty($data['column_asc'])) {
+		if (!empty($data['column_asc'])) {
 			return $this->moduleRepository->paginate($data, 20, $data['column_asc'], 'ASC');
-		} elseif(!empty($data['column_desc'])) {
+		} elseif (!empty($data['column_desc'])) {
 			return $this->moduleRepository->paginate($data, 20, $data['column_desc']);
 		}
 
@@ -53,52 +53,75 @@ class ProductService implements BaseServiceInterface
 
 	public function search($filter = [], $perPage = 20)
 	{
-		$data = $this->productVariantRepository->findBy()->with('product');
+		$data = $this->moduleRepository->findBy();
+
 		$data = $data->select(
+			'id',
 			'name',
 			'slug',
-			'price',
-			'discount',
-			'status',
-			'product_id',
+			'sku',
 			'images',
-			DB::raw("COALESCE(NULLIF(MIN(discount), 0), NULLIF(MIN(price), 0)) as final_price"),
-		)->groupBy([
-			'name',
-			'slug',
-			'price',
-			'discount',
-			'status',
-			'product_id',
-			'images',
-		]);
+			'product_category_id',
+			'product_category_ids'
+		);
 
-		if(!empty($filter['keyword'])) {
+		if (!empty($filter['keyword'])) {
 			$data = $data->where('name', 'LIKE', '%' . $filter['keyword'] . '%')
-			             ->orWhere('sku', 'LIKE', '%' . $filter['keyword'] . '%');
+				->orWhere('sku', 'LIKE', '%' . $filter['keyword'] . '%');
 		}
-		if(($filter['sort_by'] ?? '') === "price_up") {
-			$data = $data->orderBy('final_price');
-		} else {
-			$data = $data->orderBy('final_price', 'desc');
-		}
-		if(!empty($filter['categories'])) {
-			$category_ids = ProductCategory::query()
-			                               ->whereIn('slug', $filter['categories'])
-			                               ->pluck('id');
+		if (!empty($filter['categories'])) {
+			$category_ids = [];
+			foreach ($filter['categories'] as $key => $item) {
+				$category_ids[$key] = ProductCategory::query()
+					->whereIn('slug', $item)
+					->pluck('id')->toArray();
+			}
+			$combinations = $this->combinations(array_values($category_ids));
 
-			$data = $data->whereHas('product', function($pq) use ($category_ids) {
-				foreach($category_ids as $category_id) {
-					$pq->whereJsonContains('product_category_ids', (string) $category_id);
+			foreach ($combinations as $key => $combination) {
+				if ($key == 0) {
+					$data->where(function ($q) use ($combination) {
+						foreach ($combination as $id) {
+							$q->whereJsonContains('product_category_ids', (string) $id);
+						}
+					});
+				} else {
+					$data->orWhere(function ($q) use ($combination) {
+						foreach ($combination as $id) {
+							$q->whereJsonContains('product_category_ids', (string) $id);
+						}
+					});
 				}
-			});
+			}
 		}
-		$minPrice = $filter['min_price'] ?? 0;
-		$maxPrice = $filter['max_price'] ?? 10000000000000;
-		$data     = $data->havingBetween("final_price", [$minPrice, $maxPrice]);
-
 
 		return $data->paginate($perPage);
+	}
+
+	private function combinations($arrays, $i = 0)
+	{
+		if (!isset($arrays[$i])) {
+			return array();
+		}
+
+		if ($i == count($arrays) - 1) {
+			return $arrays;
+		}
+
+		// get combinations from subsequent arrays
+		$tmp = $this->combinations($arrays, $i + 1);
+
+		$result = array();
+
+		// concat each array from tmp with each element from $arrays[$i]
+		foreach ($arrays[$i] as $v) {
+			foreach ($tmp as $t) {
+				$result[] = is_array($t) ?
+					array_merge(array($v), $t) :
+					array($v, $t);
+			}
+		}
+		return $result;
 	}
 
 	public function findBy($data = [])
@@ -122,35 +145,40 @@ class ProductService implements BaseServiceInterface
 		DB::beginTransaction();
 		try {
 			$attribute_ids = array_keys($attrs);
-			$data          = $this->moduleRepository->updateById($id,
-				['attribute_ids' => json_encode($attrs)], true);
+			$data          = $this->moduleRepository->updateById(
+				$id,
+				['attribute_ids' => json_encode($attrs)],
+				true
+			);
 			$data->variants->each->delete();
-			if(!empty($attribute_ids)) {
+			if (!empty($attribute_ids)) {
 				$attributes = $this->productAttributeRepository->findBy()
-				                                               ->with('children')
-				                                               ->whereIn('id', $attribute_ids)
-				                                               ->get()
-				                                               ->toArray();
+					->with('children')
+					->whereIn('id', $attribute_ids)
+					->get()
+					->toArray();
 				$children   = [];
-				foreach($attributes as $key => $attribute) {
-					foreach($attribute['children'] as $child) {
+				foreach ($attributes as $key => $attribute) {
+					foreach ($attribute['children'] as $child) {
 						$valueID = array_keys($attrs[$attribute['id']] ?? []);
-						if(in_array($child['id'], $valueID)) {
+						if (in_array($child['id'], $valueID)) {
 							$children[$key][] = $child;
 						}
 					}
 				}
 				$attributeGroups = $this->generateAttributeVariants($children);
 
-				foreach($attributeGroups as $group) {
+				foreach ($attributeGroups as $group) {
 					$names   = implode(" ", array_column($group, 'value'));
-					$variant = $this->createVariant($data,
-						['name' => $data->name . ' - ' . $names, 'slug' => Str::slug($data->name . ' - ' . $names), 'is_root' => false]);
+					$variant = $this->createVariant(
+						$data,
+						['name' => $data->name . ' - ' . $names, 'slug' => Str::slug($data->name . ' - ' . $names), 'is_root' => false]
+					);
 					$variant->attributes()->sync($group);
 				}
 			}
 			DB::commit();
-		} catch(Exception $exception) {
+		} catch (Exception $exception) {
 			DB::rollBack();
 			session()->flash('error', trans('Something went wrong'));
 		}
@@ -166,7 +194,7 @@ class ProductService implements BaseServiceInterface
 		try {
 			$this->moduleRepository->deleteById($id);
 			session()->flash('success', trans('Deleted successfully.'));
-		} catch(Exception $exception) {
+		} catch (Exception $exception) {
 			session()->flash('error', trans('Deleted error.'));
 		}
 	}
@@ -180,14 +208,18 @@ class ProductService implements BaseServiceInterface
 	 */
 	public function generateAttributeVariants($data, int $index = 0, array $ids = [])
 	{
-		if($index < count($data)) {
-			foreach($data[$index] as $item) {
-				if($index == count($data) - 1) {
-					$this->attributeVariants[] = array_merge($ids,
-						[["attribute_id" => $item['parent_id'], "attribute_key" => $item['key'], "value" => $item['name']]]);
+		if ($index < count($data)) {
+			foreach ($data[$index] as $item) {
+				if ($index == count($data) - 1) {
+					$this->attributeVariants[] = array_merge(
+						$ids,
+						[["attribute_id" => $item['parent_id'], "attribute_key" => $item['key'], "value" => $item['name']]]
+					);
 				} else {
-					$newIds = array_merge($ids,
-						[["attribute_id" => $item['parent_id'], "attribute_key" => $item['key'], "value" => $item['name']]]);
+					$newIds = array_merge(
+						$ids,
+						[["attribute_id" => $item['parent_id'], "attribute_key" => $item['key'], "value" => $item['name']]]
+					);
 					$this->generateAttributeVariants($data, $index + 1, $newIds);
 				}
 			}
@@ -243,15 +275,15 @@ class ProductService implements BaseServiceInterface
 			$data['content']                    = replaceOldUrl($data['content']);
 			unset($data['tags'], $data['variants'], $data['attributes']);
 			$product = $this->moduleRepository->create($data);
-			if(!empty($product)) {
+			if (!empty($product)) {
 				$product->tags()->sync($tag_ids);
-				if(!$product->has_variant) {
+				if (!$product->has_variant) {
 					$this->createVariant($product, $variantData);
 				}
 			}
 			session()->flash('success', trans('Created successfully.'));
 			DB::commit();
-		} catch(Exception $exception) {
+		} catch (Exception $exception) {
 			session()->flash('error', trans('Created error.'));
 			DB::rollBack();
 		}
@@ -277,7 +309,7 @@ class ProductService implements BaseServiceInterface
 			$variantData      = $data['variants'] ?? [];
 			$tag_ids          = $this->tagRepository->getIds($data['tags'] ?? []);
 			$attribute_values = $data['attribute_values'] ?? [];
-			if(isset($data['attribute_ids'])) {
+			if (isset($data['attribute_ids'])) {
 				$data['attribute_ids'] = json_encode($data['attribute_ids']);
 			}
 			$data['has_variant'] = (int) ($data['has_variant'] ?? 1);
@@ -297,14 +329,14 @@ class ProductService implements BaseServiceInterface
 			$images          = json_decode($product->images);
 			$images->main    = $mainImage;
 			$product->update(['images' => json_encode($images)]);
-			if(!$product->has_variants) {
+			if (!$product->has_variants) {
 				$variantData['suggest_product_ids'] = json_encode($variantData['suggest_product_ids'] ?? []);
 			}
 			$product->tags()->sync($tag_ids);
 			$this->updateAttribute($product, $attribute_values, $variantData);
 			session()->flash('success', trans('Updated successfully.'));
 			DB::commit();
-		} catch(Exception $exception) {
+		} catch (Exception $exception) {
 			session()->flash('error', trans('Updated error.'));
 			DB::rollBack();
 		}
@@ -319,12 +351,12 @@ class ProductService implements BaseServiceInterface
 	 */
 	public function updateAttribute($product, $attribute_values, array $variantData = [])
 	{
-		if(!$product->has_variant) {
+		if (!$product->has_variant) {
 			$rootVariant = $product->rootVariant();
-			if(empty($rootVariant)) {
+			if (empty($rootVariant)) {
 				$rootVariant = $this->createVariant($product, $variantData);
 			}
-			if(!empty($variantData)) {
+			if (!empty($variantData)) {
 				$rootVariant->update($variantData);
 			}
 			$rootVariant->attributes()->sync($attribute_values);
@@ -346,7 +378,7 @@ class ProductService implements BaseServiceInterface
 			$data->update($params);
 			session()->flash('success', trans('Updated successfully.'));
 			DB::commit();
-		} catch(Exception $exception) {
+		} catch (Exception $exception) {
 			session()->flash('error', trans('Updated error.'));
 			DB::rollBack();
 		}
@@ -362,41 +394,41 @@ class ProductService implements BaseServiceInterface
 		DB::beginTransaction();
 		try {
 			unset($data['_token']);
-			foreach($data as $key => $value) {
+			foreach ($data as $key => $value) {
 				$input  = [
 					'key'   => $key,
 					'value' => is_array($value) ? json_encode($value) : $value,
 				];
 				$config = FlashSaleConfig::query()->where('key', $key)->first();
-				if(!empty($config)) {
+				if (!empty($config)) {
 					$config->update($input);
 				} else {
 					$config = new FlashSaleConfig($input);
 					$config->save();
 				}
 			}
-			if(empty($data['FLASH_SALE_FOR_60_PERCENT'])) {
+			if (empty($data['FLASH_SALE_FOR_60_PERCENT'])) {
 				$key    = 'FLASH_SALE_FOR_60_PERCENT';
 				$input  = [
 					'key'   => $key,
 					'value' => 0,
 				];
 				$config = FlashSaleConfig::query()->where('key', $key)->first();
-				if(!empty($config)) {
+				if (!empty($config)) {
 					$config->update($input);
 				} else {
 					$config = new FlashSaleConfig($input);
 					$config->save();
 				}
 			}
-			if(empty($data['FLASH_SALE_ADD_MORE_PRODUCTS'])) {
+			if (empty($data['FLASH_SALE_ADD_MORE_PRODUCTS'])) {
 				$key    = 'FLASH_SALE_ADD_MORE_PRODUCTS';
 				$input  = [
 					'key'   => $key,
 					'value' => json_encode([]),
 				];
 				$config = FlashSaleConfig::query()->where('key', $key)->first();
-				if(!empty($config)) {
+				if (!empty($config)) {
 					$config->update($input);
 				} else {
 					$config = new FlashSaleConfig($input);
@@ -405,7 +437,7 @@ class ProductService implements BaseServiceInterface
 			}
 			DB::commit();
 			session()->flash('success', trans('Updated successfully.'));
-		} catch(Exception $exception) {
+		} catch (Exception $exception) {
 			DB::rollBack();
 			session()->flash('error', trans('Updated error.'));
 		}
@@ -422,8 +454,8 @@ class ProductService implements BaseServiceInterface
 	private function handleVariantData($product, $variants, $attribute_ids, $attribute_values)
 	{
 		$variants = $product->has_variant ? $variants : [$variants];
-		foreach($variants as $variant) {
-			if(!empty($variant)) {
+		foreach ($variants as $variant) {
+			if (!empty($variant)) {
 				$variant['name']       = !empty($variant['name']) ? $variant['name'] : $product->name . '-' . Str::uuid();
 				$variant['product_id'] = $product->id;
 				$variant['created_by'] = $product->created_by;
@@ -434,8 +466,8 @@ class ProductService implements BaseServiceInterface
 					"created_by" => $product->created_by,
 				], $variant);
 				$data->attributes()->sync($attribute_ids);
-				if(!empty($attribute_values)) {
-					foreach($attribute_values as $id => $value) {
+				if (!empty($attribute_values)) {
+					foreach ($attribute_values as $id => $value) {
 						$data->attributes()->updateExistingPivot($id, $value);
 					}
 				}

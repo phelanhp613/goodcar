@@ -58,7 +58,7 @@
                                     <th><img src="{{ env('APP_URL') . $item->image }}" alt="" width="100"></th>
                                     <td>{{ $item->slug ?? "" }}</td>
                                     <td>{{ $item->parent->name ?? '--'  }}</td>
-                                    <td>{{ $item->type == 'brand' ? trans('Brand') : '--' }}</td>
+                                    <td>{{ $item->type ??  '--' }}</td>
                                     <td class="link-action">
                                         <a href="{{ route("get.product_category.view", $item->id) }}" class="btn btn-warning text-white" target="_blank">
                                             <i class="fa-solid fa-eye"></i>

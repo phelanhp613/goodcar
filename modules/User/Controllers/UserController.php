@@ -99,29 +99,29 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-	/**
-	 * @return Factory|View
-	 */
-	public function getProfile()
-	{
-		$data = $this->moduleService->detail(auth('admin')->id());
+    /**
+     * @return Factory|View
+     */
+    public function getProfile()
+    {
+        $data = $this->moduleService->detail(auth('admin')->id());
 
-		return view('User::profile', [
-			'data'     => $data,
-			'statuses' => $this->statuses,
-			'roles'    => $this->roles,
-		]);
-	}
+        return view('User::profile', [
+            'data'     => $data,
+            'statuses' => $this->statuses,
+            'roles'    => $this->roles,
+        ]);
+    }
 
-	/**
-	 * @param UserRequest $request
-	 * @param $id
-	 * @return RedirectResponse
-	 */
-	public function postProfile(UserRequest $request)
-	{
-		$this->moduleService->update(auth()->id('admin'), $request->all());
+    /**
+     * @param UserRequest $request
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function postProfile(UserRequest $request)
+    {
+        $this->moduleService->update(auth()->id('admin'), $request->all());
 
-		return redirect()->back();
-	}
+        return redirect()->back();
+    }
 }
