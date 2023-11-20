@@ -76,7 +76,11 @@ class ProductService implements BaseServiceInterface
 					->whereIn('slug', $item)
 					->pluck('id')->toArray();
 			}
-			$combinations = $this->combinations(array_values($category_ids));
+			if(count($category_ids) === 1) {
+				$combinations = array_values($category_ids);
+			} else {
+				$combinations = $this->combinations(array_values($category_ids));
+			}
 
 			foreach ($combinations as $key => $combination) {
 				if ($key == 0) {
@@ -98,14 +102,12 @@ class ProductService implements BaseServiceInterface
 		return $data->paginate($perPage);
 	}
 
-	private function combinations($arrays, $i = 0)
-	{
+	private function combinations($arrays, $i = 0) {
 		if (!isset($arrays[$i])) {
 			return array();
 		}
-
 		if ($i == count($arrays) - 1) {
-			return $arrays;
+			return $arrays[$i];
 		}
 
 		// get combinations from subsequent arrays
@@ -121,6 +123,7 @@ class ProductService implements BaseServiceInterface
 					array($v, $t);
 			}
 		}
+
 		return $result;
 	}
 
