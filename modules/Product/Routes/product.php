@@ -17,8 +17,6 @@ Route::middleware('admin')->prefix("admin")->group(function () {
 	        Route::post('/add-attribute/{id}', [ProductController::class, "postAddAttribute"])->name('get.product.postAddAttribute');
 	        Route::post('/add-image/{id}', [ProductController::class, "postAddImage"])->name('post.product.add_image');
 	        Route::post('/update-featured', [ProductController::class, "postUpdateProductFeatured"])->name('post.product.update_featured');
-	        Route::get('/flash_sale_config', [ProductController::class, "getFlashSaleConfig"])->name('get.product.flash_sale_config');
-	        Route::post('/flash_sale_config', [ProductController::class, "postFlashSaleConfig"])->name('post.product.flash_sale_config');
         });
         Route::get('/delete/{id}', [ProductController::class, "delete"])->name('get.product.delete')->can('product-delete');
     });

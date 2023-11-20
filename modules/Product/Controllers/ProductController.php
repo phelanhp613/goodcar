@@ -330,35 +330,4 @@ class ProductController extends BaseController
 
 		return back();
 	}
-
-	/**
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-	 */
-	public function getFlashSaleConfig()
-	{
-		$data                 = FlashSaleConfig::getFlashSaleConfig();
-		$addMoreProductIds    = json_decode($data['FLASH_SALE_ADD_MORE_PRODUCTS'] ?? '[]', 1);
-		$addMoreProductsQuery = $this->moduleService->findBy()
-			->select('id', 'name', 'sku')
-			->whereIn('id', $addMoreProductIds)
-			->get();
-		$addMoreProducts      = [];
-		foreach ($addMoreProductsQuery as $addMoreProduct) {
-			$addMoreProducts[$addMoreProduct->id] = $addMoreProduct->name . ' | ' . $addMoreProduct->sku;
-		}
-
-		return view('Product::product._flash_sale_form', compact('data', 'addMoreProducts'));
-	}
-
-	/**
-	 * @param \Illuminate\Http\Request $request
-	 *
-	 * @return \Illuminate\Http\RedirectResponse
-	 */
-	public function postFlashSaleConfig(Request $request)
-	{
-		$this->moduleService->flashSaleConfig($request->all());
-
-		return back();
-	}
 }

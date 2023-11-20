@@ -76,12 +76,8 @@ class ProductService implements BaseServiceInterface
 					->whereIn('slug', $item)
 					->pluck('id')->toArray();
 			}
-			if(count($category_ids) === 1) {
-				$combinations = array_values($category_ids);
-			} else {
-				$combinations = $this->combinations(array_values($category_ids));
-			}
 
+			$combinations = $this->combinations(array_values($category_ids));
 			foreach ($combinations as $key => $combination) {
 				if ($key == 0) {
 					$data->where(function ($q) use ($combination) {
@@ -102,29 +98,19 @@ class ProductService implements BaseServiceInterface
 		return $data->paginate($perPage);
 	}
 
-	private function combinations($arrays, $i = 0) {
-		if (!isset($arrays[$i])) {
-			return array();
-		}
-		if ($i == count($arrays) - 1) {
-			return $arrays[$i];
-		}
-
-		// get combinations from subsequent arrays
-		$tmp = $this->combinations($arrays, $i + 1);
-
-		$result = array();
-
-		// concat each array from tmp with each element from $arrays[$i]
-		foreach ($arrays[$i] as $v) {
-			foreach ($tmp as $t) {
-				$result[] = is_array($t) ?
-					array_merge(array($v), $t) :
-					array($v, $t);
+	private function combinations($data, $index = 0, $ids = [], $groups = []) {
+		if ($index < count($data)) {
+			foreach ($data[$index] as $item) {
+				if ($index == count($data) - 1) {
+					$groups[] = array_merge($ids, [$item]);
+				} else {
+					$newIds = array_merge($ids, [$item]);
+					$groups = $this->combinations($data, $index + 1, $newIds, $groups);
+				}
 			}
 		}
 
-		return $result;
+		return $groups;
 	}
 
 	public function findBy($data = [])
@@ -209,12 +195,12 @@ class ProductService implements BaseServiceInterface
 	 *
 	 * @return mixed
 	 */
-	public function generateAttributeVariants($data, int $index = 0, array $ids = [])
+	public function generateAttributeVariants($data, int $index = 0, array $ids = [], array $variantGroups = [])
 	{
 		if ($index < count($data)) {
 			foreach ($data[$index] as $item) {
 				if ($index == count($data) - 1) {
-					$this->attributeVariants[] = array_merge(
+					$variantGroups[] = array_merge(
 						$ids,
 						[["attribute_id" => $item['parent_id'], "attribute_key" => $item['key'], "value" => $item['name']]]
 					);
@@ -223,12 +209,12 @@ class ProductService implements BaseServiceInterface
 						$ids,
 						[["attribute_id" => $item['parent_id'], "attribute_key" => $item['key'], "value" => $item['name']]]
 					);
-					$this->generateAttributeVariants($data, $index + 1, $newIds);
+					$variantGroups = $this->generateAttributeVariants($data, $index + 1, $newIds, $variantGroups);
 				}
 			}
 		}
 
-		return $this->attributeVariants;
+		return $variantGroups;
 	}
 
 	/**
@@ -384,65 +370,6 @@ class ProductService implements BaseServiceInterface
 		} catch (Exception $exception) {
 			session()->flash('error', trans('Updated error.'));
 			DB::rollBack();
-		}
-	}
-
-	/**
-	 * @param array $data
-	 *
-	 * @return void
-	 */
-	public function flashSaleConfig(array $data)
-	{
-		DB::beginTransaction();
-		try {
-			unset($data['_token']);
-			foreach ($data as $key => $value) {
-				$input  = [
-					'key'   => $key,
-					'value' => is_array($value) ? json_encode($value) : $value,
-				];
-				$config = FlashSaleConfig::query()->where('key', $key)->first();
-				if (!empty($config)) {
-					$config->update($input);
-				} else {
-					$config = new FlashSaleConfig($input);
-					$config->save();
-				}
-			}
-			if (empty($data['FLASH_SALE_FOR_60_PERCENT'])) {
-				$key    = 'FLASH_SALE_FOR_60_PERCENT';
-				$input  = [
-					'key'   => $key,
-					'value' => 0,
-				];
-				$config = FlashSaleConfig::query()->where('key', $key)->first();
-				if (!empty($config)) {
-					$config->update($input);
-				} else {
-					$config = new FlashSaleConfig($input);
-					$config->save();
-				}
-			}
-			if (empty($data['FLASH_SALE_ADD_MORE_PRODUCTS'])) {
-				$key    = 'FLASH_SALE_ADD_MORE_PRODUCTS';
-				$input  = [
-					'key'   => $key,
-					'value' => json_encode([]),
-				];
-				$config = FlashSaleConfig::query()->where('key', $key)->first();
-				if (!empty($config)) {
-					$config->update($input);
-				} else {
-					$config = new FlashSaleConfig($input);
-					$config->save();
-				}
-			}
-			DB::commit();
-			session()->flash('success', trans('Updated successfully.'));
-		} catch (Exception $exception) {
-			DB::rollBack();
-			session()->flash('error', trans('Updated error.'));
 		}
 	}
 
