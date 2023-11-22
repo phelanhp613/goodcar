@@ -185,7 +185,6 @@ return [
         /*
          * Package Service Providers...
          */
-	    App\Commons\Slug\SlugProvider::class,
 	    App\Commons\Email\EmailServiceProvider::class,
         /*
          * Application Service Providers...

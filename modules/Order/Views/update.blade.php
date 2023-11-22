@@ -114,32 +114,16 @@
                             @php($variant = $item->productVariant)
                             @if(!empty($variant))
                                 <h2 class="">{{ $variant->name }}</h2>
-                                <div class="w-md-50 ratio ratio-16x9">
+                                <div class="w-md-50 ratio ratio-16x9 mb-3">
                                     <img src="{{ getMainImage($variant->images) }}" class="w-100 h-100 object-fit-contain" alt="">
                                 </div>
-                                <div class="">
-                                    <h3>{{ trans('Price') }}</h3>
-                                    @php($saleOff = 100 - (int)(($variant->discount/($variant->price)) * 100))
-                                    @if($saleOff > 0)
-                                        <div class="py-2 product-price fw-semibold mb-4">
-                                            @if($variant->stock > 0)
-                                                @if($variant->discount == 0)
-                                                    <span class="fs-md-3 fs-5 text-success">{{ currency_format($variant->price ?? 0) }}</span>
-                                                @else
-                                                    <div class="d-inline-block">
-                                                        <div class="price-discount">
-                                                            <span class="price fs-md-3 fs-5 text-success">{{ currency_format($variant->discount ?? 0, ' VNĐ') }}</span>
-                                                            <span class="discount text-decoration-line-through fs-md-6 fs-8 text-danger">{{ currency_format($variant->price ?? 0, ' VNĐ') }}</span>
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            @else
-                                                <span class="fs-4 text-decoration-underline"><i>{{ trans('Sold out') }}</i></span>
-                                            @endif
-                                        </div>
-                                    @endif
+                                <div class="mb-3">
+                                    <h3 class="mb-2">{{ trans('Price') }}</h3>
+                                    <div class="product-price fw-semibold">
+                                        <span class="fs-md-3 fs-5 text-success">{{ currency_format($item->price ?? 0) }}</span>
+                                    </div>
                                 </div>
-                                <div class="table-responsive">
+                                <div class="table-responsive mb-3">
                                     <h3>{{ trans('Attribute') }}</h3>
                                     @php($productAttributes = [])
                                     @if(!empty($variant->attributes))

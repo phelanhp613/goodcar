@@ -26,7 +26,7 @@
             <div class="variant row">
                 @php($attribute_pivots_names = !empty($variant_selected->attributePivots) ? $variant_selected->attributePivots->pluck('value')->toArray() : [])
                 @foreach($product_attributes ?? [] as $product_attribute)
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="form-group mb-4 attribute-group">
                             <label class="text-primary fs-6 fs-md-5 fw-semibold mb-3 text-capitalize">
                                 {{ str_replace($data->name . ' - ', '', $product_attribute->name) }}

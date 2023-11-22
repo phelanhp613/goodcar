@@ -3,7 +3,7 @@
 namespace Modules\Frontend\Controllers;
 
 use App\Commons\CacheData\CacheDataService;
-use App\Commons\Slug\SlugInterface;
+use App\Commons\Slug\SlugService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Frontend\Repositories\FrontendService;
@@ -12,7 +12,7 @@ use Modules\Product\Services\ProductCategoryService;
 
 class FrontendController extends Controller
 {
-	private $slugInterface;
+	private $slugService;
 
 	private $frontendService;
 
@@ -28,13 +28,13 @@ class FrontendController extends Controller
 	 * @return void
 	 */
 	public function __construct(
-		SlugInterface $slugInterface,
+		SlugService $slugService,
 		FrontendService $frontendService,
 		CacheDataService $cacheService,
 		ProductService $productService,
 		ProductCategoryService $productCategoryService
 	) {
-		$this->slugInterface          = $slugInterface;
+		$this->slugService          = $slugService;
 		$this->frontendService        = $frontendService;
 		$this->cacheService           = $cacheService;
 		$this->productService         = $productService;
@@ -81,7 +81,7 @@ class FrontendController extends Controller
 			return $dataView;
 		}
 
-		$dataBySlug = $this->slugInterface->setSlug($slug)->init();
+		$dataBySlug = $this->slugService->setSlug($slug)->init();
 		if (empty($dataBySlug->model) || empty($dataBySlug->data)) {
 
 			session()->flash('error', trans('Cannot find this page'));
