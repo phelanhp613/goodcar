@@ -43,50 +43,24 @@
             @endforeach
         </div>
     </div>
-    {{-- @foreach($productCategories as $cate)
-        @if($productByCategory[$cate->id]->isNotEmpty())
-            <div class="brand container py-4">
-                <h2 class="mb-4 fs-4 border-bottom">{{ $cate->name }}</h2>
-                <div class="row">
-                    @foreach($productByCategory[$cate->id] as $item)
-                        <div class="col-md-3 mb-3">
-                            <div class="card">
-                                <div class="ratio ratio-16x9">
-                                    <img src="{{ getMainImage($item->images) }}" class="card-img-top object-fit-contain w-100" alt="...">
-                                </div>
-                                <div class="card-body">
-                                    <div class="card-title fw-bold">{{ $item->name }}</div>
-                                    <div class="min-price">Chỉ từ:
-                                        <span class="text-success">{{ currency_format($item->variants->first()->price ?? 0) }}</span>
-                                    </div>
-                                    <div class="sale-program mb-2">Khuyến mãi: ....</div>
-                                    <a href="{{ route('frontend.redirect_to_page', $item->slug) }}" class="btn btn-primary">Xem chi tiết</a>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-    @endforeach --}}
     <div class="news container mb-3">
         <h2 class="mb-4 text-center"> BÀI VIẾT</h2>
-        <div class="row">
-            @for($i=1; $i<=3; $i++)
+        <div class="row mb-5">
+            @foreach ($posts as $item)
                 <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="ratio ratio-16x9">
-                            <img src="{{ asset('images/frontend/icon-creta.png') }}" class="card-img-top object-fit-contain w-100" alt="...">
+                    <a class="text-decoration-none" href="{{ route('frontend.redirect_to_page', $item->slug) }}">                    
+                        <div class="card h-100">
+                            <div class="ratio ratio-16x9">
+                                <img src="{{ $item->images }}" class="card-img-top object-fit-cover w-100" alt="...">
+                            </div>
+                            <div class="card-body">
+                                <div class="card-title fw-bold">{{ $item->name }}</div>
+                                <div class="">{{ $item->description }}</div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="card-title fw-bold">Hyundai Creta</div>
-                            <div class="min-price">Chỉ từ: <span class="text-success">599.000.000</span></div>
-                            <div class="sale-program mb-2">Khuyến mãi: ....</div>
-                            <a href="#" class="btn btn-primary">Xem chi tiết</a>
-                        </div>
-                    </div>
+                    </a>
                 </div>
-            @endfor
+            @endforeach
         </div>
         <div class="text-center">
             <a href="#" class="btn btn-primary">Xem thêm</a>

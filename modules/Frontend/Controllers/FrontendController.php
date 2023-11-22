@@ -7,8 +7,10 @@ use App\Commons\Slug\SlugService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Frontend\Repositories\FrontendService;
+use Modules\Post\Repositories\PostService;
 use Modules\Product\Services\ProductService;
 use Modules\Product\Services\ProductCategoryService;
+
 
 class FrontendController extends Controller
 {
@@ -22,6 +24,8 @@ class FrontendController extends Controller
 
 	private $productCategoryService;
 
+	private $postService;
+
 	/**
 	 * Create a new authentication controller instance.
 	 *
@@ -32,13 +36,15 @@ class FrontendController extends Controller
 		FrontendService $frontendService,
 		CacheDataService $cacheService,
 		ProductService $productService,
-		ProductCategoryService $productCategoryService
+		ProductCategoryService $productCategoryService,
+		PostService $postService,
 	) {
 		$this->slugService          = $slugService;
 		$this->frontendService        = $frontendService;
 		$this->cacheService           = $cacheService;
 		$this->productService         = $productService;
 		$this->productCategoryService = $productCategoryService;
+		$this->postService = $postService;
 	}
 
 	/**
@@ -53,6 +59,7 @@ class FrontendController extends Controller
 			->take(4);
 		$productByCategory = [];
 		$productFeatured = $this->productService->findBy()->where('featured', 1)->get()->take(4);
+		$posts = $this->postService->findBy()->get()->take(3);
 		foreach ($productCategories as $item) {
 			$productByCategory[$item->id] = $this->productService->findBy()
 				->whereJsonContains(
@@ -62,10 +69,9 @@ class FrontendController extends Controller
 				->get()
 				->take(4);
 		}
-
 		return view(
 			'Frontend::index',
-			compact('products', 'productByCategory', 'productCategories', 'productFeatured')
+			compact('products', 'productByCategory', 'productCategories', 'productFeatured', 'posts')
 		);
 	}
 
@@ -81,7 +87,6 @@ class FrontendController extends Controller
 		if (env('CACHE_VIEW', false) && $dataView) {
 			return $dataView;
 		}
-
 		$dataBySlug = $this->slugService->setSlug($slug)->init();
 		if (empty($dataBySlug->model) || empty($dataBySlug->data)) {
 
@@ -123,8 +128,17 @@ class FrontendController extends Controller
 	 *
 	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
 	 */
-	public function contact(Request $request)
+	public function news(Request $request)
 	{
-		return view('Frontend::contact.contact');
+		$posts = $this->postService->findBy()->get();
+		return view('Frontend::post.index', compact('posts'));
+	}
+	/**
+	 * @param $slug
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+	 */
+	public function postdetail($slug)
+	{
 	}
 }

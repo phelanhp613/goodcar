@@ -48,3 +48,20 @@
       © 2023 TrueCar
     </div>
 </footer>
+<!-- Contact Buttons -->
+<div class="contact-buttons d-flex d-md-block flex-row-reverse">
+  <a href="{{ "https://www.facebook.com/" }}" class="contact-button" target="_blank" aria-label="facebook">
+      <div class="contact-button-circle"></div>
+      <div class="contact-button-fill"></div>
+      <div class="contact-button-image bg-white rounded-circle border border-white">
+          <img src="{{ asset('images/fb-messenger.png') }}" alt="" width="30" height="30">
+      </div>
+  </a>
+  <a href="tel:{{ "0123321123" }}" target="_blank" class="contact-button" aria-label="phone">
+      <div class="contact-button-circle phone"></div>
+      <div class="contact-button-fill phone"></div>
+      <div class="contact-button-image bg-danger rounded-circle border border-2 border-white">
+          <img src="{{ asset('images/phone.png') }}" class="d-flex justify-content-center align-items-center" alt="" width="30" height="30">
+      </div>
+  </a>
+</div>

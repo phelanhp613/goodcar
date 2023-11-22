@@ -130,7 +130,7 @@ class BaseRepository
 	{
 		$result = $this->model->find($id);
 		if (method_exists($result, 'sluggable')) {
-			if(!empty($result->sluggable)) {
+			if (!empty($result->sluggable)) {
 				$result->sluggable->delete();
 			}
 		}

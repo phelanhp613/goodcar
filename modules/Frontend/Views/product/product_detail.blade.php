@@ -42,6 +42,11 @@
                         <hr>
                         <div class="mb-5">
                             <div class="product-images w-100">
+                                @if(!empty($variant_selected) && $variant_selected->stock > 0)
+                                    <div class="position-fixed btn-order-fixed">
+                                        <a href="{{ route('frontend.get.order', ['variant_id' => $variant_selected->id]) }}" class="btn btn-danger py-3 text-white fw-semibold">{{ trans('Order now') }} {{ $variant_selected->name }}</a>
+                                    </div>
+                                @endif
                                 <div class="slide-image px-2 px-md-5 position-relative">
                                     <div class="slick-single invisible">
                                         @if($data->has_variant)
@@ -97,11 +102,7 @@
             @endif
         </div>
     </div>
-    @if(!empty($variant_selected))
-        <div class="position-fixed btn-order-fixed">
-            <a href="{{ route('frontend.get.order', ['variant_id' => $variant_selected->id]) }}" class="btn btn-danger py-3 text-white fw-semibold">{{ trans('Order now') }} {{ $variant_selected->name }}</a>
-        </div>
-    @endif
+    
 @endsection
 
 @push('js')

@@ -64,4 +64,8 @@ class PostService implements BaseServiceInterface
             session()->flash('error', trans('Deleted error.'));
         }
     }
+    public function findBy($data = [])
+    {
+        return $this->moduleRepository->findBy($data);
+    }
 }

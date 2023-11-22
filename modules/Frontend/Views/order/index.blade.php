@@ -74,25 +74,6 @@
                                     </table>
                                 @endif
                             </div>
-                            {{-- <div class="">
-                                <h3>{{ trans('Specification') }}</h3>
-                                @if(!empty($variant->attributes))
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <td class="fw-semibold" style="width: 200px">{{ trans('Engine') }}</td>
-                                            <td>{{ $variant->engine }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-semibold" style="width: 200px">{{ trans('Power') }}</td>
-                                            <td>{{ $variant->power }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-semibold" style="width: 200px">{{ trans('Drive System') }}</td>
-                                            <td>{{ $variant->drive_system }}</td>
-                                        </tr>
-                                    </table>
-                                @endif
-                            </div> --}}
                             <input type="hidden" name="product_variant_id" value="{{ $variant->id }}">
                             <input type="hidden" name="product_id" value="{{ $variant->product->id }}">
                             <input type="hidden" name="product_attributes" value="{{ json_encode($productAttributes) }}">
@@ -109,5 +90,5 @@
 @push('js')
     <script src="{{ asset('assets/vendor/jsvalidation/jsvalidation.min.js') }}"></script>
     {!! JsValidator::formRequest('Modules\Order\Requests\OrderRequest','#order-form') !!}
-{{--    <script src="{{ asset('assets/js/frontend_order.js') }}?v={{ env('APP_VERSION', '1') }}"></script>--}}
+
 @endpush

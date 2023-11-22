@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\Frontend\Controllers\FrontendController;
 use Modules\Frontend\Controllers\FrontendOrderController;
 
+
 Route::get('/', [FrontendController::class, 'index'])->name('frontend.home');
 Route::get('404', [FrontendController::class, 'pageNotFound'])->name('frontend.pageNotFound');
 
@@ -16,7 +17,7 @@ Route::prefix('order')->group(function () {
 
 Route::get('/tim-kiem-san-pham', [FrontendController::class, 'searchProduct'])
 	->name('frontend.product.search');
-Route::get('/lien-he', [FrontendController::class, 'contact'])
-	->name('frontend.contact.contact');
+Route::get('/news', [FrontendController::class, 'news'])
+	->name('frontend.post.news');
 Route::get('/{slug}', [FrontendController::class, 'redirectToPage'])
 	->name('frontend.redirect_to_page');
