@@ -4,6 +4,7 @@ namespace Modules\Order\Repositories;
 
 use Illuminate\Support\Carbon;
 use Modules\Base\Repositories\BaseRepository;
+use Modules\Order\Models\Order;
 use Modules\Order\Models\OrderDetail;
 
 class OrderDetailRepository extends BaseRepository
@@ -36,9 +37,7 @@ class OrderDetailRepository extends BaseRepository
 			if (!empty($filters['phone'])) {
 				$q->where('phone', 'LIKE', '%' . $filters['phone'] . '%');
 			}
-			if (isset($filters['status'])) {
-				$q->where('status', $filters['status']);
-			}
+			$q->where('status', Order::STATUS_DELIVERED);
 			if (!empty($filters['from_date']) && empty($filters['to_date'])) {
 				$from_date = new Carbon($filters['from_date']);
 				$from_date = $from_date->format('Y-m-d')." 00:00:00";

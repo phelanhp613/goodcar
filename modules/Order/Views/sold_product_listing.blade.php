@@ -34,7 +34,6 @@
                                 <th>{{ trans('Order Info') }}</th>
                                 <th>{{ trans('Chassis number') }}</th>
                                 <th>{{ trans('Vehicle engine number') }}</th>
-                                <th class="text-center">{{ trans('Status') }}</th>
                                 <th >{{ trans('Created At') }}</th>
                                 <th class="action" style="width: 150px">{{ trans('Action') }}</th>
                             </tr>
@@ -49,18 +48,6 @@
                                     </td>
                                     <td class="fw-semibold text-danger">
                                         <a href="{{ route('get.order.update', $item->order->id) }}">#{{ $item->order->code }}</a>
-                                    </td>
-                                    <td>
-                                        @php($status = $item->order->status)
-                                        @if ($status == 0)
-                                            <span class="badge bg-danger text-white w-100">{{ Order::getStatus($status) }}</span>
-                                        @elseif($status == 2)
-                                            <span class="badge bg-warning w-100">{{ Order::getStatus($status) }}</span>
-                                        @elseif($status == 5)
-                                            <span class="badge bg-success w-100">{{ Order::getStatus($status) }}</span>
-                                        @else
-                                            <span class="badge bg-info w-100">{{ Order::getStatus($status) }}</span>
-                                        @endif
                                     </td>
                                     <td>{{ $item->chassis_number }}</td>
                                     <td>{{ $item->vehicle_engine_number }}</td>

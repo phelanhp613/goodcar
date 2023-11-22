@@ -20,11 +20,6 @@
                         <input type="tel" class="form-control" id="phone" name="phone" value="{{ $filters['phone'] ?? null}}">
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="status">{{ trans('Status') }}</label>
-                        {!! Form::select('status', ['' => trans('Select')] + Order::getStatuses(), $filters['status'] ?? null,
-                            ['class' => 'select2 form-control w-100', 'id' => 'status']) !!}
-                    </div>
-                    <div class="form-group col-md-3">
                         <label for="from-date">{{ trans("From Date") }}</label>
                         <div class="input-group mb-3">
                             <input type="text" name="from_date" autocomplete="off" value="{{ $filters['from_date'] ?? null }}" class="form-control date" id="from-date" placeholder="dd-mm-yyyy">
