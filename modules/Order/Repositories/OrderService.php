@@ -105,8 +105,8 @@ class OrderService implements BaseServiceInterface
 				]);
 			}
 			$data['customer_id'] = $customer->id;
-			$order        = $this->moduleRepository->create($data);
-			$orderDetails = [];
+			$order               = $this->moduleRepository->create($data);
+			$orderDetails        = [];
 			foreach($products as $product) {
 				$product['total_price'] = !empty($product['final_price']) ? $product['final_price'] * $product['quantity'] : $product['total_price'];
 				$orderDetail            = [
@@ -337,5 +337,43 @@ class OrderService implements BaseServiceInterface
 	public function orderDetail($id)
 	{
 		return $this->orderDetailRepository->detailById($id);
+	}
+
+	/**
+	 * @param $data
+	 *
+	 * @return mixed
+	 */
+	public function getOrderDetailList($data)
+	{
+		return $this->orderDetailRepository->paginate($data);
+	}
+
+	/**
+	 * @param $id
+	 * @param $data
+	 *
+	 * @return void
+	 */
+	public function updateOrderDetail($id, $data)
+	{
+		try {
+			$detail = $this->orderDetailRepository->detailById($id);
+			if(!empty($data['maintenance'])) {
+				$maintenance                               = json_decode($detail->maintenance, 1);
+				$maintenance[$data['maintenance']['date']] = $data['maintenance'];
+				$data['maintenance']                       = $maintenance;
+			}
+			if(!empty($data['maintenance_remove'])) {
+				$maintenance = json_decode($detail->maintenance, 1);
+				unset($maintenance[$data['maintenance_remove']]);
+				unset($data['maintenance_remove']);
+				$data['maintenance'] = $maintenance;
+			}
+			$this->orderDetailRepository->updateById($id, $data);
+			session()->flash('success', trans('Successfully.'));
+		} catch(Exception $exception) {
+			session()->flash('error', trans('Something went wrong.'));
+		}
 	}
 }

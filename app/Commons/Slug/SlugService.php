@@ -5,7 +5,7 @@ namespace App\Commons\Slug;
 use App\Commons\CacheData\CacheDataService;
 use Modules\Base\Models\Slug;
 
-class SlugService implements SlugInterface
+class SlugService
 {
 	public $slug;
 

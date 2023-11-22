@@ -136,4 +136,41 @@ class OrderController extends BaseController
 		return back();
 	}
 
+	/**
+	 * @param \Illuminate\Http\Request $request
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+	 */
+	public function getSoldProductListing(Request $request)
+	{
+		$filters = $request->all();
+		$data = $this->moduleService->getOrderDetailList($filters);
+
+		return view('Order::sold_product_listing', compact('data', 'filters'));
+	}
+
+	/**
+	 * @param \Illuminate\Http\Request $request
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+	 */
+	public function getSoldProductDetail($id)
+	{
+		$data = $this->moduleService->orderDetail($id);
+
+		return view('Order::sold_product_detail', compact('data'));
+	}
+
+	/**
+	 * @param $id
+	 * @param \Illuminate\Http\Request $request
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function postSoldProductDetail($id, Request $request)
+	{
+		$this->moduleService->updateOrderDetail($id, $request->all());
+
+		return back();
+	}
 }

@@ -5,7 +5,7 @@
             <div class="fw-semibold">{{ trans("Search") }}</div>
         </div>
         <div class="card-body collapse show" id="form-search-box">
-            <form action="{{ route('get.order.list') }}" method="get">
+            <form action="{{ route('get.order.sold_product_list') }}" method="get">
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label for="code">{{ trans("Order code") }}</label>
@@ -42,12 +42,20 @@
                             </span>
                         </div>
                     </div>
+                    <div class="form-group col-md-3">
+                        <label for="chassis_number">{{ trans('Chassis number') }}</label>
+                        <input type="text" name="chassis_number" class="form-control" id="chassis_number" value="{{ $filters['chassis_number'] ?? null }}">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="vehicle_engine_number">{{ trans('Vehicle engine number') }}</label>
+                        <input type="text" name="vehicle_engine_number" class="form-control" id="" value="{{ $filters['vehicle_engine_number'] ?? null }}">
+                    </div>
                 </div>
                 <div class="row">
                 </div>
                 <div class="d-flex">
                     <button type="submit" class="btn btn-info text-white me-2">{{ trans("Search") }}</button>
-                    <a href="{{ route('get.order.list') }}" class="btn btn-outline-dark">{{ trans("Reset") }}</a>
+                    <a href="{{ route('get.order.sold_product_list') }}" class="btn btn-outline-dark">{{ trans("Reset") }}</a>
                 </div>
             </form>
         </div>
