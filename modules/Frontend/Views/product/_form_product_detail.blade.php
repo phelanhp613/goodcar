@@ -62,13 +62,13 @@
             @php($saleOff = 100 - (int)(($variant_selected->discount/($variant_selected->price)) * 100))
             @if($saleOff >= 50 && $saleOff < 100)
                 <div class="fw-semibold mb-4">
-                    <div class="product-price product-price-flash-sale d-flex justify-content-between p-2 bg-highlight-flash-sale text-white rounded-3">
+                    <div class="product-price product-price-flash-sale d-flex justify-content-between p-2 bg-highlight-flash-sale  rounded-3">
                         <div>
                             @if($variant_selected->stock > 0)
                                 <div class="d-inline-block">
                                     <div class="price-discount">
-                                        <div class="price fs-md-3 fs-5">{{ currency_format($variant_selected->discount ?? 0) }}</div>
-                                        <div class="discount text-decoration-line-through fs-md-6 fs-8">{{ currency_format($variant_selected->price ?? 0) }}</div>
+                                        <div class="price fs-md-3 fs-5 text-success">{{ currency_format(($variant_selected->price ?? 0) - ($variant_selected->discount ?? 0)) }}</div>
+                                        <div class="discount text-decoration-line-through fs-md-6 fs-8 text-black">{{ currency_format($variant_selected->price ?? 0) }}</div>
                                     </div>
                                 </div>
                             @else

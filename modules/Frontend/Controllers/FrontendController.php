@@ -52,6 +52,7 @@ class FrontendController extends Controller
 			->get()
 			->take(4);
 		$productByCategory = [];
+		$productFeatured = $this->productService->findBy()->where('featured', 1)->get()->take(4);
 		foreach ($productCategories as $item) {
 			$productByCategory[$item->id] = $this->productService->findBy()
 				->whereJsonContains(
@@ -64,7 +65,7 @@ class FrontendController extends Controller
 
 		return view(
 			'Frontend::index',
-			compact('products', 'productByCategory', 'productCategories')
+			compact('products', 'productByCategory', 'productCategories', 'productFeatured')
 		);
 	}
 

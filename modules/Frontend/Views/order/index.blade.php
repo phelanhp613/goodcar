@@ -58,7 +58,7 @@
                                 @endif
                             </div>
                             <div class="table-responsive">
-                                <h3>{{ trans('Attribute') }}</h3>
+                                <h3>Phiên Bản</h3>
                                 @php($productAttributes = [])
                                 @if(!empty($variant->attributes))
                                     <table class="table table-bordered">
@@ -74,7 +74,7 @@
                                     </table>
                                 @endif
                             </div>
-                            <div class="">
+                            {{-- <div class="">
                                 <h3>{{ trans('Specification') }}</h3>
                                 @if(!empty($variant->attributes))
                                     <table class="table table-bordered">
@@ -92,7 +92,7 @@
                                         </tr>
                                     </table>
                                 @endif
-                            </div>
+                            </div> --}}
                             <input type="hidden" name="product_variant_id" value="{{ $variant->id }}">
                             <input type="hidden" name="product_id" value="{{ $variant->product->id }}">
                             <input type="hidden" name="product_attributes" value="{{ json_encode($productAttributes) }}">

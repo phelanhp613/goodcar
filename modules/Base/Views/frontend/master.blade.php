@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/frontend.css') }}?v={{ env('APP_VERSION', '1') }}">
     @stack('css')
     <script type="text/javascript" src="{{ asset('assets/vendor/jquery-3.7.0.min.js') }}"></script>
+    <script src="https://kit.fontawesome.com/72d53beb28.js" crossorigin="anonymous"></script>
 </head>
 <body>
 @include('Base::frontend.header')
