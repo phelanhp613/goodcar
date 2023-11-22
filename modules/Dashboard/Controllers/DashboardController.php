@@ -29,11 +29,11 @@ class DashboardController extends Controller
 			formatDate($now->endOfWeek()->endOfDay(), 'Y-m-d H:i:s'),
 		])->get();
 		$weekData      = [];
-		for($i = 2; $i <= 7; $i ++) {
-			$weekData["Thứ $i"] = 0;
+		for($i = 1; $i <= 6; $i ++) {
+			$weekData["Thứ " . $i+1] = 0;
 		}
 		foreach($weekDataOrder as $item) {
-			$key            = "Thứ " . $item->created_at->dayOfWeek;
+			$key            = "Thứ " . $item->created_at->dayOfWeek+1;
 			$weekData[$key] = $weekData[$key] + $item->total_price;
 		}
 
