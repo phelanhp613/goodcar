@@ -19,3 +19,343 @@
 	right: 5rem;
 	bottom: 5rem;
 }
+
+.contact-buttons {
+	position: fixed;
+	bottom: 0;
+	left: 0.5rem;
+	z-index: 1050;
+
+	.contact-button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: transparent;
+		width: 100px;
+		height: 100px;
+		cursor: pointer;
+		z-index: 200000 !important;
+		-webkit-backface-visibility: hidden;
+		-webkit-transform: translateZ(0);
+		-webkit-transition: visibility .5s;
+		-moz-transition: visibility .5s;
+		-o-transition: visibility .5s;
+		transition: visibility .5s;
+
+		.contact-button-circle {
+			opacity: .5;
+			width: 100px;
+			height: 100px;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			margin: auto;
+			position: absolute;
+			background-color: transparent;
+			-webkit-border-radius: 100%;
+			-moz-border-radius: 100%;
+			border-radius: 100%;
+			border: 2px solid #00aff2;
+			-webkit-animation: contactButtonCircleAnimate 1.2s infinite ease-in-out;
+			-moz-animation: contactButtonCircleAnimate 1.2s infinite ease-in-out;
+			-ms-animation: contactButtonCircleAnimate 1.2s infinite ease-in-out;
+			-o-animation: contactButtonCircleAnimate 1.2s infinite ease-in-out;
+			animation: contactButtonCircleAnimate 1.2s infinite ease-in-out;
+			-webkit-transition: all .5s;
+			-moz-transition: all .5s;
+			-o-transition: all .5s;
+			transition: all .5s;
+
+			&.phone {
+				border: 2px solid $danger;
+			}
+		}
+
+		.contact-button-fill {
+			background-color: $info;
+			opacity: .75 !important;
+			width: 80px;
+			height: 80px;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			margin: auto;
+			position: absolute;
+			-webkit-border-radius: 100%;
+			-moz-border-radius: 100%;
+			border-radius: 100%;
+			border: 2px solid transparent;
+			-webkit-animation: contactButtonFillAnimate 2.3s infinite ease-in-out;
+			-moz-animation: contactButtonFillAnimate 2.3s infinite ease-in-out;
+			-ms-animation: contactButtonFillAnimate 2.3s infinite ease-in-out;
+			-o-animation: contactButtonFillAnimate 2.3s infinite ease-in-out;
+			animation: contactButtonFillAnimate 2.3s infinite ease-in-out;
+			-webkit-transition: all .5s;
+			-moz-transition: all .5s;
+			-o-transition: all .5s;
+			transition: all .5s;
+
+			&.phone {
+				background-color: $danger;
+			}
+		}
+
+		.contact-button-image {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: $info;
+			width: 40px;
+			height: 40px;
+			-webkit-border-radius: 100%;
+			-moz-border-radius: 100%;
+			border-radius: 100%;
+			border: 2px solid transparent;
+			opacity: 1;
+			-webkit-animation: contactButtonImageAnimate 1s infinite ease-in-out;
+			-moz-animation: contactButtonImageAnimate 1s infinite ease-in-out;
+			-ms-animation: contactButtonImageAnimate 1s infinite ease-in-out;
+			-o-animation: contactButtonImageAnimate 1s infinite ease-in-out;
+			animation: contactButtonImageAnimate 1s infinite ease-in-out;
+
+			&.phone {
+				background-color: $danger;
+			}
+		}
+
+		@media (max-width: 767px) {
+			width: 70px;
+			height: 70px;
+
+			.contact-button-circle {
+				width: 70px;
+				height: 70px;
+			}
+			.contact-button-fill {
+				width: 60px;
+				height: 60px;
+			}
+		}
+	}
+
+	//Circle
+	@-moz-keyframes contactButtonCircleAnimate {
+		0% {
+			transform: rotate(0) scale(.5) skew(1deg);
+			opacity: .1
+		}
+		30% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .5
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .1
+		}
+	}
+
+	@-webkit-keyframes contactButtonCircleAnimate {
+		0% {
+			transform: rotate(0) scale(.5) skew(1deg);
+			opacity: .1
+		}
+		30% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .5
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .1
+		}
+	}
+
+	@-o-keyframes contactButtonCircleAnimate {
+		0% {
+			transform: rotate(0) scale(.5) skew(1deg);
+			opacity: .1
+		}
+		30% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .5
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .1
+		}
+	}
+
+	@keyframes contactButtonCircleAnimate {
+		0% {
+			transform: rotate(0) scale(.5) skew(1deg);
+			opacity: .1
+		}
+		30% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .5
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .1
+		}
+	}
+
+	//Circle Fill
+	@-moz-keyframes contactButtonFillAnimate {
+		0% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .2
+		}
+		100% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+	}
+
+	@-webkit-keyframes contactButtonFillAnimate {
+		0% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .2
+		}
+		100% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+	}
+
+	@-o-keyframes contactButtonFillAnimate {
+		0% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .2
+		}
+		100% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+	}
+
+	@keyframes contactButtonFillAnimate {
+		0% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg);
+			opacity: .2
+		}
+		100% {
+			transform: rotate(0) scale(.7) skew(1deg);
+			opacity: .2
+		}
+	}
+
+	//Image
+	@-moz-keyframes contactButtonImageAnimate {
+		0% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		10% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		20% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		30% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		40% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+	}
+
+	@-webkit-keyframes contactButtonImageAnimate {
+		0% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		10% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		20% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		30% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		40% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+	}
+
+	@-o-keyframes contactButtonImageAnimate {
+		0% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		10% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		20% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		30% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		40% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+	}
+
+	@keyframes contactButtonImageAnimate {
+		0% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		10% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		20% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		30% {
+			transform: rotate(-25deg) scale(1) skew(1deg)
+		}
+		40% {
+			transform: rotate(25deg) scale(1) skew(1deg)
+		}
+		50% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+		100% {
+			transform: rotate(0) scale(1) skew(1deg)
+		}
+	}
+}
