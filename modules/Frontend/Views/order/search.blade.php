@@ -1,4 +1,5 @@
 @extends('Base::frontend.master')
+@php use Modules\Order\Models\Order; @endphp
 @section('content')
     <section id="order-section" class="container">
         <nav aria-label="breadcrumb">
@@ -43,6 +44,7 @@
                                                         <th>{{ trans('Name') }}</th>
                                                         <th>{{ trans('Phone') }}</th>
                                                         <th style="width: 300px;">{{ trans('Delivery address') }}</th>
+                                                        <th>{{ trans('Status') }}</th>
                                                         <th>{{ trans('Total Price') }}</th>
                                                         <th style="width: 180px">{{ trans('Created At') }}</th>
                                                         <th class="action" style="width: 150px">{{ trans('Action') }}</th>
@@ -57,6 +59,18 @@
                                                             <td>{{ $item->name }}</td>
                                                             <td>{{ $item->phone }}</td>
                                                             <td>{{ $item->address }}</td>
+                                                            <td>
+                                                                @php($status = $item->status)
+                                                                @if ($status == 0)
+                                                                    <span class="badge bg-danger text-white w-100">{{ Order::getStatus($status) }}</span>
+                                                                @elseif($status == 2)
+                                                                    <span class="badge bg-warning w-100">{{ Order::getStatus($status) }}</span>
+                                                                @elseif($status == 5)
+                                                                    <span class="badge bg-success w-100">{{ Order::getStatus($status) }}</span>
+                                                                @else
+                                                                    <span class="badge bg-info w-100">{{ Order::getStatus($status) }}</span>
+                                                                @endif
+                                                            </td>
                                                             <td class="fw-bold text-primary">{{ currency_format($item->total_price) }}</td>
                                                             <td>{{ formatDate($item->created_at,'d-m-Y H:i') }}</td>
                                                             <td class="text-center">

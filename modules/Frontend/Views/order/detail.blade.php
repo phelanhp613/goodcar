@@ -1,13 +1,14 @@
-@extends('Base::frontend.master')
-@php
-use Modules\Setting\Models\PaymentConfig;
+@extends('Base::frontend.master')@php
+    use Modules\Setting\Models\PaymentConfig;
+    use Modules\Order\Models\Order;
 @endphp
 @section('content')
     <section id="order-section" class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb fs-md-6 fs-8">
                 <li class="breadcrumb-item"><a href="{{ route('frontend.home') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('frontend.get.orderSearch') }}">{{ trans('Tra cứu đơn hàng') }}</a></li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('frontend.get.orderSearch') }}">{{ trans('Tra cứu đơn hàng') }}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{ trans('Order Detail') }}</li>
             </ol>
         </nav>
@@ -24,6 +25,20 @@ use Modules\Setting\Models\PaymentConfig;
                                 <div>Số điện thoại: {{ $data->phone }}</div>
                                 <div>Email: {{ $data->email }}</div>
                                 <div>Địa chỉ: {{ $data->address }}</div>
+                                <div>Trạng thái đơn hàng:
+                                    <span>
+                                        @php($status = $data->status)
+                                        @if ($status == 0)
+                                            <span class="badge bg-danger text-white">{{ Order::getStatus($status) }}</span>
+                                        @elseif($status == 2)
+                                            <span class="badge bg-warning">{{ Order::getStatus($status) }}</span>
+                                        @elseif($status == 5)
+                                            <span class="badge bg-success">{{ Order::getStatus($status) }}</span>
+                                        @else
+                                            <span class="badge bg-info">{{ Order::getStatus($status) }}</span>
+                                        @endif
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="card mb-3">
@@ -96,6 +111,5 @@ use Modules\Setting\Models\PaymentConfig;
                     @endif
                 </div>
             </div>
-        </div>
     </section>
 @endsection
