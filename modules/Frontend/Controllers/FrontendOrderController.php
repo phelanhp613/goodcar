@@ -50,9 +50,9 @@ class FrontendOrderController extends BaseController
 		if(!empty($request->product_variant_id)) {
 			$product_variant = $this->variantService->detail($request->product_variant_id);
 			$product         = $product_variant->product;
-			$quantity    = 1;
-			$total_price = (int) (!empty($product_variant->discount) ? $product_variant->discount : $product_variant->price) * $quantity;
-			$data        = $request->all();
+			$quantity        = 1;
+			$total_price     = (int) (!empty($product_variant->discount) ? $product_variant->discount : $product_variant->price) * $quantity;
+			$data            = $request->all();
 			unset($data['quantity'], $data['variant_id'], $data['product_variant_id'], $data['product_id'], $data['product_attributes'], $data['proengsoft_jsvalidation']);
 			$data['products'] = [
 				$product_variant->id => [
@@ -93,5 +93,33 @@ class FrontendOrderController extends BaseController
 		session()->flash('error', trans('This page is not ready!'));
 
 		return redirect()->route('frontend.home');
+	}
+
+	/**
+	 * @param \Illuminate\Http\Request $request
+	 *
+	 * @return mixed
+	 */
+	public function orderSearch(Request $request)
+	{
+		$data = [];
+
+		if(!empty($request->phone)) {
+			$data = $this->orderService->list(['phone' => $request->phone]);
+		}
+
+		return view('Frontend::order.search', compact('data'));
+	}
+
+	/**
+	 * @param \Illuminate\Http\Request $request
+	 *
+	 * @return mixed
+	 */
+	public function orderDetail($id)
+	{
+		$data = $this->orderService->detail($id);
+
+		return view('Frontend::order.detail', compact('data'));
 	}
 }
