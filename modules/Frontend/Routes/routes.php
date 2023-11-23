@@ -23,5 +23,7 @@ Route::get('/tim-kiem-san-pham', [FrontendController::class, 'searchProduct'])
      ->name('frontend.product.search');
 Route::get('/news', [FrontendController::class, 'news'])
      ->name('frontend.post.news');
+Route::get('/uoc-tinh-chi-phi', [FrontendController::class, 'costEstimate'])
+     ->name('frontend.get.costEstimate');
 Route::get('/{slug}', [FrontendController::class, 'redirectToPage'])
      ->name('frontend.redirect_to_page');

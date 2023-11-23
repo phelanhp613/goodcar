@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Frontend\Repositories\FrontendService;
 use Modules\Post\Repositories\PostService;
+use Modules\Product\Models\Product;
+use Modules\Product\Models\ProductVariant;
 use Modules\Product\Services\ProductService;
 use Modules\Product\Services\ProductCategoryService;
 
@@ -133,12 +135,35 @@ class FrontendController extends Controller
 		$posts = $this->postService->findBy()->get();
 		return view('Frontend::post.index', compact('posts'));
 	}
+
 	/**
-	 * @param $slug
-	 *
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
 	 */
-	public function postdetail($slug)
+	public function costEstimate(Request $request)
 	{
+		$price = 0;
+		$product = null;
+		if(!empty($request->product_id)) {
+			$product = ProductVariant::query()->find($request->product_id);
+			$price = $product->price;
+		};
+		$mucLePhi = [
+			1 => 12/100,
+			2 => 10/100,
+			3 => 10/100
+		];
+		$lePhi = $mucLePhi[$request->area ?? 1] * $price;
+		$phiDK = [
+			1 => 20000000,
+			2 => 1000000,
+			3 => 200000
+		];
+		$phiSuDungDuongBo = 1560000;
+		$phiKiemDinh = 230000;
+		$bhTNSD = 480000;
+
+		$total = $price + $lePhi + $phiDK[$request->area ?? 1] + $phiSuDungDuongBo + $phiKiemDinh + $bhTNSD;
+
+		return view('Frontend::cost_estimate', compact( 'total', 'product', 'price', 'lePhi', 'mucLePhi', 'phiDK','phiSuDungDuongBo', 'bhTNSD', 'phiKiemDinh'));
 	}
 }
