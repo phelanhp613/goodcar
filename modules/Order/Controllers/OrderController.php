@@ -2,6 +2,7 @@
 
 namespace Modules\Order\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -158,7 +159,7 @@ class OrderController extends BaseController
 	{
 		$data = $this->moduleService->orderDetail($id);
 
-		return view('Order::sold_product_detail', compact('data'));
+			return view('Order::sold_product_detail', compact('data'));
 	}
 
 	/**
@@ -172,5 +173,14 @@ class OrderController extends BaseController
 		$this->moduleService->updateOrderDetail($id, $request->all());
 
 		return back();
+	}
+
+	public function getPrintOrder($id)
+	{
+		$data = $this->moduleService->findBy(['id' => $id])->with('details')->first()->toArray();
+
+		$pdf = PDF::loadView('Order::print', $data);
+
+		return $pdf->download('hoa_don.pdf');
 	}
 }

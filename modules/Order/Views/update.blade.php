@@ -100,6 +100,9 @@
                                         <a href="{{ route("get.order.accept", $data->id) }}" class="btn btn-success fw-semibold text-white me-2">{{ trans('Accept') }}</a>
                                         <a href="{{ route("get.order.abort", $data->id) }}" class="btn btn-danger fw-semibold text-white">{{ trans('Abort') }}</a>
                                     @endif
+                                    @if($status == 5)
+                                        <a href="{{ route('get.order.print', $data->id) }}" class="btn btn-danger text-white"><i class="fas fa-print"></i> In hóa đơn</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>

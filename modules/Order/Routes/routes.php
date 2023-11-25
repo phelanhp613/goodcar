@@ -20,6 +20,7 @@ Route::middleware('admin')->prefix("admin")->group(function() {
 			Route::post("update-detail/{id}", [OrderController::class, 'postUpdateDetail'])
 			     ->name("post.order.updateDetail");
 		});
+		Route::get('/print/{id}', [OrderController::class, 'getPrintOrder'])->name("get.order.print")->can('order');
 		Route::get("delete/{id}", [OrderController::class, 'delete'])
 		     ->name("get.order.delete")
 		     ->can('order-delete');
