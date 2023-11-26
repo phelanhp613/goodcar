@@ -1,0 +1,26 @@
+{
+    "open sans": {
+        "300_italic": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/open_sans_300_italic_54c67a410fca3ed6a82c331ec0184ef9",
+        "italic": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/open_sans_italic_67bdd4a47b171988efc0a4ba996a68e0",
+        "500_italic": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/open_sans_500_italic_55ce3b598368aeabef6ef3e7e6646eb8",
+        "600_italic": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/open_sans_600_italic_f5747ccad255983b07ed115de01d13ca",
+        "bold_italic": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/open_sans_bold_italic_762aac4dcb9c01f1ca640da86dd8d4ad",
+        "300": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/open_sans_300_0885c5810a008bcb7c54e9d1bf54fb2c",
+        "normal": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/open_sans_normal_f9f1b653d87c168097eaa958ffde3cdf",
+        "500": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/open_sans_500_156d0d04fc7a69e4e8a9aa6623bea99e",
+        "600": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/open_sans_600_9542d9fe5ed8edbce0c8641c6025458b",
+        "bold": "open_sans_bold_9f0e3c1c8c0fab5db8d6ce31e4104d18"
+    },
+    "roboto": {
+        "300_italic": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/roboto_300_italic_3d719d848a0b6b3f4f0918985ffd2db7",
+        "italic": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/roboto_italic_e3ef71c7d9eeac822fc7d92d4fc7ff6e",
+        "500_italic": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/roboto_500_italic_e69cd621b57d68ed0b47f09bd22a3d7e",
+        "bold_italic": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/roboto_bold_italic_76e4a6bfadf19fea9990a367967a3f96",
+        "900_italic": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/roboto_900_italic_7ad2e464d2e86e53eea8619bf6734bbe",
+        "300": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/roboto_300_32acfcb296f555e063ebba2be7db9e2f",
+        "normal": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/roboto_normal_7bc701b343c10631f60048716b96e4f7",
+        "500": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/roboto_500_5774d6fb05eba3d096525f821dbe4137",
+        "bold": "\/var\/www\/html\/U-Freelance\/thegioixe\/storage\/fonts\/roboto_bold_8db5cb5d0586c1e891426d13097b1d04",
+        "900": "roboto_900_7bf41cacaff90e7097ddd49fb9296601"
+    }
+}
