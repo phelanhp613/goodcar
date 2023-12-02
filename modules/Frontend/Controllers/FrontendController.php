@@ -120,7 +120,7 @@ class FrontendController extends Controller
 	{
 		$keyword = $request->keyword;
 		$categories = $this->productCategoryService->getArray();
-		$data = $this->productService->search($request->all(), 9);
+		$data = $this->productService->search($request->all(), 15);
 
 		return view('Frontend::product.product_search', compact('data', 'keyword', 'categories'));
 	}

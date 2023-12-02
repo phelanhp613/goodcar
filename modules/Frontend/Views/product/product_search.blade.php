@@ -41,10 +41,8 @@
                             </div>
                         @endforeach
                     </div>
-                    <div class="product-list-pagination text-center">
-                        <a href="{{ $data->hasMorePages() ? $data->withQueryString()->nextPageUrl() : 'javascript:' }}" class="btn btn-outline-primary btn-show-more @if(!$data->hasMorePages()) d-none @endif">
-                            {{ trans('Show more') }}
-                        </a>
+                    <div class="product-list-pagination text-center d-flex justify-content-center">
+                        {{ $data->withQueryString()->render('vendor/pagination/default') }}
                     </div>
                 @else
                     <div class="vh-100 py-5">
@@ -57,7 +55,7 @@
     </div>
 @endsection
 @push('js')
-    <script>
+    {{--<script>
 		$(document).ready(function () {
 			$(document).on("click", ".btn-show-more", function (e) {
 				e.preventDefault();
@@ -77,5 +75,5 @@
 				});
 			});
 		})
-    </script>
+    </script>--}}
 @endpush
