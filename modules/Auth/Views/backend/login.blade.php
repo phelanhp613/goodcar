@@ -16,7 +16,7 @@
                                         {{ session()->get('danger') }}
                                     </div>
                                 @endif
-                                <form action="" method="post">
+                                <form action="" method="post" id="login-form">
                                     @csrf
                                     <div class="form-outline mb-4">
                                         <div class="form-floating mb-3">
@@ -45,3 +45,8 @@
         </div>
     </div>
 @endsection
+
+@push('js')
+    <script src="{{ asset('assets/vendor/jsvalidation/jsvalidation.min.js') }}"></script>
+    {!! JsValidator::formRequest('Modules\Auth\Requests\AuthLoginRequest','#login-form') !!}
+@endpush
