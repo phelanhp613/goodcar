@@ -34,7 +34,9 @@ class DashboardController extends Controller
 		}
 		foreach($weekDataOrder as $item) {
 			$key            = "Thứ " . $item->created_at->dayOfWeek+1;
-			$weekData[$key] = $weekData[$key] + $item->total_price;
+			if(isset($weekData[$key])) {
+				$weekData[$key] = $weekData[$key] + $item->total_price;
+			}
 		}
 
 		$monthDataOrder = Order::query()->whereBetween('created_at', [
@@ -47,7 +49,9 @@ class DashboardController extends Controller
 		}
 		foreach($monthDataOrder as $item) {
 			$key             = "Ngày " . $item->created_at->day;
-			$monthData[$key] = $monthData[$key] + $item->total_price;
+			if(isset($monthData[$key])) {
+				$monthData[$key] = $monthData[$key] + $item->total_price;
+			}
 		}
 
 		$yearDataOrder = Order::query()->whereBetween('created_at', [
@@ -63,7 +67,9 @@ class DashboardController extends Controller
 		}
 		foreach($yearDataOrder as $item) {
 			$key            = "Ngày " . formatDate($item->created_at, 'd-m-Y');
-			$yearData[$key] = $yearData[$key] + $item->total_price;
+			if(isset($yearData[$key])) {
+				$yearData[$key] = $yearData[$key] + $item->total_price;
+			}
 		}
 
 		return view("Dashboard::index", [
